@@ -5,23 +5,13 @@ const OfficeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  contactPerson: [
-    {
-      name: {
-        type: String,
-        required: true,
-      },
-      contactNumber: {
-        type: String,
-      },
-    },
-  ],
-  room: {
-    type: String,
-  },
   password: {
     type: String,
     required: true,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
   },
 });
 

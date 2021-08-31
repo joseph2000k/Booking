@@ -24,7 +24,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { officeName, password, room } = req.body;
+    const { officeName, password } = req.body;
 
     try {
       let office = await Office.findOne({ officeName });
@@ -37,7 +37,6 @@ router.post(
 
       office = new Office({
         officeName,
-        room,
         password,
       });
 

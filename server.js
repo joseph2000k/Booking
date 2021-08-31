@@ -15,6 +15,7 @@ app.get('/', (req, res) => res.send('API Running'));
 app.use('/api/offices', require('./routes/api/offices'));
 app.use('/api/meeting', require('./routes/api/meeting'));
 app.use('/api/auth', require('./routes/api/auth'));
+app.use('/api/officeprofile', require('./routes/api/officeprofile'));
 
 const PORT = process.env.PORT || 5000;
 
