@@ -11,10 +11,30 @@ const RoomSchema = new Schema({
   capacity: {
     type: String,
   },
+  meetings: [
+    {
+      meetingId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'meeting',
+      },
+      date: {
+        type: Date,
+        required: true,
+      },
+      timeStart: {
+        type: Date,
+        required: true,
+      },
+      timeEnd: {
+        type: Date,
+        required: true,
+      },
+    },
+  ],
   admins: [
     {
       adminId: {
-        type: Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'admins',
       },
       name: {

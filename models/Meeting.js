@@ -40,9 +40,14 @@ const MeetingSchema = new mongoose.Schema({
   },
   isNotPending: {
     type: Boolean,
+    default: false,
   },
   approvalDate: {
     type: Date,
+  },
+  dateCreated: {
+    type: Date,
+    default: Date.now,
   },
 });
 

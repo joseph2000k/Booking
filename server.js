@@ -1,5 +1,6 @@
 const express = require('express');
 const connectDB = require('./config/db');
+const defaultAdmin = require('./config/defaultAdmin');
 
 const app = express();
 
@@ -16,7 +17,12 @@ app.use('/api/offices', require('./routes/api/offices'));
 app.use('/api/meeting', require('./routes/api/meeting'));
 app.use('/api/auth', require('./routes/api/auth'));
 app.use('/api/officeprofile', require('./routes/api/officeprofile'));
+app.use('/api/rooms', require('./routes/api/rooms'));
+app.use('/api/admins', require('./routes/api/admins'));
 
 const PORT = process.env.PORT || 5000;
+
+//check for default admin
+defaultAdmin();
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
