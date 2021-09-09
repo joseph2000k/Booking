@@ -23,7 +23,6 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    //TODO: create a route that will view all contactperson and all rooms
     try {
       const office = await Office.findById(req.office.id).select("-password");
 
@@ -74,5 +73,35 @@ router.get("/", auth, async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+//@route    DELETE api/meeting/:meeting_id
+//@desc     delete a non pending meeting
+//@access   Private
+router.delete("/:meeting_id", auth, async (req, res) => {
+  try {
+    const meeting = await Meeting.findById(req.params.meeting_id);
+
+    if (!meeting) {
+      return res.status(404).json({ msg: "meeting not found" });
+    }
+
+    //check user
+    if (meeting.office.toString() !== req.office.id) {
+      return res.status(401).json({ msg: "user not authorized" });
+    }
+
+    if (meeting.isNotPending === false) {
+      return res.json({ msg: "meeting is still on pending list" });
+    }
+
+    await meeting.remove();
+    res.json({ msg: "meeting removed" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+//TODO: create a route that will approve a meeting by an admin
 
 module.exports = router;
