@@ -45,6 +45,10 @@ const MeetingSchema = new mongoose.Schema({
   approvalDate: {
     type: Date,
   },
+  finish: {
+    type: Boolean,
+    default: false,
+  },
   dateCreated: {
     type: Date,
     default: Date.now,
