@@ -5,26 +5,26 @@ const MeetingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'office',
   },
-  room: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'rooms',
-  },
-  contactPerson: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'officeProfile',
-  },
-  date: {
-    type: Date,
-    required: true,
-  },
-  timeStart: {
-    type: Date,
-    required: true,
-  },
-  timeEnd: {
-    type: Date,
-    required: true,
-  },
+  rooms: [
+    {
+      room: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'room',
+      },
+      date: {
+        type: Date,
+        required: true,
+      },
+      timeStart: {
+        type: Date,
+        required: true,
+      },
+      timeEnd: {
+        type: Date,
+        required: true,
+      },
+    },
+  ],
   requirements: [
     {
       first: {

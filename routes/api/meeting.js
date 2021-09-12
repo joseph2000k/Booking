@@ -5,17 +5,25 @@ const Meeting = require('../../models/Meeting');
 const OfficeProfile = require('../../models/OfficeProfile');
 const auth = require('../../middleware/auth');
 const Office = require('../../models/Office');
+const Room = require('../../models/Room');
+const authAdmin = require('../../middleware/authAdmin');
 
-//@route    POST api/meeting
+//@route    POST api/meeting/schedule
 //@desc     Create a meeting
 //@access   Private
 router.post(
-  '/',
+  '/schedule',
   [
     auth,
-    check('date', 'date is required').notEmpty(),
-    check('timeStart', 'Starting time is required').notEmpty(),
-    check('timeEnd', 'Ending time is required').notEmpty(),
+    check('room').custom((value) => {
+      return Room.findById(value).then((room) => {
+        if (!room) {
+          return Promise.reject('Invalid Room');
+        }
+      });
+    }),
+    //check('timeStart', 'Starting time is required').notEmpty(),
+    //check('timeEnd', 'Ending time is required').notEmpty(),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -24,36 +32,39 @@ router.post(
     }
 
     try {
-      const office = await Office.findById(req.office.id).select('-password');
-
       const {
+        room,
         date,
         timeStart,
         timeEnd,
-        room,
-        contactPerson,
+        first,
+        second,
         specialInstructions,
-        isNotPending,
-        approvalDate,
-        dateCreated,
       } = req.body;
 
-      //TODO: review isNotPending. make this editable
-      const newMeeting = new Meeting({
-        office: req.office.id,
+      const newRoomsched = {
+        room,
         date,
         timeStart,
         timeEnd,
-        room,
-        contactPerson,
-        specialInstructions,
-        isNotPending,
-        approvalDate,
-        dateCreated,
-      });
+      };
 
-      await newMeeting.save();
-      res.json(newMeeting);
+      const newRequirements = {
+        first,
+        second,
+      };
+
+      const meetingFields = {};
+      meetingFields.office = req.office.id;
+      if (specialInstructions)
+        meetingFields.specialInstructions = specialInstructions;
+
+      let meeting = new Meeting(meetingFields);
+      meeting.rooms.unshift(newRoomsched);
+      meeting.requirements.unshift(newRequirements);
+
+      await meeting.save();
+      res.json(meeting);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -98,6 +109,25 @@ router.delete('/:meeting_id', auth, async (req, res) => {
 
     await meeting.remove();
     res.json({ msg: 'meeting removed' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+//@route    PUT api/meeting/approval/:id
+//@desc     approve a meeting
+//@access   Private/admin
+router.put('/approval/:id', authAdmin, async (req, res) => {
+  try {
+    const filter = { _id: req.params.id };
+    const update = { isNotPending: true };
+
+    let meeting = await Meeting.findOneAndUpdate(filter, update, { new: true });
+    if (meeting) {
+      await meeting.save();
+      return res.json(meeting);
+    }
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
