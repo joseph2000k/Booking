@@ -123,11 +123,6 @@ router.put("/approval/:id", authAdmin, async (req, res) => {
     const filter = { _id: req.params.id };
     const update = { isNotPending: true };
 
-    //get the room in the Meeting model-done
-    //IF room
-    //get rooms and store in an array
-    //for each rooms in array. get all rooms in the array then save meetings in each rooms
-
     let updatedMeeting = await Meeting.findOneAndUpdate(filter, update, {
       new: true,
     });

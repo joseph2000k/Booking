@@ -1,18 +1,18 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { check, validationResult } = require('express-validator');
-const authAdmin = require('../../middleware/authAdmin');
-const auth = require('../../middleware/auth');
-const Admin = require('../../models/Admin');
-const OfficeProfile = require('../../models/OfficeProfile');
-const Room = require('../../models/Room');
+const { check, validationResult } = require("express-validator");
+const authAdmin = require("../../middleware/authAdmin");
+const auth = require("../../middleware/auth");
+const Admin = require("../../models/Admin");
+const OfficeProfile = require("../../models/OfficeProfile");
+const Room = require("../../models/Room");
 
 //@route POST api/rooms
 //@desc Create a room
 //@access Private
 router.post(
-  '/',
-  [authAdmin, check('name', 'room name is required').notEmpty()],
+  "/",
+  [authAdmin, check("name", "room name is required").notEmpty()],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -25,14 +25,14 @@ router.post(
       if (req.admin.level !== 1) {
         return res
           .status(400)
-          .json({ errors: [{ msg: 'Invalid Credentials' }] });
+          .json({ errors: [{ msg: "Invalid Credentials" }] });
       }
       let newRoom = await Room.findOne({ name });
 
       if (newRoom) {
         return res
           .status(400)
-          .json({ errors: [{ msg: 'room already exists' }] });
+          .json({ errors: [{ msg: "room already exists" }] });
       }
 
       newRoom = new Room({
@@ -46,7 +46,7 @@ router.post(
       res.json(room);
     } catch (err) {
       console.err(err.message);
-      res.status(500).send('Server Error');
+      res.status(500).send("Server Error");
     }
   }
 );
@@ -54,17 +54,23 @@ router.post(
 //@route  GET api/rooms
 //@desc   Get all room
 //@access Public
-router.get('/', auth, async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
     const rooms = await Room.find();
     res.json(rooms);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
-//TODO: create a route that will approve a meeting by an admin then put it in a room
-//consider merging room and meeting since a meeting will not exist without a room
+//@route  GET api/rooms/meetings
+//@desc   Get all approved meetings
+//@access Private/admin
+router.get("/meetings", authAdmin, async (req, res) => {
+  return res.json({ msg: "this is all the meetings" });
+});
+
+//TODO: get next 5 meetings in all rooms
 
 module.exports = router;
