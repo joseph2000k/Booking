@@ -68,7 +68,13 @@ router.get("/", auth, async (req, res) => {
 //@desc   Get all approved meetings
 //@access Private/admin
 router.get("/meetings", authAdmin, async (req, res) => {
-  return res.json({ msg: "this is all the meetings" });
+  try {
+    const rooms = await Room.find().populate("meetings", "rooms");
+    res.json(rooms);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
 });
 
 //TODO: get next 5 meetings in all rooms
