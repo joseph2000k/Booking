@@ -3,3 +3,32 @@ attach supporting documents
 chat related to specific meeting request
 
 
+
+> var d1 = new Date("09/15/2021 10:00:00 pm gmt")
+undefined
+> var d2 = new Date("09/15/2021 2:00:00 pm gmt")
+undefined
+> var nd1= new Date("09/15/2021 11:00:00 pm gmt")
+undefined
+> nd1.getTime()<=d2.getTime() && nd1.getTime()
+false
+> nd1.getTime()<=d2.getTime() && nd1.getTime() >= d1.getTime()
+false
+> var date1 = new Date()
+undefined
+> var date2 =new Date(date1)
+undefined
+> var nd1= new Date("09/15/2021 11:00:00 am gmt")
+undefined
+> nd1.getTime
+nd1.getTime            nd1.getTimezoneOffset
+
+> nd1.getTime() <= d2.getTime()  && nd1.getTime
+[Function: getTime]
+> nd1.getTime() <= d2.getTime()  && nd1.getTime() >= d1.getTime()
+false
+> var d1 = new Date("09/15/2021 10:00:00 am gmt")
+undefined
+> nd1.getTime() <= d2.getTime()  && nd1.getTime() >= d1.getTime()
+true
+>
