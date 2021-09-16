@@ -32,19 +32,11 @@ router.post(
     }
 
     try {
-      const {
-        room,
-        date,
-        timeStart,
-        timeEnd,
-        first,
-        second,
-        specialInstructions,
-      } = req.body;
+      const { room, timeStart, timeEnd, first, second, specialInstructions } =
+        req.body;
 
       const newRoomsched = {
         room,
-        date,
         timeStart,
         timeEnd,
       };
@@ -59,10 +51,61 @@ router.post(
       if (specialInstructions)
         meetingFields.specialInstructions = specialInstructions;
 
-      let meeting = new Meeting(meetingFields);
-      meeting.rooms.unshift(newRoomsched);
-      meeting.requirements.unshift(newRequirements);
+      const allRooms = await Room.find().populate("meetings", "rooms");
+      const allMeetings = allRooms.map((item) => item.meetings);
+      const eachrooms = allMeetings.map((item) => item.rooms);
 
+      console.log(eachrooms);
+
+      //let meeting = new Meeting(meetingFields);
+      //meeting.rooms.unshift(newRoomsched);
+      //meeting.requirements.unshift(newRequirements);
+
+      //await meeting.save();
+      //res.json(meeting);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
+
+//@route    PUT api/meeting/schedule/:id
+//@desc     Add schedule in a meeting
+//@access   Private
+router.put(
+  "/schedule/:id",
+  auth,
+  check("room").custom((value) => {
+    return Room.findById(value).then((room) => {
+      if (!room) {
+        return Promise.reject("Invalid Room");
+      }
+    });
+  }),
+  async (req, res) => {
+    try {
+      const meeting = await Meeting.findById(req.params.id);
+      console.log(meeting);
+
+      if (meeting.isNotPending || finish) {
+        return res.status(404).json("this meeting has already been approved");
+      }
+
+      //check user
+      if (meeting.office.toString() !== req.office.id) {
+        return res.status(401).json("User not authorized");
+      }
+
+      const { room, timeStart, timeEnd } = req.body;
+
+      const newRoomsched = {
+        room,
+        timeStart,
+        timeEnd,
+      };
+
+      meeting.rooms.unshift(newRoomsched);
       await meeting.save();
       res.json(meeting);
     } catch (err) {
