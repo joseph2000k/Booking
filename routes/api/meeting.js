@@ -9,6 +9,34 @@ const Room = require("../../models/Room");
 const authAdmin = require("../../middleware/authAdmin");
 
 //@route    POST api/meeting/schedule
+//@desc     Meeting test route, delete this.
+//@access   Private
+router.post("/testmeeting", async (req, res) => {
+  try {
+    const allrooms = await Meeting.find().populate("rooms");
+    const room = allrooms.map((item) => item.rooms);
+    res.json(room);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+});
+
+//@route    POST api/meeting/schedule
+//@desc     Room test route, delete this.
+//@access   Private
+router.post("/test", async (req, res) => {
+  try {
+    const rooms = await Room.find().populate("meetings", "rooms");
+    const room = rooms.map((item) => item.meetings);
+    res.json(room);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server Error");
+  }
+});
+
+//@route    POST api/meeting/schedule
 //@desc     Create a meeting
 //@access   Private
 router.post(
@@ -51,18 +79,12 @@ router.post(
       if (specialInstructions)
         meetingFields.specialInstructions = specialInstructions;
 
-      const allRooms = await Room.find().populate("meetings", "rooms");
-      const allMeetings = allRooms.map((item) => item.meetings);
-      const eachrooms = allMeetings.map((item) => item.rooms);
+      let meeting = new Meeting(meetingFields);
+      meeting.rooms.unshift(newRoomsched);
+      meeting.requirements.unshift(newRequirements);
 
-      console.log(eachrooms);
-
-      //let meeting = new Meeting(meetingFields);
-      //meeting.rooms.unshift(newRoomsched);
-      //meeting.requirements.unshift(newRequirements);
-
-      //await meeting.save();
-      //res.json(meeting);
+      await meeting.save();
+      res.json(meeting);
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
@@ -86,9 +108,8 @@ router.put(
   async (req, res) => {
     try {
       const meeting = await Meeting.findById(req.params.id);
-      console.log(meeting);
 
-      if (meeting.isNotPending || finish) {
+      if (meeting.isNotPending || meeting.finish) {
         return res.status(404).json("this meeting has already been approved");
       }
 
