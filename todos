@@ -32,3 +32,14 @@ undefined
 > nd1.getTime() <= d2.getTime()  && nd1.getTime() >= d1.getTime()
 true
 >
+
+Meeting.find({
+    $and: [
+        { $or: [{d1: {&lte: timeEnd}}, {d1: {$lte : timeStart}}] },
+        { $or: [{d2: {&lte: timeEnd}}, {d2: {$lte : timeStart}}] }
+    ]
+})
+
+
+REF.
+https://stackoverflow.com/questions/34003927/how-can-i-do-a-conditional-mongoose-query-that-uses-and-and-or

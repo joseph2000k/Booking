@@ -11,25 +11,29 @@ const authAdmin = require('../../middleware/authAdmin');
 //@route    POST api/meeting/schedule
 //@desc     Meeting test route, delete this.
 //@access   Private
-router.post('/testmeeting', async (req, res) => {
+router.get('/testmeeting', async (req, res) => {
   try {
-    const allrooms = await Meeting.find().populate('rooms');
-    const room = allrooms.map((item) => item.rooms);
-    res.json(room);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Server Error');
-  }
-});
+    const d1 = new Date('2021-09-17T10:00:00.000+00:00');
+    const d2 = new Date('2021-09-17T11:00:00.000+00:00');
 
-//@route    POST api/meeting/schedule
-//@desc     Room test route, delete this.
-//@access   Private
-router.post('/test', async (req, res) => {
-  try {
-    const rooms = await Room.find().populate('meetings', 'rooms');
-    const room = rooms.map((item) => item.meetings);
-    res.json(room);
+    const meeting = await Meeting.find({
+      $and: [
+        {
+          $or: [
+            { 'rooms.timeStart': { $lte: d1 } },
+            { 'rooms.timeStart': { $lte: d2 } },
+          ],
+        },
+        {
+          $or: [
+            { 'rooms.timeEnd': { $gte: d1 } },
+            { 'rooms.timeEnd': { $gte: d2 } },
+          ],
+        },
+      ],
+    });
+
+    res.json(meeting);
   } catch (err) {
     console.error(err);
     res.status(500).send('Server Error');
