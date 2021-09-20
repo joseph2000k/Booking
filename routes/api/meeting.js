@@ -13,8 +13,8 @@ const authAdmin = require('../../middleware/authAdmin');
 //@access   Private
 router.get('/testmeeting', async (req, res) => {
   try {
-    const d1 = new Date('2021-09-21T15:00:00.000+00:00');
-    const d2 = new Date('2021-09-21T16:00:00.000+00:00');
+    const d1 = new Date('2021-09-21T08:00:00.000+00:00');
+    const d2 = new Date('2021-09-21T09:00:00.000+00:00');
 
     const meeting = await Meeting.find({
       $and: [
@@ -39,7 +39,13 @@ router.get('/testmeeting', async (req, res) => {
       ],
     });
 
-    res.json(meeting);
+    console.log(meeting.length);
+    if (meeting.length > 0) {
+      return res
+        .status(406)
+        .json({ msg: 'This date has already been reserved' });
+    }
+    res.json({ msg: 'this date is available' });
   } catch (err) {
     console.error(err);
     res.status(500).send('Server Error');
