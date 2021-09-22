@@ -60,3 +60,6 @@ if (room.length===timeStart.length===timeEnd.length){
       meeting.rooms.unshift(newRoomsched);
     }
 }
+
+
+/\d{4}(.\d{2}){2}(\s|T)(\d{2}.){2}\d{2}/g
