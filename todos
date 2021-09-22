@@ -45,3 +45,18 @@ Meeting.find({
 
 REF.
 https://stackoverflow.com/questions/34003927/how-can-i-do-a-conditional-mongoose-query-that-uses-and-and-or
+
+
+
+use split method in room, timeStart and timeEnd
+
+if (room.length===timeStart.length===timeEnd.length){
+    for(let i=0; i<room.length; i++){
+        var newRoomsched = {
+        room[i],
+        timeStart[i],
+        timeEnd[i],
+      };
+      meeting.rooms.unshift(newRoomsched);
+    }
+}

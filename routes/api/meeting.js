@@ -13,39 +13,24 @@ const authAdmin = require("../../middleware/authAdmin");
 //@access   Private
 router.get("/testmeeting", async (req, res) => {
   try {
-    const d1 = new Date("2021-09-21T08:00:00.000+00:00");
-    const d2 = new Date("2021-09-21T09:00:00.000+00:00");
+    let rooma = "1 2 3";
+    let timeStarta = "a b c";
+    let timeEnda = "x y z";
 
-    const meeting = await Meeting.find({
-      $and: [
-        {
-          rooms: {
-            $elemMatch: {
-              $and: [
-                {
-                  $or: [
-                    { timeStart: { $lte: d1 } },
-                    { timeStart: { $lte: d2 } },
-                  ],
-                },
-                {
-                  $or: [{ timeEnd: { $gte: d1 } }, { timeEnd: { $gte: d2 } }],
-                },
-              ],
-            },
-          },
-          isNotPending: true,
-        },
-      ],
-    });
+    let room = rooma.split(" ");
+    let timeStart = timeStarta.split(" ");
+    let timeEnd = timeEnda.split(" ");
 
-    console.log(meeting.length);
-    if (meeting.length > 0) {
-      return res
-        .status(406)
-        .json({ msg: "This date has already been reserved" });
+    var meeting = [];
+    for (i = 0; i < room.length; i++) {
+      var newRoomSched = {
+        room: room[i],
+        timeStart: timeStart[i],
+        timeEnd: timeEnd[i],
+      };
+      meeting.unshift(newRoomSched);
+      console.log(newRoomSched);
     }
-    res.json({ msg: "this date is available" });
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
