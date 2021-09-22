@@ -48,13 +48,13 @@ router.post(
   '/schedule',
   [
     auth,
-    check('room').custom((value) => {
+    /* check('room').custom((value) => {
       return Room.findById(value).then((room) => {
         if (!room) {
           return Promise.reject('Invalid Room');
         }
       });
-    }),
+    }), */
     //check('timeStart', 'Starting time is required').notEmpty(),
     //check('timeEnd', 'Ending time is required').notEmpty(),
   ],
@@ -65,51 +65,19 @@ router.post(
     }
 
     try {
-      const { room, timeStart, timeEnd, first, second, specialInstructions } =
-        req.body;
-
-      const newRoomsched = {
-        room,
-        timeStart,
-        timeEnd,
-      };
+      const {
+        getRoom,
+        getTimeStart,
+        getTimeEnd,
+        first,
+        second,
+        specialInstructions,
+      } = req.body;
 
       const newRequirements = {
         first,
         second,
       };
-
-      const meetings = await Meeting.find({
-        $and: [
-          {
-            rooms: {
-              $elemMatch: {
-                $and: [
-                  {
-                    $or: [
-                      { timeStart: { $lte: timeStart } },
-                      { timeStart: { $lte: timeEnd } },
-                    ],
-                  },
-                  {
-                    $or: [
-                      { timeEnd: { $gte: timeStart } },
-                      { timeEnd: { $gte: timeEnd } },
-                    ],
-                  },
-                ],
-              },
-            },
-            disapproved: false,
-          },
-        ],
-      });
-
-      if (meetings.length > 0) {
-        return res.status(406).json({
-          msg: 'There is a pending meeting or the meeting for this date has already been approved',
-        });
-      }
 
       const meetingFields = {};
       meetingFields.office = req.office.id;
@@ -117,7 +85,57 @@ router.post(
         meetingFields.specialInstructions = specialInstructions;
 
       let meeting = new Meeting(meetingFields);
-      meeting.rooms.unshift(newRoomsched);
+
+      let room = getRoom.split(' ');
+      let timeStart = getTimeStart.split(' ');
+      let timeEnd = getTimeEnd.split(' ');
+
+      for (let i = 0; i < room.length; i++) {
+        var newRoomsched = {
+          room: room[i],
+          timeStart: timeStart[i],
+          timeEnd: timeEnd[i],
+        };
+
+        let roomId = await Room.findById(room[i]);
+
+        if (!roomId) {
+          return res.json({ msg: 'invalid room' });
+        }
+        const meetings = await Meeting.find({
+          $and: [
+            {
+              rooms: {
+                $elemMatch: {
+                  $and: [
+                    {
+                      $or: [
+                        { timeStart: { $lte: timeStart[i] } },
+                        { timeStart: { $lte: timeEnd[i] } },
+                      ],
+                    },
+                    {
+                      $or: [
+                        { timeEnd: { $gte: timeStart[i] } },
+                        { timeEnd: { $gte: timeEnd[i] } },
+                      ],
+                    },
+                  ],
+                },
+              },
+              disapproved: false,
+            },
+          ],
+        });
+
+        if (meetings.length > 0) {
+          return res.status(406).json({
+            msg: `Dates are already reserved with date(s), ${timeStart[i]}, ${timeEnd[i]}`,
+          });
+        }
+        meeting.rooms.unshift(newRoomsched);
+      }
+
       meeting.requirements.unshift(newRequirements);
 
       await meeting.save();
