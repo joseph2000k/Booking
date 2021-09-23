@@ -1,17 +1,17 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { check, validationResult } = require('express-validator');
-const Meeting = require('../../models/Meeting');
-const OfficeProfile = require('../../models/OfficeProfile');
-const auth = require('../../middleware/auth');
-const Office = require('../../models/Office');
-const Room = require('../../models/Room');
-const authAdmin = require('../../middleware/authAdmin');
+const { check, validationResult } = require("express-validator");
+const Meeting = require("../../models/Meeting");
+const OfficeProfile = require("../../models/OfficeProfile");
+const auth = require("../../middleware/auth");
+const Office = require("../../models/Office");
+const Room = require("../../models/Room");
+const authAdmin = require("../../middleware/authAdmin");
 
 //@route    POST api/meeting/schedule
 //@desc     Meeting test route, delete this.
 //@access   Private
-router.post('/testmeeting', async (req, res) => {
+router.post("/testmeeting", async (req, res) => {
   try {
     const { rooma, timeStarta, timeEnda } = req.body;
 
@@ -21,9 +21,9 @@ router.post('/testmeeting', async (req, res) => {
     let timeEnda =
       '2018-06-01T13:30:00Z 2018-06-01T14:30:00Z 2018-06-01T14:30:00Z';
  */
-    let room = rooma.split(' ');
-    let timeStart = timeStarta.split(' ');
-    let timeEnd = timeEnda.split(' ');
+    let room = rooma.split(" ");
+    let timeStart = timeStarta.split(" ");
+    let timeEnd = timeEnda.split(" ");
 
     var meeting = [];
     for (i = 0; i < room.length; i++) {
@@ -37,7 +37,7 @@ router.post('/testmeeting', async (req, res) => {
     }
   } catch (err) {
     console.error(err);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
@@ -45,7 +45,7 @@ router.post('/testmeeting', async (req, res) => {
 //@desc     Create a meeting
 //@access   Private
 router.post(
-  '/schedule',
+  "/schedule",
   [
     auth,
     /* check('room').custom((value) => {
@@ -65,14 +65,8 @@ router.post(
     }
 
     try {
-      const {
-        getRoom,
-        getTimeStart,
-        getTimeEnd,
-        first,
-        second,
-        specialInstructions,
-      } = req.body;
+      const { room, timeStart, timeEnd, first, second, specialInstructions } =
+        req.body;
 
       const newRequirements = {
         first,
@@ -86,21 +80,21 @@ router.post(
 
       let meeting = new Meeting(meetingFields);
 
-      let room = getRoom.split(' ');
-      let timeStart = getTimeStart.split(' ');
-      let timeEnd = getTimeEnd.split(' ');
+      let getRoom = room.split(" ");
+      let getTimeStart = timeStart.split(" ");
+      let getTimeEnd = timeEnd.split(" ");
 
       for (let i = 0; i < room.length; i++) {
         var newRoomsched = {
-          room: room[i],
-          timeStart: timeStart[i],
-          timeEnd: timeEnd[i],
+          getRoom: getRoom[i],
+          getTimeStart: getTimeStart[i],
+          getTimeEnd: getTimeEnd[i],
         };
 
-        let roomId = await Room.findById(room[i]);
+        let roomId = await Room.findById(getRoom[i]);
 
         if (!roomId) {
-          return res.json({ msg: 'invalid room' });
+          return res.json({ msg: "invalid room" });
         }
         const meetings = await Meeting.find({
           $and: [
@@ -110,14 +104,14 @@ router.post(
                   $and: [
                     {
                       $or: [
-                        { timeStart: { $lte: timeStart[i] } },
-                        { timeStart: { $lte: timeEnd[i] } },
+                        { timeStart: { $lte: getTimeStart[i] } },
+                        { timeStart: { $lte: getTimeEnd[i] } },
                       ],
                     },
                     {
                       $or: [
-                        { timeEnd: { $gte: timeStart[i] } },
-                        { timeEnd: { $gte: timeEnd[i] } },
+                        { timeEnd: { $gte: getTimeStart[i] } },
+                        { timeEnd: { $gte: getTimeEnd[i] } },
                       ],
                     },
                   ],
@@ -130,7 +124,7 @@ router.post(
 
         if (meetings.length > 0) {
           return res.status(406).json({
-            msg: `Dates are already reserved with date(s), ${timeStart[i]}, ${timeEnd[i]}`,
+            msg: `Dates are already reserved with date(s), ${getTimeStart[i]}, ${getTimeEnd[i]}`,
           });
         }
         meeting.rooms.unshift(newRoomsched);
@@ -142,7 +136,7 @@ router.post(
       res.json(meeting);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server Error');
+      res.status(500).send("Server Error");
     }
   }
 );
@@ -151,12 +145,12 @@ router.post(
 //@desc     Add schedule in a meeting
 //@access   Private
 router.put(
-  '/schedule/:id',
+  "/schedule/:id",
   auth,
-  check('room').custom((value) => {
+  check("room").custom((value) => {
     return Room.findById(value).then((room) => {
       if (!room) {
-        return Promise.reject('Invalid Room');
+        return Promise.reject("Invalid Room");
       }
     });
   }),
@@ -165,12 +159,12 @@ router.put(
       const meeting = await Meeting.findById(req.params.id);
 
       if (meeting.isNotPending || meeting.finish) {
-        return res.status(404).json('this meeting has already been approved');
+        return res.status(404).json("this meeting has already been approved");
       }
 
       //check user
       if (meeting.office.toString() !== req.office.id) {
-        return res.status(401).json('User not authorized');
+        return res.status(401).json("User not authorized");
       }
 
       const { room, timeStart, timeEnd } = req.body;
@@ -186,7 +180,7 @@ router.put(
       res.json(meeting);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server Error');
+      res.status(500).send("Server Error");
     }
   }
 );
@@ -194,50 +188,50 @@ router.put(
 //@route    GET api/meeting
 //@desc     Get meeting for the current office
 //@access   Private
-router.get('/', auth, async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
     const meeting = await Meeting.find({ office: req.office.id });
     res.json(meeting);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
 //@route    DELETE api/meeting/:meeting_id
 //@desc     delete a meeting
 //@access   Private
-router.delete('/:meeting_id', auth, async (req, res) => {
+router.delete("/:meeting_id", auth, async (req, res) => {
   try {
     const meeting = await Meeting.findById(req.params.meeting_id);
 
     if (!meeting) {
-      return res.status(404).json({ msg: 'meeting not found' });
+      return res.status(404).json({ msg: "meeting not found" });
     }
 
     //check user
     if (meeting.office.toString() !== req.office.id) {
-      return res.status(401).json({ msg: 'user not authorized' });
+      return res.status(401).json({ msg: "user not authorized" });
     }
 
     if (meeting.finish) {
       return res
         .status(405)
-        .json({ msg: 'cannot be deleted, meeting is finished.' });
+        .json({ msg: "cannot be deleted, meeting is finished." });
     }
 
     await meeting.remove();
-    res.json({ msg: 'meeting removed' });
+    res.json({ msg: "meeting removed" });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
 //@route    PUT api/meeting/approval/:id
 //@desc     approve a meeting
 //@access   Private/admin
-router.put('/approval/:id', authAdmin, async (req, res) => {
+router.put("/approval/:id", authAdmin, async (req, res) => {
   try {
     const filter = { _id: req.params.id };
     const update = { isNotPending: true };
@@ -247,7 +241,7 @@ router.put('/approval/:id', authAdmin, async (req, res) => {
     if (meeting.isNotPending || meeting.finish) {
       return res
         .status(404)
-        .json({ msg: 'meeting has already been approved or done' });
+        .json({ msg: "meeting has already been approved or done" });
     }
     let updatedMeeting = await Meeting.findOneAndUpdate(filter, update, {
       new: true,
@@ -265,14 +259,14 @@ router.put('/approval/:id', authAdmin, async (req, res) => {
     }
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
 //@route    GET api/meeting/approval/
 //@desc     show all meetings that needs to be approve
 //@access   Private/admin
-router.get('/approval', authAdmin, async (req, res) => {
+router.get("/approval", authAdmin, async (req, res) => {
   try {
     const meeting = await Meeting.find();
 
@@ -283,7 +277,7 @@ router.get('/approval', authAdmin, async (req, res) => {
     res.json(pendingMeeting);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
