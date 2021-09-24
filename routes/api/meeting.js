@@ -264,14 +264,14 @@ router.put("/approval/:id", authAdmin, async (req, res) => {
 });
 
 //@route    GET api/meeting/approval/
-//@desc     show all meetings that needs to be approve
+//@desc     view all meetings that needs to be approve
 //@access   Private/admin
 router.get("/approval", authAdmin, async (req, res) => {
   try {
     const meeting = await Meeting.find();
 
     const pendingMeeting = meeting.filter(
-      (item) => item.isNotPending === false
+      (item) => item.isNotPending === false && item.disapproved === false
     );
 
     res.json(pendingMeeting);
