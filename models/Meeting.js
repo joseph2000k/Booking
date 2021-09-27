@@ -1,23 +1,15 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const MeetingSchema = new mongoose.Schema({
   office: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "office",
+    ref: 'office',
   },
-  rooms: [
+  schedules: [
     {
-      room: {
+      schedule: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "room",
-      },
-      timeStart: {
-        type: Date,
-        required: true,
-      },
-      timeEnd: {
-        type: Date,
-        required: true,
+        ref: 'room',
       },
     },
   ],
@@ -55,4 +47,4 @@ const MeetingSchema = new mongoose.Schema({
   },
 });
 
-module.exports = Meeting = mongoose.model("meeting", MeetingSchema);
+module.exports = Meeting = mongoose.model('meeting', MeetingSchema);
