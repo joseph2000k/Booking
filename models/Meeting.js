@@ -7,10 +7,8 @@ const MeetingSchema = new mongoose.Schema({
   },
   schedules: [
     {
-      schedule: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'room',
-      },
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'schedule',
     },
   ],
   requirements: [

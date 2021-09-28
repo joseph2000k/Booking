@@ -9,6 +9,24 @@ const Room = require('../../models/Room');
 const authAdmin = require('../../middleware/authAdmin');
 const Schedule = require('../../models/Schedule');
 
+//@route    GET api/meeting/approval/
+//@desc     test route
+//@access   Private/admin
+router.get('/testroute', async (req, res) => {
+  try {
+    const meeting = await Meeting.find().populate('schedules');
+
+    /* const pendingMeeting = meeting.filter(
+      (item) => item.isNotPending === false && item.disapproved === false
+    );
+ */
+    res.json(meeting);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 router.post('/schedule', [auth], async (req, res) => {
   try {
     const { room, timeStart, timeEnd, first, second, specialInstructions } =
