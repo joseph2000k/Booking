@@ -56,8 +56,6 @@ router.post('/schedule', [auth], async (req, res) => {
         timeEnd: getTimeEnd[i],
       };
 
-      console.log(getTimeEnd[i]);
-
       let roomId = await Room.findById(getRoom[i]);
 
       if (!roomId) {
@@ -65,21 +63,21 @@ router.post('/schedule', [auth], async (req, res) => {
       }
 
       if (getTimeStart[i] === getTimeEnd[i]) {
-        return res.json({ msg: 'input date overlapping' });
+        return res.status(406).json({ msg: 'input date overlapping' });
       }
 
       if (
         getTimeStart[i + 1] <= getTimeEnd[i] &&
         getTimeStart[i + 1] >= getTimeStart[i]
       ) {
-        return res.json({ msg: 'input date overlapping' });
+        return res.status(406).json({ msg: 'input date overlapping' });
       }
 
       if (
         getTimeEnd[i + 1] <= getTimeEnd[i] &&
         getTimeEnd[i + 1] >= getTimeStart[i]
       ) {
-        return res.json({ msg: 'input date overlapping' });
+        return res.status(406).json({ msg: 'input date overlapping' });
       }
 
       const schedule = await Schedule.find({
@@ -99,20 +97,19 @@ router.post('/schedule', [auth], async (req, res) => {
                 ],
               },
             ],
-
-            disapproved: false,
           },
         ],
-      }).populate({ path: 'meeting', match: { disapproved: false } });
+      });
 
-      console.log(schedule);
       if (schedule.length > 0) {
         return res.status(406).json({
           msg: `Dates are already reserved with date(s), ${getTimeStart[i]}, ${getTimeEnd[i]}`,
         });
       }
       let newSched = new Schedule(newRoomsched);
+
       await newSched.save();
+
       meeting.schedules.unshift(newSched.id);
     }
 
