@@ -63,6 +63,21 @@ router.post('/schedule', [auth], async (req, res) => {
       if (!roomId) {
         return res.json({ msg: 'invalid room' });
       }
+
+      if (
+        getTimeStart[i + 1] <= getTimeEnd[i] &&
+        getTimeStart[i + 1] >= getTimeStart[i]
+      ) {
+        return res.json({ msg: 'input date overlapping' });
+      }
+
+      if (
+        getTimeEnd[i + 1] <= getTimeEnd[i] &&
+        getTimeEnd[i + 1] >= getTimeStart[i]
+      ) {
+        return res.json({ msg: 'input date overlapping' });
+      }
+
       const schedule = await Schedule.find({
         $and: [
           {
