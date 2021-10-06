@@ -1,43 +1,33 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { check, validationResult } = require('express-validator');
-const Meeting = require('../../models/Meeting');
-const OfficeProfile = require('../../models/OfficeProfile');
-const auth = require('../../middleware/auth');
-const Office = require('../../models/Office');
-const Room = require('../../models/Room');
-const authAdmin = require('../../middleware/authAdmin');
-const Schedule = require('../../models/Schedule');
+const { check, validationResult } = require("express-validator");
+const Meeting = require("../../models/Meeting");
+const OfficeProfile = require("../../models/OfficeProfile");
+const auth = require("../../middleware/auth");
+const Office = require("../../models/Office");
+const Room = require("../../models/Room");
+const authAdmin = require("../../middleware/authAdmin");
+const Schedule = require("../../models/Schedule");
 
 //@route    GET api/meeting/approval/
-//@desc     test route
+//@desc     test route for finding all scheds in a room
 //@access   Private/admin
-router.get('/testroute', async (req, res) => {
+router.get("/testroute", async (req, res) => {
   try {
-    const d1 = new Date('2023-07-01T12:30:00.000+00:00');
-    const meeting = await Schedule.find().populate('meeting');
-
-    /* const approvedMeeting = meeting.filter(
-      (item) => item.timeStart.getTime() <= d1.getTime()
-    ); */
-
-    const approvedMeeting = meeting.filter(
-      (item) => item.timeStart.getTime() < d1.getTime()
-    );
-
-    /* const pendingMeeting = meeting.filter(
-      (item) => item.isNotPending === false && item.disapproved === false
-    );
- */
-    console.log(approvedMeeting.length);
-    res.json(approvedMeeting);
+    const distinctRoom = await Schedule.find().distinct("room");
+    for (let i = 0; i < distinctRoom.length - 1; i++) {
+      var room = await Schedule.find(distinctRoom[i], "meeting room");
+      /* .populate("meeting")
+        .populate("room"); */
+    }
+    res.json(room);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
-router.post('/schedule', [auth], async (req, res) => {
+router.post("/schedule", [auth], async (req, res) => {
   try {
     const { room, timeStart, timeEnd, first, second, specialInstructions } =
       req.body;
@@ -54,9 +44,9 @@ router.post('/schedule', [auth], async (req, res) => {
 
     let meeting = new Meeting(meetingFields);
 
-    let getRoom = room.split(' ');
-    let getTimeStart = timeStart.split(' ');
-    let getTimeEnd = timeEnd.split(' ');
+    let getRoom = room.split(" ");
+    let getTimeStart = timeStart.split(" ");
+    let getTimeEnd = timeEnd.split(" ");
 
     console.log(getRoom);
     var schedArray = [];
@@ -71,28 +61,28 @@ router.post('/schedule', [auth], async (req, res) => {
       let roomId = await Room.findById(getRoom[i]);
 
       if (!roomId) {
-        return res.json({ msg: 'invalid room' });
+        return res.json({ msg: "invalid room" });
       }
 
       if (getTimeStart[i] === getTimeEnd[i]) {
-        return res.status(406).json({ msg: 'input date overlapping' });
+        return res.status(406).json({ msg: "input date overlapping" });
       }
 
       if (
         getTimeStart[i + 1] <= getTimeEnd[i] &&
         getTimeStart[i + 1] >= getTimeStart[i]
       ) {
-        return res.status(406).json({ msg: 'input date overlapping' });
+        return res.status(406).json({ msg: "input date overlapping" });
       }
 
       if (
         getTimeEnd[i + 1] <= getTimeEnd[i] &&
         getTimeEnd[i + 1] >= getTimeStart[i]
       ) {
-        return res.status(406).json({ msg: 'input date overlapping' });
+        return res.status(406).json({ msg: "input date overlapping" });
       }
 
-      const meetings = await Schedule.find().populate('meeting');
+      const meetings = await Schedule.find().populate("meeting");
 
       const schedule = meetings.filter(
         (item) =>
@@ -119,18 +109,35 @@ router.post('/schedule', [auth], async (req, res) => {
       schedArray.length === getTimeStart.length &&
       schedArray.length === getTimeEnd.length
     ) {
-      /*  schedArray.forEach((item) => item.save());
+      schedArray.forEach((item) => item.save());
 
-      await meeting.save(); */
+      await meeting.save();
       res.json(meeting);
       schedArray = [];
     } else {
-      res.json({ msg: 'invalid inputs' });
+      res.json({ msg: "invalid inputs" });
       schedArray = [];
     }
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
+  }
+});
+
+//@route    GET api/meeting/approval/
+//@desc     test route
+//@access   Private/admin
+router.delete("/testroute2", async (req, res) => {
+  try {
+    await Room.deleteMany({
+      _id: "6133b21735ea3a22af9fd1e0",
+      meetings: "6133b21735ea3a22af9fd1e0",
+    });
+    // Number of docs deleted
+    res.deletedCount;
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
 });
 
