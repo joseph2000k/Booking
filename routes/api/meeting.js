@@ -15,12 +15,12 @@ const Schedule = require("../../models/Schedule");
 router.get("/testroute", async (req, res) => {
   try {
     const distinctRoom = await Schedule.find().distinct("room");
-    for (let i = 0; i < distinctRoom.length - 1; i++) {
-      var room = await Schedule.find(distinctRoom[i], "meeting room");
-      /* .populate("meeting")
-        .populate("room"); */
+    roomArray = [];
+    distinctRoom.forEach((item) => roomArray.push(item));
+    for (let i = 0; i < roomArray.length; i++) {
+      var roomStr = roomArray[i].toString();
     }
-    res.json(room);
+    console.log(roomArray);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
