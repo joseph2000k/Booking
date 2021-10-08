@@ -48,7 +48,6 @@ router.post("/schedule", [auth], async (req, res) => {
     let getTimeStart = timeStart.split(" ");
     let getTimeEnd = timeEnd.split(" ");
 
-    console.log(getRoom);
     var schedArray = [];
     for (let i = 0; i < getRoom.length; i++) {
       var newRoomsched = {
@@ -127,8 +126,24 @@ router.post("/schedule", [auth], async (req, res) => {
 //@route    GET api/meeting/approval/
 //@desc     delete a meeting test route
 //@access   Private/admin
-router.delete("/testroute", async (req, res) => {
+router.delete("/testroute/:roomId", auth, async (req, res) => {
   try {
+    const meeting = await Meeting.findById(req.params.roomId);
+    const schedule = await Schedule.find({ meeting: req.params.roomId });
+    if (!meeting || !schedule) {
+      return res.status(404).json({ msg: "Meeting does not exist" });
+    }
+    if (meeting.office.toString() !== req.office.id) {
+      return res.status(401).json({ msg: "User not Authorized" });
+    }
+
+    if (meeting && schedule.length > 0) {
+      await Schedule.deleteMany({ meeting: req.params.roomId });
+      await meeting.remove();
+      return res.status(200).json({ msg: "Meeting Deleted" });
+    } else {
+      return res.json({ msg: "Deleting a meeting failed" });
+    }
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
