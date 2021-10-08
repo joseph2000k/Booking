@@ -10,17 +10,17 @@ const authAdmin = require("../../middleware/authAdmin");
 const Schedule = require("../../models/Schedule");
 
 //@route    GET api/meeting/approval/
-//@desc     test route for finding all scheds in a room
+//@desc     view all meetings in a room
 //@access   Private/admin
-router.get("/testroute", async (req, res) => {
+router.get("/:roomId", async (req, res) => {
   try {
-    const distinctRoom = await Schedule.find().distinct("room");
-    roomArray = [];
-    distinctRoom.forEach((item) => roomArray.push(item));
-    for (let i = 0; i < roomArray.length; i++) {
-      var roomStr = roomArray[i].toString();
+    const room = await Schedule.find({ room: req.params.roomId });
+    const meetingRoom = await Room.findById(req.params.roomId);
+    if (!room || !meetingRoom) {
+      return res.status(404).json({ msg: "no room found" });
     }
-    console.log(roomArray);
+    const allMeetings = { [meetingRoom.name]: room };
+    res.json(allMeetings);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
@@ -125,16 +125,10 @@ router.post("/schedule", [auth], async (req, res) => {
 });
 
 //@route    GET api/meeting/approval/
-//@desc     test route
+//@desc     delete a meeting test route
 //@access   Private/admin
-router.delete("/testroute2", async (req, res) => {
+router.delete("/testroute", async (req, res) => {
   try {
-    await Room.deleteMany({
-      _id: "6133b21735ea3a22af9fd1e0",
-      meetings: "6133b21735ea3a22af9fd1e0",
-    });
-    // Number of docs deleted
-    res.deletedCount;
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
