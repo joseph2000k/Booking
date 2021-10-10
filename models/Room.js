@@ -11,32 +11,6 @@ const RoomSchema = new Schema({
   capacity: {
     type: String,
   },
-  meetings: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'meeting',
-    },
-  ],
-  admins: [
-    {
-      adminId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'admins',
-      },
-      name: {
-        type: String,
-      },
-      office: {
-        type: String,
-      },
-      contactDetails: {
-        type: String,
-      },
-      level: {
-        type: Number,
-      },
-    },
-  ],
 });
 
 module.exports = Room = mongoose.model('room', RoomSchema);

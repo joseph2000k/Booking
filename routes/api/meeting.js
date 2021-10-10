@@ -33,7 +33,7 @@ router.get('/myschedules/:officeId', auth, async (req, res) => {
 //@route    GET api/meeting/approval/
 //@desc     view all meetings in a room
 //@access   Public
-router.get('/:roomId', async (req, res) => {
+router.get('/rooms/:roomId', async (req, res) => {
   try {
     const room = await Schedule.find({ room: req.params.roomId });
     const meetingRoom = await Room.findById(req.params.roomId);
@@ -165,6 +165,25 @@ router.delete('/:roomId', auth, async (req, res) => {
     } else {
       return res.json({ msg: 'Deleting a meeting failed' });
     }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+//@route    GET api/meeting/approval/
+//@desc     view all meetings that needs to be approve
+//@access   Private/admin
+//TODO  VERIFY ADMIN BEFORE APPROVAL
+router.post('/approval', authAdmin, async (req, res) => {
+  try {
+    const meeting = await Meeting.find();
+
+    const pendingMeeting = meeting.filter(
+      (item) => item.isNotPending === false && item.disapproved === false
+    );
+
+    res.json(pendingMeeting);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
