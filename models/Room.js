@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const RoomSchema = new Schema({
@@ -11,6 +11,12 @@ const RoomSchema = new Schema({
   capacity: {
     type: String,
   },
+  admins: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "admin",
+    },
+  ],
 });
 
-module.exports = Room = mongoose.model('room', RoomSchema);
+module.exports = Room = mongoose.model("room", RoomSchema);
