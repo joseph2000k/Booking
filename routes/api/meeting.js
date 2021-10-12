@@ -177,13 +177,21 @@ router.delete("/:roomId", auth, async (req, res) => {
 //TODO  VERIFY ADMIN BEFORE APPROVAL
 router.get("/approval/:roomId", authAdmin, async (req, res) => {
   try {
-    const admin = await Room.findById(req.params.roomId);
+    const room = await Room.findById(req.params.roomId);
 
-    console.log(admin);
-    const meeting = await Meeting.find();
+    const admin = room.admins.includes(req.admin.id);
+    if (!admin) {
+      return res.status(410).json("Not Authorized");
+    }
 
-    const pendingMeeting = meeting.filter(
-      (item) => item.isNotPending === false && item.disapproved === false
+    const meetings = await Schedule.find({ room: req.params.roomId }).populate(
+      "meeting"
+    );
+
+    const pendingMeeting = meetings.filter(
+      (item) =>
+        item.meeting.isNotPending === false &&
+        item.meeting.disapproved === false
     );
 
     res.json(pendingMeeting);
