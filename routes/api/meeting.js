@@ -14,13 +14,16 @@ const Schedule = require('../../models/Schedule');
 //@access   Private
 router.get('/', auth, async (req, res) => {
   try {
-    const meeting = await Meeting.find({ office: req.office.id });
+    const meetings = await Meeting.find({ office: req.office.id });
 
-    const office = meeting.find(
+    if (meetings.length < 1) {
+      return res.status(404).json({ msg: 'No meeting found' });
+    }
+    const meeting = meetings.filter(
       (item) => item.office.toString() === req.office.id
     );
 
-    if (!office) {
+    if (!meeting) {
       return res.status(401).json({ msg: 'User not Authorized' });
     }
 
