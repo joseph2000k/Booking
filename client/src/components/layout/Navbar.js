@@ -5,7 +5,7 @@ const Navbar = () => {
     <nav className="navbar bg-dark">
       <h1>
         <a href="index.html">
-          <i className="fas fa-code"></i> DevConnector
+          <i class="fa fa-pencil-square-o" aria-hidden="true"></i> BookingSystem
         </a>
       </h1>
       <ul>
