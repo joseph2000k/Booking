@@ -34,7 +34,14 @@ body {
 }
 
 .landing {
-  background-image: url("./img/calendar.png");
+  background-image: url('./img/calendar.png');
   height: 100vh;
   background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.x-large {
+  font-size: 2rem;
 }
