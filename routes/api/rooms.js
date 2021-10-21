@@ -54,7 +54,7 @@ router.post(
 //@route  GET api/rooms
 //@desc   Get all room
 //@access Public
-router.get('/', auth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const rooms = await Room.find();
     res.json(rooms);
