@@ -2,9 +2,14 @@ $skyColor: #00b4d8;
 $my-font: white;
 $body-font: Arial, Helvetica, sans-serif;
 
-body {
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+body {
+  overflow: hidden;
 }
 
 .navbar {
@@ -34,14 +39,24 @@ body {
 }
 
 .landing {
-  background-image: url('./img/calendar.png');
+  background-image: url("./img/calendar.png");
   height: 100vh;
   background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: -1;
 }
 
 .x-large {
   font-size: 2rem;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  overflow: hidden;
+  padding: 0 2rem;
+  margin-top: 6rem;
+  margin-bottom: 3rem;
 }
