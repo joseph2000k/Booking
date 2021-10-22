@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Landing from "./components/layout/Landing";
 import Login from "./components/auth/Login";
+import Rooms from "./components/rooms/Rooms";
 
 //Redux
 import { Provider } from "react-redux";
@@ -18,6 +19,7 @@ const App = () => (
         <section className="container">
           <Switch>
             <Route exact path="/login" component={Login} />
+            <Route exact path="/rooms" component={Rooms} />
           </Switch>
         </section>
       </Fragment>
