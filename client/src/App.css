@@ -5,8 +5,17 @@
   padding: 0;
 }
 
-body {
-  overflow: hidden;
+a {
+  text-decoration: none;
+}
+
+.a-link {
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.h-title {
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .navbar {
@@ -25,6 +34,26 @@ body {
           align-items: center;
   position: fixed;
   top: 0;
+  z-index: 4;
+}
+
+.navbar .btn {
+  display: inline-block;
+  background: var(--light-color);
+  color: #333;
+  padding: 0.4rem 1.3rem;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  -webkit-transition: opacity 0.2s ease-in;
+  transition: opacity 0.2s ease-in;
+  outline: none;
+}
+
+.navbar .btn-primary {
+  background: var(--primary-color);
+  color: #fff;
 }
 
 .navbar a {
