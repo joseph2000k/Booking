@@ -57,8 +57,7 @@ router.get("/rooms/:roomId", async (req, res) => {
 //@access   Private
 router.post("/schedule", [auth], async (req, res) => {
   try {
-    const { room, timeStart, timeEnd, first, second, specialInstructions } =
-      req.body;
+    const { room, start, end, first, second, specialInstructions } = req.body;
 
     const newRequirements = {
       first,
@@ -73,16 +72,16 @@ router.post("/schedule", [auth], async (req, res) => {
     let meeting = new Meeting(meetingFields);
 
     let getRoom = room.split(" ");
-    let getTimeStart = timeStart.split(" ");
-    let getTimeEnd = timeEnd.split(" ");
+    let getTimeStart = start.split(" ");
+    let getTimeEnd = end.split(" ");
 
     var schedArray = [];
     for (let i = 0; i < getRoom.length; i++) {
       var newRoomsched = {
         meeting: meeting.id,
         room: getRoom[i].trim(),
-        timeStart: getTimeStart[i].trim(),
-        timeEnd: getTimeEnd[i].trim(),
+        start: getTimeStart[i].trim(),
+        end: getTimeEnd[i].trim(),
       };
 
       let roomId = await Room.findById(getRoom[i]);
@@ -113,16 +112,16 @@ router.post("/schedule", [auth], async (req, res) => {
 
       const schedule = meetings.filter(
         (item) =>
-          (item.timeStart.getTime() <= new Date(getTimeStart[i]).getTime() ||
-            item.timeStart.getTime() <= new Date(getTimeEnd[i]).getTime()) &&
-          (item.timeEnd.getTime() >= new Date(getTimeStart[i]).getTime() ||
-            item.timeEnd.getTime() >= new Date(getTimeEnd[i]).getTime()) &&
+          (item.start.getTime() <= new Date(getTimeStart[i]).getTime() ||
+            item.start.getTime() <= new Date(getTimeEnd[i]).getTime()) &&
+          (item.end.getTime() >= new Date(getTimeStart[i]).getTime() ||
+            item.end.getTime() >= new Date(getTimeEnd[i]).getTime()) &&
           item.meeting.disapproved === false
       );
 
       if (schedule.length > 0) {
         return res.status(406).json({
-          msg: `Please check overlapping dates ${timeStart}, ${timeEnd}`,
+          msg: `Please check overlapping dates ${start}, ${end}`,
         });
       }
       var newSched = new Schedule(newRoomsched);
