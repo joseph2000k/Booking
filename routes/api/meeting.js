@@ -44,8 +44,7 @@ router.get("/rooms/:roomId", async (req, res) => {
     if (!room || !meetingRoom) {
       return res.status(404).json({ msg: "no room found" });
     }
-    const allMeetings = { [meetingRoom.name]: room };
-    res.json(allMeetings);
+    res.json(room);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
