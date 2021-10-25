@@ -1,7 +1,8 @@
-import { GET_ROOMS, ROOM_ERROR } from "../actions/types";
+import { GET_ROOMS, GET_ROOM_MEETINGS, ROOM_ERROR } from "../actions/types";
 
 const initialState = {
   rooms: [],
+  meetings: [],
   loading: true,
   error: {},
 };
@@ -14,6 +15,13 @@ export default function roomReducer(state = initialState, action) {
       return {
         ...state,
         rooms: payload,
+        loading: false,
+      };
+
+    case GET_ROOM_MEETINGS:
+      return {
+        ...state,
+        meetings: payload,
         loading: false,
       };
 

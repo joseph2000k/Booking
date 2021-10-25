@@ -1,4 +1,5 @@
 export const GET_ROOMS = "GET_ROOMS";
+export const GET_ROOM_MEETINGS = "GET_ROOM_MEETINGS";
 export const ROOM_ERROR = "ROOM_ERROR";
 export const OFFICE_LOADED = "OFFICE_LOADED";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
