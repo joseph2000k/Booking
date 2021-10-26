@@ -14,17 +14,9 @@ const RoomCalendar = ({ getRoomMeetings, match, meetings: { meetings } }) => {
     <div>
       <FullCalendar
         defaultView="dayGridMonth"
+        displayEventTime={false}
         plugins={[dayGridPlugin]}
-        events={[
-          {
-            id: "a",
-            title: "Finance",
-            start: `
-            2021-11-01T10:30:00.000+00:00`,
-            end: `
-            2021-11-01T11:30:00.000+00:00`,
-          },
-        ]}
+        events={meetings}
       />
     </div>
   );
