@@ -27,6 +27,11 @@ a {
 
 .h-title {
   font-family: $body-font;
+  font-weight: bold;
+}
+
+.form .form-group {
+  margin: 1.2rem 0;
 }
 
 .alert {

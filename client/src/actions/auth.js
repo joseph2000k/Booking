@@ -23,14 +23,14 @@ export const loadOffice = () => async (dispatch) => {
 };
 
 //Login User
-export const login = (email, password) => async (dispatch) => {
+export const login = (officeName, password) => async (dispatch) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
     },
   };
 
-  const body = JSON.stringify({ email, password });
+  const body = JSON.stringify({ officeName, password });
 
   try {
     const res = await axios.post("/api/auth", body, config);

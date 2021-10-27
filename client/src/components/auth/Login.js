@@ -6,18 +6,18 @@ import { login } from "../../actions/auth";
 
 export const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
-    email: "",
+    officeName: "",
     password: "",
   });
 
-  const { email, password } = formData;
+  const { officeName, password } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    login(email, password);
+    login(officeName, password);
   };
 
   //Redirect if logged in
@@ -34,10 +34,10 @@ export const Login = ({ login, isAuthenticated }) => {
       <form className="form" onSubmit={(e) => onSubmit(e)}>
         <div className="form-group">
           <input
-            type="email"
-            placeholder="Email Address"
-            name="email"
-            value={email}
+            type="text"
+            placeholder="Office Name"
+            name="officeName"
+            value={officeName}
             onChange={(e) => onChange(e)}
             required
           />
