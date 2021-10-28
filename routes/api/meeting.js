@@ -40,8 +40,34 @@ router.get("/", auth, async (req, res) => {
 //@access   Public
 router.get("/rooms/:roomId", async (req, res) => {
   try {
-    const meetingList = await Schedule.aggregate([
-      { $match: { room: new ObjectId(req.params.roomId) } },
+    const meetingList = await Meeting.aggregate([
+      { $unwind: "$schedules" },
+
+      //{ $match: { "$schedules.room": req.params.roomId } },
+      {
+        $lookup: {
+          from: "offices",
+          localField: "office",
+          foreignField: "_id",
+          as: "office",
+        },
+      },
+
+      {
+        $unwind: {
+          path: "$office",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $project: {
+          title: "$office.officeName",
+          start: "$schedules.start",
+          end: "$schedules.end",
+          _id: 0,
+        },
+      },
+      /* { $match: { room: new ObjectId(req.params.roomId) } },
 
       {
         $lookup: {
@@ -73,7 +99,7 @@ router.get("/rooms/:roomId", async (req, res) => {
       },
       {
         $project: { start: 1, end: 1, title: "$titles.officeName" },
-      },
+      }, */
     ]);
 
     res.json(meetingList);
@@ -88,7 +114,25 @@ router.get("/rooms/:roomId", async (req, res) => {
 //@access   Private
 router.post("/schedule", [auth], async (req, res) => {
   try {
-    const { room, start, end, first, second, specialInstructions } = req.body;
+    const { specialInstructions, first, second } = req.body;
+
+    const newRequirements = {
+      first,
+      second,
+    };
+
+    const meetingFields = {};
+    meetingFields.office = req.office.id;
+    if (specialInstructions)
+      meetingFields.specialInstructions = specialInstructions;
+
+    let meeting = new Meeting(meetingFields);
+
+    meeting.requirements.unshift(newRequirements);
+
+    const newMeeting = await meeting.save();
+    res.json(newMeeting);
+    /* const { room, start, end, first, second, specialInstructions } = req.body;
 
     const newRequirements = {
       first,
@@ -174,11 +218,55 @@ router.post("/schedule", [auth], async (req, res) => {
     } else {
       res.json({ msg: "invalid inputs" });
       schedArray = [];
-    }
+    } */
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
+});
+//@route    PUT
+//@desc     add schedule to the meeting
+//@access   Private
+router.get("/schedule/:meetingId", auth, async (req, res) => {
+  try {
+    const meeting = await Meeting.findById(req.params.meetingId);
+
+    if (!meeting) {
+      console.log("meeting not found");
+    }
+    const { room, start, end } = req.body;
+    let roomName = await Room.findOne({ name: room });
+    console.log(roomName);
+
+    if (!roomName) {
+      return res.json({ msg: "invalid room" });
+    }
+
+    const schedule = meeting.schedules.filter(
+      (item) =>
+        (item.start.getTime() <= new Date(start).getTime() ||
+          item.start.getTime() <= new Date(end).getTime()) &&
+        (item.end.getTime() >= new Date(start).getTime() ||
+          item.end.getTime() >= new Date(end).getTime())
+    );
+
+    const newSchedule = {
+      room: roomName.id,
+      start,
+      end,
+    };
+
+    console.log(schedule);
+    if (schedule.length > 0) {
+      return res.status(406).json({
+        msg: `Please check overlapping dates`,
+      });
+    } else {
+      meeting.schedules.unshift(newSchedule);
+    }
+    meeting.save();
+    res.json(meeting);
+  } catch (error) {}
 });
 
 //@route    GET api/meeting/approval/
