@@ -1,9 +1,8 @@
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import React, { Fragment, useEffect } from 'react';
-import RoomItem from './RoomItem';
-import { getRooms } from '../../actions/rooms';
-import calendar from './RoomCalendar';
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import React, { Fragment, useEffect } from "react";
+import RoomItem from "./RoomItem";
+import { getRooms } from "../../actions/rooms";
 
 const Rooms = ({ getRooms, room: { rooms } }) => {
   useEffect(() => {
@@ -11,7 +10,7 @@ const Rooms = ({ getRooms, room: { rooms } }) => {
   }, [getRooms]);
   return (
     <Fragment>
-      <h1 className='h-title'>Rooms</h1>
+      <h1 className="h-title">Rooms</h1>
       <div>
         {rooms.map((room) => (
           <RoomItem key={room._id} room={room}></RoomItem>

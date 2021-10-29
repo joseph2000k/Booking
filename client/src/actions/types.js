@@ -9,3 +9,5 @@ export const REMOVE_ALERT = "REMOVE_ALERT";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 export const LOGOUT = "LOGOUT";
 export const GET_ROOM = "GET_ROOM";
+export const CREATE_MEETING = "CREATE_MEETING";
+export const MEETING_ERROR = "MEETING_ERROR";

@@ -7,6 +7,7 @@ import Landing from "./components/layout/Landing";
 import setAuthToken from "./utils/setAuthToken";
 import { loadOffice } from "./actions/auth";
 import Login from "./components/auth/Login";
+import ScheduleForm from "./components/meetings/ScheduleForm";
 import Rooms from "./components/rooms/Rooms";
 import RoomCalendar from "./components/rooms/RoomCalendar";
 import Dashboard from "./components/dashboard/Dashboard";
@@ -44,6 +45,11 @@ const App = () => {
               <Route exact path="/rooms" component={Rooms} />
               <Route exact path="/meeting/:id" component={RoomCalendar} />
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              <PrivateRoute
+                exact
+                path="/create-meeting"
+                component={ScheduleForm}
+              />
             </Switch>
           </section>
         </Fragment>
