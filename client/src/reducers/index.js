@@ -3,10 +3,12 @@ import room from "./room";
 import auth from "./auth";
 import alert from "./alert";
 import meeting from "./meeting";
+import meetingauth from "./meetingauth";
 
 export default combineReducers({
   room,
   auth,
   alert,
   meeting,
+  meetingauth,
 });
