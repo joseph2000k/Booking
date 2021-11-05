@@ -7,7 +7,7 @@ import {
 } from "../actions/types";
 
 const initialState = {
-  token: localStorage.getItem("meetingToken"),
+  meetingToken: localStorage.getItem("meetingToken"),
   isAuthenticated: null,
   loading: true,
   meeting: null,
@@ -24,7 +24,7 @@ export default function authmeetingReducer(state = initialState, action) {
         meeting: payload,
       };
     case LOGIN_MEETING_SUCCESS:
-      localStorage.setItem("meetingToken", payload.token);
+      localStorage.setItem("meetingToken", payload.meetingToken);
       return {
         ...state,
         ...payload,
@@ -34,10 +34,10 @@ export default function authmeetingReducer(state = initialState, action) {
     case AUTH_MEETING_ERROR:
     case LOGIN_MEETING_FAIL:
     case REMOVE_MEETING:
-      localStorage.removeItem("token");
+      localStorage.removeItem("meetingToken");
       return {
         ...state,
-        token: null,
+        meetingToken: null,
         isAuthenticated: false,
         meeting: null,
         loading: false,

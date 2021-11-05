@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { removeTokenMeeting } from "../../actions/authmeeting";
 
-const Dashboard = (props) => {
+const Dashboard = ({ removeTokenMeeting }) => {
+  useEffect(() => {
+    removeTokenMeeting();
+  }, [removeTokenMeeting]);
+
   return (
     <div>
       <Link to="create-meeting">
@@ -12,6 +18,8 @@ const Dashboard = (props) => {
   );
 };
 
-Dashboard.propTypes = {};
+Dashboard.propTypes = {
+  removeTokenMeeting: PropTypes.func.isRequired,
+};
 
-export default Dashboard;
+export default connect(null, { removeTokenMeeting })(Dashboard);

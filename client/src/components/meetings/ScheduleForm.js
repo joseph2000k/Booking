@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { setMeeting } from "../../actions/meeting";
+import { proceedScheduling } from "../../actions/authmeeting";
+import { loadCurrentMeeting } from "../../actions/authmeeting";
 
-const ScheduleForm = ({ setMeeting }) => {
+const ScheduleForm = ({ proceedScheduling }) => {
   const [formData, setFormData] = useState({
     specialInstructions: "",
     first: "",
@@ -23,7 +25,7 @@ const ScheduleForm = ({ setMeeting }) => {
         className="form"
         onSubmit={(e) => {
           e.preventDefault();
-          setMeeting(formData);
+          proceedScheduling(formData);
         }}
       >
         <div className="form-group">
@@ -60,7 +62,10 @@ const ScheduleForm = ({ setMeeting }) => {
 };
 
 ScheduleForm.propTypes = {
-  setMeeting: PropTypes.func.isRequired,
+  proceedScheduling: PropTypes.func.isRequired,
+  loadCurrentMeeting: PropTypes.func.isRequired,
 };
 
-export default connect(null, { setMeeting })(ScheduleForm);
+export default connect(null, { proceedScheduling, loadCurrentMeeting })(
+  ScheduleForm
+);
