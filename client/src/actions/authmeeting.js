@@ -1,15 +1,15 @@
 //TODO
 
-import axios from "axios";
-import { setAlert } from "./alert";
+import axios from 'axios';
+import { setAlert } from './alert';
 import {
   LOGIN_MEETING_SUCCESS,
   OFFICE_MEETING_LOADED,
   AUTH_MEETING_ERROR,
   LOGIN_MEETING_FAIL,
   REMOVE_MEETING,
-} from "./types";
-import setAuthMeetingToken from "../utils/setAuthMeetingToken";
+} from './types';
+import setAuthMeetingToken from '../utils/setAuthMeetingToken';
 
 export const loadCurrentMeeting = () => async (dispatch) => {
   if (localStorage.meetingToken) {
@@ -17,7 +17,7 @@ export const loadCurrentMeeting = () => async (dispatch) => {
   }
 
   try {
-    const res = await axios.get("/api/authmeeting");
+    const res = await axios.get('/api/authmeeting');
 
     dispatch({
       type: OFFICE_MEETING_LOADED,
@@ -35,12 +35,12 @@ export const proceedScheduling = (formData) => async (dispatch) => {
   console.log(formData);
   const config = {
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
   };
 
   try {
-    const res = await axios.post("/api/authmeeting", formData, config);
+    const res = await axios.post('/api/authmeeting', formData, config);
     console.log(res.data);
 
     dispatch({
@@ -53,7 +53,7 @@ export const proceedScheduling = (formData) => async (dispatch) => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
     }
 
     dispatch({
