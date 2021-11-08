@@ -3,18 +3,17 @@ import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
-    <nav className="navbar bg-dark">
-      <h1>
-        <Link to="/">
-          <i class="fa fa-pencil-square-o" aria-hidden="true"></i> BookingSystem
+    <nav className="nav fixed-top bg-info justify-content-between">
+      <h2>
+        <Link className="text-decoration-none link-secondary" to="/">
+          <i className="fa fa-pencil-square-o w-bold" aria-hidden="true"></i>{" "}
+          BookingSystem
         </Link>
-      </h1>
+      </h2>
       <ul>
-        <li>
-          <Link to="/login">
-            <i class="fa fa-sign-in" aria-hidden="true"></i> Login
-          </Link>
-        </li>
+        <Link className="text-decoration-none link-secondary" to="/login">
+          <i class="fa fa-sign-in" aria-hidden="true"></i> Login
+        </Link>
       </ul>
     </nav>
   );

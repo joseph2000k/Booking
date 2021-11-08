@@ -66,10 +66,12 @@ const ScheduleForm = ({ proceedScheduling }) => {
           className="btn btn-primary my-1"
         />
       </form>
-      {/* <div>
+      <div>
         <div>{value.toString()}</div>
-        <button onClick={toggleValue}>Toggle</button>
-      </div> */}
+        <button onClick={toggleValue} class="btn btn-primary">
+          Primary
+        </button>
+      </div>
     </Fragment>
   );
 };

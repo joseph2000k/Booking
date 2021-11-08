@@ -13,6 +13,7 @@ import RoomCalendar from "./components/rooms/RoomCalendar";
 import Dashboard from "./components/dashboard/Dashboard";
 import Alert from "./components/layout/Alert";
 import { LOGOUT } from "./actions/types";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 //Redux
 import { Provider } from "react-redux";
