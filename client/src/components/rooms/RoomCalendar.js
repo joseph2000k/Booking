@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { getRoomMeetings } from "../../actions/rooms";
-import { getRoom } from "../../actions/rooms";
+import React, { useEffect } from 'react';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import bootstrapPlugin from '@fullcalendar/bootstrap';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getRoomMeetings } from '../../actions/rooms';
+import { getRoom } from '../../actions/rooms';
 
 const RoomCalendar = ({
   getRoom,
@@ -20,14 +21,16 @@ const RoomCalendar = ({
 
   return (
     <div>
-      <h1 className="h-title">{room.name}</h1>
+      <h1 className='h-title'>{room.name}</h1>
       <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin]}
-        defaultView="dayGridMonth"
+        plugins={[dayGridPlugin, interactionPlugin, bootstrapPlugin]}
+        defaultView='dayGridMonth'
+        themeSystem='standard'
+        height='auto'
         displayEventTime={false}
         events={meetings}
         dateClick={(info) => {
-          alert("Clicked on: " + info.dateStr);
+          alert('Clicked on: ' + info.dateStr);
         }}
       />
     </div>
