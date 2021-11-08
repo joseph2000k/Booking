@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getRoomMeetings } from "../../actions/rooms";
@@ -21,10 +22,13 @@ const RoomCalendar = ({
     <div>
       <h1 className="h-title">{room.name}</h1>
       <FullCalendar
+        plugins={[dayGridPlugin, interactionPlugin]}
         defaultView="dayGridMonth"
         displayEventTime={false}
-        plugins={[dayGridPlugin]}
         events={meetings}
+        dateClick={(info) => {
+          alert("Clicked on: " + info.dateStr);
+        }}
       />
     </div>
   );

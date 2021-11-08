@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { setMeeting } from "../../actions/meeting";
 import { proceedScheduling } from "../../actions/authmeeting";
 import { loadCurrentMeeting } from "../../actions/authmeeting";
+import useToggle from "../../utils/useToggle";
 
 const ScheduleForm = ({ proceedScheduling }) => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,8 @@ const ScheduleForm = ({ proceedScheduling }) => {
     first: "",
     second: "",
   });
+
+  const [value, toggleValue] = useToggle(false);
 
   const { specialInstructions, first, second } = formData;
 
@@ -55,8 +58,18 @@ const ScheduleForm = ({ proceedScheduling }) => {
             onChange={onChange}
           />
         </div>
-        <input type="submit" className="btn btn-primary my-1" />
+        <div>{value.toString()}</div>
+        <input
+          type="submit"
+          value="Add Room and Date"
+          onClick={toggleValue}
+          className="btn btn-primary my-1"
+        />
       </form>
+      {/* <div>
+        <div>{value.toString()}</div>
+        <button onClick={toggleValue}>Toggle</button>
+      </div> */}
     </Fragment>
   );
 };
