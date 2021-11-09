@@ -95,4 +95,20 @@ router.get('/room/:roomId', async (req, res) => {
   }
 });
 
+//@route  GET api/rooms/room
+//@desc   Find a room by ID
+//@access Public
+
+router.get('/room/', async (req, res) => {
+  try {
+    const { roomId } = req.body;
+
+    const room = await Room.findById(roomId).populate('admins', '-password');
+    res.json(room);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
