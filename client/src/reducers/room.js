@@ -3,6 +3,7 @@ import {
   GET_ROOM_MEETINGS,
   ROOM_ERROR,
   GET_ROOM,
+  ADD_ROOM,
 } from "../actions/types";
 
 const initialState = {
@@ -41,6 +42,12 @@ export default function roomReducer(state = initialState, action) {
     case GET_ROOM:
       return {
         ...state,
+        room: payload,
+        loading: false,
+      };
+
+    case ADD_ROOM:
+      return {
         room: payload,
         loading: false,
       };

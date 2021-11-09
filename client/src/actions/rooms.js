@@ -1,5 +1,11 @@
 import axios from "axios";
-import { GET_ROOM, GET_ROOMS, GET_ROOM_MEETINGS, ROOM_ERROR } from "./types";
+import {
+  GET_ROOM,
+  GET_ROOMS,
+  GET_ROOM_MEETINGS,
+  ROOM_ERROR,
+  ADD_ROOM,
+} from "./types";
 
 //Get rooms
 export const getRooms = () => async (dispatch) => {
@@ -44,6 +50,21 @@ export const getRoom = (id) => async (dispatch) => {
     dispatch({
       type: GET_ROOM,
       payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: ROOM_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+//Add room on creating a meeting
+export const addRoom = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: ADD_ROOM,
+      payload: id,
     });
   } catch (err) {
     dispatch({
