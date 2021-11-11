@@ -10,22 +10,30 @@ const MeetingRoomItem = ({
   getRoomMeetings,
   getRoom,
   formData,
+  toggleValue,
+  value,
   room: { _id, name },
-}) => (
-  <div>
-    <button
-      className="btn btn-primary"
-      onClick={(e) => {
-        e.preventDefault();
-        getRoom(_id);
-        getRoomMeetings(_id);
-        proceedScheduling(formData);
-      }}
-    >
-      {name}
-    </button>
-  </div>
-);
+}) => {
+  return (
+    <div>
+      <button
+        className="btn btn-primary"
+        onClick={(e) => {
+          e.preventDefault();
+          getRoom(_id);
+          getRoomMeetings(_id);
+          proceedScheduling(formData);
+          {
+            toggleValue(false);
+          }
+        }}
+      >
+        {name}
+        {value}
+      </button>
+    </div>
+  );
+};
 
 MeetingRoomItem.propTypes = {
   proceedScheduling: PropTypes.func.isRequired,

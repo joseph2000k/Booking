@@ -10,7 +10,7 @@ import { getRooms } from "../../actions/rooms";
 import MeetingRoomItem from "./MeetingRoomItem";
 import Modal from "react-bootstrap/Modal";
 
-const ScheduleForm = ({ proceedScheduling, getRooms, room: { rooms } }) => {
+const ScheduleForm = ({ getRooms, room: { rooms } }) => {
   useEffect(() => {
     getRooms();
   }, [getRooms]);
@@ -24,12 +24,28 @@ const ScheduleForm = ({ proceedScheduling, getRooms, room: { rooms } }) => {
     second: "",
   });
 
-  const [value, toggleValue] = useToggle(false);
+  const [value, toggleValue] = useToggle(true);
 
   const { specialInstructions, first, second } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const roomList = (
+    <div>
+      {rooms.map((room) => (
+        <MeetingRoomItem
+          key={room._id}
+          room={room}
+          formData={formData}
+          toggleValue={toggleValue}
+          value={value}
+        ></MeetingRoomItem>
+      ))}
+    </div>
+  );
+
+  const roomCalendar = <div>this is the calendar</div>;
 
   return (
     <Fragment>
@@ -100,15 +116,7 @@ const ScheduleForm = ({ proceedScheduling, getRooms, room: { rooms } }) => {
             Select a Room
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          {rooms.map((room) => (
-            <MeetingRoomItem
-              key={room._id}
-              room={room}
-              formData={formData}
-            ></MeetingRoomItem>
-          ))}
-        </Modal.Body>
+        <Modal.Body>{value ? roomList : roomCalendar}</Modal.Body>
       </Modal>
     </Fragment>
   );
