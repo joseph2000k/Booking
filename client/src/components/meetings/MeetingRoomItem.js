@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { proceedScheduling } from '../../actions/authmeeting';
-import { getRoom, getRoomMeetings } from '../../actions/rooms';
-import PropTypes from 'prop-types';
+import React from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { proceedScheduling } from "../../actions/authmeeting";
+import { getRoom, getRoomMeetings } from "../../actions/rooms";
+import PropTypes from "prop-types";
 
 const MeetingRoomItem = ({
   proceedScheduling,
@@ -13,16 +13,18 @@ const MeetingRoomItem = ({
   toggleValue,
   value,
   room: { _id, name },
+  setRoomId,
 }) => {
   return (
     <div>
       <button
-        className='btn btn-primary'
+        className="btn btn-primary"
         onClick={(e) => {
           e.preventDefault();
           getRoom(_id);
           getRoomMeetings(_id);
           proceedScheduling(formData);
+          setRoomId(_id);
           {
             toggleValue(false);
           }
