@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import { getRoomMeetings } from "../../actions/rooms";
 import { getRoom } from "../../actions/rooms";
 import TimePicker from "react-time-picker";
+import Moment from "react-moment";
 
 const MeetingRoomCalendar = ({
   getRoom,
@@ -47,7 +48,12 @@ const MeetingRoomCalendar = ({
           onChange={toOnChange}
           value={toValue}
         />
-        Date: {dateValue === "" ? " Please select a date below" : dateValue}
+        Date:{" "}
+        {dateValue === "" ? (
+          " Please select a date below"
+        ) : (
+          <Moment format="MM-DD-YYYY">{dateValue}</Moment>
+        )}
       </div>
       <h1 className="h-title">{room.name}</h1>
       <FullCalendar
