@@ -18,6 +18,7 @@ const MeetingRoomCalendar = ({
   toValue,
   toOnChange,
   dateOnChange,
+  dateValue,
   meetings: { meetings, room },
 }) => {
   useEffect(() => {
@@ -46,6 +47,7 @@ const MeetingRoomCalendar = ({
           onChange={toOnChange}
           value={toValue}
         />
+        Date: {dateValue === "" ? " Please select a date below" : dateValue}
       </div>
       <h1 className="h-title">{room.name}</h1>
       <FullCalendar
