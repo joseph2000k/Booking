@@ -10,6 +10,7 @@ import { getRooms } from "../../actions/rooms";
 import MeetingRoomItem from "./MeetingRoomItem";
 import Modal from "react-bootstrap/Modal";
 import MeetingRoomCalendar from "./MeetingRoomCalendar";
+import moment from "moment";
 
 const ScheduleForm = ({ getRooms, room: { rooms } }) => {
   useEffect(() => {
@@ -30,8 +31,11 @@ const ScheduleForm = ({ getRooms, room: { rooms } }) => {
   //toggle for modal
   const [value, toggleValue] = useToggle(true);
 
+  const [dateValue, dateOnChange] = useState("");
   const [fromValue, fromOnChange] = useState("08:00");
   const [toValue, toOnChange] = useState("17:00");
+  const startDate = moment(dateValue + " " + fromValue, "YYYY-MM-DD HH:mm");
+  const endDate = moment(dateValue + " " + toValue, "YYYY-MM-DD HH:mm");
 
   const handleClose = (e) => setLgShow(false);
 
@@ -63,6 +67,7 @@ const ScheduleForm = ({ getRooms, room: { rooms } }) => {
         fromOnChange={fromOnChange}
         toValue={toValue}
         toOnChange={toOnChange}
+        dateOnChange={dateOnChange}
       ></MeetingRoomCalendar>
     </div>
   );
@@ -98,7 +103,7 @@ const ScheduleForm = ({ getRooms, room: { rooms } }) => {
             onChange={onChange}
           />
         </div>
-        <div>{fromValue}</div>
+        <div>{startDate.toString()}</div>
         <div>{value.toString()}</div>
         <input
           type="submit"

@@ -17,6 +17,7 @@ const MeetingRoomCalendar = ({
   fromOnChange,
   toValue,
   toOnChange,
+  dateOnChange,
   meetings: { meetings, room },
 }) => {
   useEffect(() => {
