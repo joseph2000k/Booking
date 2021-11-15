@@ -103,6 +103,7 @@ const ScheduleForm = ({ getRooms, room: { rooms } }) => {
             onChange={onChange}
           />
         </div>
+        <div>{dateValue}</div>
         <div>{startDate.toString()}</div>
         <div>{value.toString()}</div>
         <input

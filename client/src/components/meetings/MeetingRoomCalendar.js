@@ -57,7 +57,7 @@ const MeetingRoomCalendar = ({
         displayEventTime={false}
         events={meetings}
         dateClick={(info) => {
-          alert("Clicked on: " + info.dateStr);
+          dateOnChange(info.dateStr);
         }}
       />
     </div>
