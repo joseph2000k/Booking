@@ -30,6 +30,9 @@ const ScheduleForm = ({ getRooms, room: { rooms } }) => {
   //toggle for modal
   const [value, toggleValue] = useToggle(true);
 
+  const [fromValue, fromOnChange] = useState("08:00");
+  const [toValue, toOnChange] = useState("17:00");
+
   const handleClose = (e) => setLgShow(false);
 
   const { specialInstructions, first, second } = formData;
@@ -54,7 +57,13 @@ const ScheduleForm = ({ getRooms, room: { rooms } }) => {
 
   const roomCalendar = (
     <div>
-      <MeetingRoomCalendar roomId={roomId}></MeetingRoomCalendar>
+      <MeetingRoomCalendar
+        roomId={roomId}
+        fromValue={fromValue}
+        fromOnChange={fromOnChange}
+        toValue={toValue}
+        toOnChange={toOnChange}
+      ></MeetingRoomCalendar>
     </div>
   );
 
@@ -89,6 +98,7 @@ const ScheduleForm = ({ getRooms, room: { rooms } }) => {
             onChange={onChange}
           />
         </div>
+        <div>{fromValue}</div>
         <div>{value.toString()}</div>
         <input
           type="submit"

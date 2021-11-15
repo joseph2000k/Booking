@@ -13,15 +13,16 @@ const MeetingRoomCalendar = ({
   getRoom,
   getRoomMeetings,
   roomId,
+  fromValue,
+  fromOnChange,
+  toValue,
+  toOnChange,
   meetings: { meetings, room },
 }) => {
   useEffect(() => {
     getRoom(roomId);
     getRoomMeetings(roomId);
   }, [getRoom, getRoomMeetings]);
-
-  const [fromValue, fromOnChange] = useState("08:00");
-  const [toValue, toOnChange] = useState("17:00");
 
   return (
     <div>
@@ -32,6 +33,7 @@ const MeetingRoomCalendar = ({
           disableClock="true"
           minTime="06:00:00"
           clearIcon
+          onChange={fromOnChange}
           value={fromValue}
         />
         To:
@@ -40,6 +42,7 @@ const MeetingRoomCalendar = ({
           disableClock="true"
           minTime="06:00:00"
           clearIcon
+          onChange={toOnChange}
           value={toValue}
         />
       </div>
