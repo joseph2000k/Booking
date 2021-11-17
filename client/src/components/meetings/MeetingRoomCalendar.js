@@ -9,23 +9,32 @@ import { getRoomMeetings } from "../../actions/rooms";
 import { getRoom } from "../../actions/rooms";
 import TimePicker from "react-time-picker";
 import Moment from "react-moment";
+import { proceedScheduling } from "../../actions/authmeeting";
 
 const MeetingRoomCalendar = ({
   getRoom,
   getRoomMeetings,
   roomId,
-  fromValue,
-  fromOnChange,
-  toValue,
-  toOnChange,
+  start,
+  meeting,
+  startOnChange,
+  end,
+  endOnChange,
   dateOnChange,
   dateValue,
+  proceedScheduling,
   meetings: { meetings, room },
 }) => {
   useEffect(() => {
     getRoom(roomId);
     getRoomMeetings(roomId);
   }, [getRoom, getRoomMeetings]);
+
+  const selectAllow = (e) => {
+    if (e.end.getTime() / 1000 - e.start.getTime() / 1000 <= 86400) {
+      return true;
+    }
+  };
 
   return (
     <div>
@@ -36,8 +45,8 @@ const MeetingRoomCalendar = ({
           disableClock="true"
           minTime="06:00:00"
           clearIcon
-          onChange={fromOnChange}
-          value={fromValue}
+          onChange={startOnChange}
+          value={start}
         />
         To:
         <TimePicker
@@ -45,8 +54,8 @@ const MeetingRoomCalendar = ({
           disableClock="true"
           minTime="06:00:00"
           clearIcon
-          onChange={toOnChange}
-          value={toValue}
+          onChange={endOnChange}
+          value={end}
         />
         Date:{" "}
         {dateValue === "" ? (
@@ -54,6 +63,12 @@ const MeetingRoomCalendar = ({
         ) : (
           <Moment format="MM-DD-YYYY">{dateValue}</Moment>
         )}
+        <button
+          className="btn btn-primary"
+          onClick={() => proceedScheduling(meeting)}
+        >
+          Confirm
+        </button>
       </div>
       <h1 className="h-title">{room.name}</h1>
       <FullCalendar
@@ -64,6 +79,10 @@ const MeetingRoomCalendar = ({
         height="auto"
         displayEventTime={false}
         events={meetings}
+        selectable={true}
+        selectAllow={selectAllow}
+        displayEventTime={true}
+        displayEventEnd={true}
         dateClick={(info) => {
           dateOnChange(info.dateStr);
         }}
@@ -76,12 +95,15 @@ MeetingRoomCalendar.propTypes = {
   getRoomMeetings: PropTypes.func.isRequired,
   getRoom: PropTypes.func.isRequired,
   meetings: PropTypes.array.isRequired,
+  proceedScheduling: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   meetings: state.room,
 });
 
-export default connect(mapStateToProps, { getRoomMeetings, getRoom })(
-  MeetingRoomCalendar
-);
+export default connect(mapStateToProps, {
+  proceedScheduling,
+  getRoomMeetings,
+  getRoom,
+})(MeetingRoomCalendar);

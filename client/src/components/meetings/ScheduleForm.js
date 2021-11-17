@@ -32,10 +32,10 @@ const ScheduleForm = ({ getRooms, room: { rooms } }) => {
   const [value, toggleValue] = useToggle(true);
 
   const [dateValue, dateOnChange] = useState("");
-  const [fromValue, fromOnChange] = useState("08:00");
-  const [toValue, toOnChange] = useState("17:00");
-  const startDate = moment(dateValue + " " + fromValue, "YYYY-MM-DD HH:mm");
-  const endDate = moment(dateValue + " " + toValue, "YYYY-MM-DD HH:mm");
+  const [start, startOnChange] = useState("08:00");
+  const [end, endOnChange] = useState("17:00");
+  const startDate = moment(dateValue + " " + start, "YYYY-MM-DD HH:mm");
+  const endDate = moment(dateValue + " " + end, "YYYY-MM-DD HH:mm");
 
   const handleClose = (e) => setLgShow(false);
 
@@ -43,6 +43,13 @@ const ScheduleForm = ({ getRooms, room: { rooms } }) => {
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const meeting = {
+    ...formData,
+    start: startDate,
+    end: endDate,
+    room: roomId,
+  };
 
   const roomList = (
     <div>
@@ -63,12 +70,13 @@ const ScheduleForm = ({ getRooms, room: { rooms } }) => {
     <div>
       <MeetingRoomCalendar
         roomId={roomId}
-        fromValue={fromValue}
-        fromOnChange={fromOnChange}
-        toValue={toValue}
-        toOnChange={toOnChange}
+        start={start}
+        startOnChange={startOnChange}
+        end={end}
+        endOnChange={endOnChange}
         dateOnChange={dateOnChange}
         dateValue={dateValue}
+        meeting={meeting}
       ></MeetingRoomCalendar>
     </div>
   );
@@ -104,6 +112,7 @@ const ScheduleForm = ({ getRooms, room: { rooms } }) => {
             onChange={onChange}
           />
         </div>
+        <div>{roomId}</div>
         <div>{dateValue}</div>
         <div>{startDate.toString()}</div>
         <div>{value.toString()}</div>

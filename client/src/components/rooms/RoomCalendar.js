@@ -28,8 +28,10 @@ const RoomCalendar = ({
         defaultView="dayGridMonth"
         themeSystem="standard"
         height="auto"
-        displayEventTime={false}
+        displayEventTime={true}
+        displayEventEnd={true}
         events={meetings}
+        selectable={true}
         dateClick={(info) => {
           alert("Clicked on: " + info.dateStr);
         }}

@@ -1,15 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { proceedScheduling } from "../../actions/authmeeting";
 import { getRoom, getRoomMeetings } from "../../actions/rooms";
 import PropTypes from "prop-types";
 
 const MeetingRoomItem = ({
-  proceedScheduling,
   getRoomMeetings,
   getRoom,
-  formData,
+
   toggleValue,
   value,
   room: { _id, name },
@@ -23,7 +21,6 @@ const MeetingRoomItem = ({
           e.preventDefault();
           getRoom(_id);
           getRoomMeetings(_id);
-          proceedScheduling(formData);
           setRoomId(_id);
           {
             toggleValue(false);
@@ -38,11 +35,8 @@ const MeetingRoomItem = ({
 };
 
 MeetingRoomItem.propTypes = {
-  proceedScheduling: PropTypes.func.isRequired,
   getRoomMeetings: PropTypes.func.isRequired,
   getRoom: PropTypes.func.isRequired,
 };
 
-export default connect(null, { proceedScheduling, getRoomMeetings, getRoom })(
-  MeetingRoomItem
-);
+export default connect(null, { getRoomMeetings, getRoom })(MeetingRoomItem);
