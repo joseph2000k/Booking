@@ -23,6 +23,8 @@ const MeetingRoomCalendar = ({
   dateOnChange,
   dateValue,
   proceedScheduling,
+  toggleValue,
+  handleClose,
   meetings: { meetings, room },
 }) => {
   useEffect(() => {
@@ -65,7 +67,13 @@ const MeetingRoomCalendar = ({
         )}
         <button
           className="btn btn-primary"
-          onClick={() => proceedScheduling(meeting)}
+          onClick={() => {
+            proceedScheduling(meeting);
+            {
+              toggleValue(true);
+            }
+            handleClose();
+          }}
         >
           Confirm
         </button>

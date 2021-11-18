@@ -77,6 +77,8 @@ const ScheduleForm = ({ getRooms, room: { rooms } }) => {
         dateOnChange={dateOnChange}
         dateValue={dateValue}
         meeting={meeting}
+        toggleValue={toggleValue}
+        handleClose={handleClose}
       ></MeetingRoomCalendar>
     </div>
   );

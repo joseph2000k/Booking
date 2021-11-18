@@ -38,6 +38,10 @@ const MeetingSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  isSubmitted: {
+    type: Boolean,
+    default: false,
+  },
   disapproved: {
     type: Boolean,
     default: false,
