@@ -62,6 +62,7 @@ router.get("/office/:meetingId", auth, async (req, res) => {
 router.get("/rooms/:roomId", async (req, res) => {
   try {
     const meetingList = await Meeting.aggregate([
+      { $match: { isSubmitted: true } },
       { $unwind: "$schedules" },
       {
         $lookup: {
@@ -351,4 +352,19 @@ router.put("/approval/:roomId/:meetingId", authAdmin, async (req, res) => {
   }
 });
 
+//@route    PUT api/meeting/approval/:id
+//@desc     TEST ROUTE approve a meeting
+//@access   Private/admin
+router.post("/testroute", async (req, res) => {
+  try {
+    const schedule = await Meeting.findById(req.body.meetingId).populate(
+      "schedules"
+    );
+    for (let i = 0; i < schedule.schedules.length; i++) {}
+    res.json(schedule);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 module.exports = router;

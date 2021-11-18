@@ -11,6 +11,7 @@ module.exports = async function (req, res, next) {
   }
 
   const meetingList = await Meeting.aggregate([
+    { $match: { isSubmitted: true } },
     { $unwind: "$schedules" },
     {
       $lookup: {
