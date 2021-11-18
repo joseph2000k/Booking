@@ -1,28 +1,28 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config');
-const Meeting = require('../../models/Meeting');
-const authMeeting = require('../../middleware/authMeeting');
-const auth = require('../../middleware/auth');
-const scheduleVerifier = require('../../middleware/scheduleVerifier');
+const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const config = require("config");
+const Meeting = require("../../models/Meeting");
+const authMeeting = require("../../middleware/authMeeting");
+const auth = require("../../middleware/auth");
+const scheduleVerifier = require("../../middleware/scheduleVerifier");
 
-router.get('/', authMeeting, async (req, res) => {
+router.get("/", authMeeting, async (req, res) => {
   try {
     const meeting = await Meeting.findById(req.meeting.id);
     res.json(meeting);
   } catch (error) {
     console.error(error.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 
 //@route    POST api/authmeeting/
 //@desc     Authenticate and update meeting
 //@access   Private
-router.post('/', [auth, authMeeting, scheduleVerifier], async (req, res) => {
+router.post("/", [auth, authMeeting, scheduleVerifier], async (req, res) => {
   try {
     const { specialInstructions, first, second } = req.body;
 
@@ -51,7 +51,7 @@ router.post('/', [auth, authMeeting, scheduleVerifier], async (req, res) => {
 
       jwt.sign(
         payload,
-        config.get('jwtSecretMeeting'),
+        config.get("jwtSecretMeeting"),
         { expiresIn: 360000 },
         (err, meetingToken) => {
           if (err) throw err;
@@ -60,7 +60,6 @@ router.post('/', [auth, authMeeting, scheduleVerifier], async (req, res) => {
       );
 
       await meeting.save();
-      console.log(meeting);
     } else {
       const meeting = await Meeting.findByIdAndUpdate(
         req.meeting.id,
@@ -72,8 +71,6 @@ router.post('/', [auth, authMeeting, scheduleVerifier], async (req, res) => {
         { multi: true, new: true }
       );
 
-      console.log(meeting.id);
-
       await meeting.save();
 
       payload = {
@@ -84,7 +81,7 @@ router.post('/', [auth, authMeeting, scheduleVerifier], async (req, res) => {
 
       jwt.sign(
         payload,
-        config.get('jwtSecretMeeting'),
+        config.get("jwtSecretMeeting"),
         { expiresIn: 360000 },
         (err, meetingToken) => {
           if (err) throw err;
@@ -94,7 +91,7 @@ router.post('/', [auth, authMeeting, scheduleVerifier], async (req, res) => {
     }
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).send("Server Error");
   }
 });
 module.exports = router;

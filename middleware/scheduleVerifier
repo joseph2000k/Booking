@@ -1,10 +1,10 @@
 const Meeting = require("../models/Meeting");
 const Room = require("../models/Room");
+const mongoose = require("mongoose");
 
 module.exports = async function (req, res, next) {
   const { room, start, end } = req.body;
   let roomName = await Room.findById(room);
-  console.log(roomName);
 
   if (!roomName) {
     return res.json({ msg: "invalid room" });
@@ -36,7 +36,7 @@ module.exports = async function (req, res, next) {
         _id: 0,
       },
     },
-
+    { $match: { room: mongoose.Types.ObjectId(roomName.id) } },
     { $project: { room: 0 } },
   ]);
 
@@ -53,7 +53,6 @@ module.exports = async function (req, res, next) {
     start,
     end,
   };
-  console.log(schedule);
   if (schedule) {
     return res.status(406).json({
       msg: `Please check overlapping dates`,
