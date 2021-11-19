@@ -8,6 +8,7 @@ const Meeting = require("../../models/Meeting");
 const authMeeting = require("../../middleware/authMeeting");
 const auth = require("../../middleware/auth");
 const scheduleVerifier = require("../../middleware/scheduleVerifier");
+const submitVerifier = require("../../middleware/submitVerifier");
 
 router.get("/", authMeeting, async (req, res) => {
   try {
@@ -94,4 +95,28 @@ router.post("/", [auth, authMeeting, scheduleVerifier], async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
+
+//@route    POST api/authmeeting/
+//@desc     Submit meeting
+//@access   Private
+router.post(
+  "/submit/:meetingId",
+  [auth, authMeeting, submitVerifier],
+  async (req, res) => {
+    try {
+      if (req.submitSchedule.office.toString() !== req.office.id) {
+        return res.status(400).json({ msg: "Invalid Credentials..." });
+      }
+      const meeting = await Meeting.findOneAndUpdate(
+        { id: req.submitSchedule.id },
+        { isSubmitted: true },
+        { new: true }
+      );
+      res.json(meeting);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send("Server Error");
+    }
+  }
+);
 module.exports = router;

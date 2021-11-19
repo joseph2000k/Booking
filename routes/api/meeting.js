@@ -12,6 +12,7 @@ const Schedule = require("../../models/Schedule");
 var ObjectId = require("mongodb").ObjectId;
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const mongoose = require("mongoose");
 
 //@route    GET api/meeting/
 //@desc     Get all meetings for the current office
@@ -357,11 +358,62 @@ router.put("/approval/:roomId/:meetingId", authAdmin, async (req, res) => {
 //@access   Private/admin
 router.post("/testroute", async (req, res) => {
   try {
+    var allMeeting = await Meeting.aggregate([
+      { $match: { isSubmitted: true } },
+      { $unwind: "$schedules" },
+      {
+        $lookup: {
+          from: "offices",
+          localField: "office",
+          foreignField: "_id",
+          as: "office",
+        },
+      },
+
+      {
+        $unwind: {
+          path: "$office",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $project: {
+          room: "$schedules.room",
+          title: "$office.officeName",
+          start: "$schedules.start",
+          end: "$schedules.end",
+          _id: 0,
+        },
+      },
+      //{ $match: { room: mongoose.Types.ObjectId(roomName.id) } },
+      //{ $project: { room: 0 } },
+    ]);
+
     const schedule = await Meeting.findById(req.body.meetingId).populate(
       "schedules"
     );
-    for (let i = 0; i < schedule.schedules.length; i++) {}
-    res.json(schedule);
+    for (let i = 0; i < schedule.schedules.length; i++) {
+      var scheduleList = allMeeting.find(
+        (item) =>
+          (item.start.getTime() <=
+            new Date(schedule.schedules[i].start).getTime() ||
+            item.start.getTime() <=
+              new Date(schedule.schedules[i].end).getTime()) &&
+          (item.end.getTime() >=
+            new Date(schedule.schedules[i].start).getTime() ||
+            item.end.getTime() >=
+              new Date(schedule.schedules[i].end).getTime()) &&
+          item.room.toString() === schedule.schedules[i].room.toString()
+      );
+      if (scheduleList) {
+        return res.json({
+          msg: `${schedule.schedules[i].start} has already been taken`,
+        });
+      }
+    }
+
+    res.status(200).json({ msg: "Meeting is available" });
+    //res.json(schedule);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
