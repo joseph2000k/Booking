@@ -3,11 +3,13 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { removeTokenMeeting } from "../../actions/authmeeting";
+import { loadOfficeMeetings } from "../../actions/authmeeting";
 
-const Dashboard = ({ removeTokenMeeting }) => {
+const Dashboard = ({ removeTokenMeeting, loadOfficeMeetings }) => {
   useEffect(() => {
     removeTokenMeeting();
-  }, [removeTokenMeeting]);
+    loadOfficeMeetings();
+  }, [removeTokenMeeting, loadOfficeMeetings]);
 
   return (
     <div>
@@ -20,6 +22,9 @@ const Dashboard = ({ removeTokenMeeting }) => {
 
 Dashboard.propTypes = {
   removeTokenMeeting: PropTypes.func.isRequired,
+  loadOfficeMeetings: PropTypes.func.isRequired,
 };
 
-export default connect(null, { removeTokenMeeting })(Dashboard);
+export default connect(null, { removeTokenMeeting, loadOfficeMeetings })(
+  Dashboard
+);

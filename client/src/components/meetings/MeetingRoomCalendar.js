@@ -10,6 +10,7 @@ import { getRoom } from "../../actions/rooms";
 import TimePicker from "react-time-picker";
 import Moment from "react-moment";
 import { proceedScheduling } from "../../actions/authmeeting";
+import { loadCurrentMeeting } from "../../actions/authmeeting";
 
 const MeetingRoomCalendar = ({
   getRoom,
@@ -23,6 +24,7 @@ const MeetingRoomCalendar = ({
   dateOnChange,
   dateValue,
   proceedScheduling,
+  loadCurrentMeeting,
   toggleValue,
   handleClose,
   meetings: { meetings, room },
@@ -30,7 +32,8 @@ const MeetingRoomCalendar = ({
   useEffect(() => {
     getRoom(roomId);
     getRoomMeetings(roomId);
-  }, [getRoom, getRoomMeetings]);
+    loadCurrentMeeting();
+  }, [getRoom, getRoomMeetings, loadCurrentMeeting]);
 
   const selectAllow = (e) => {
     if (e.end.getTime() / 1000 - e.start.getTime() / 1000 <= 86400) {
@@ -69,6 +72,7 @@ const MeetingRoomCalendar = ({
           className="btn btn-primary"
           onClick={() => {
             proceedScheduling(meeting);
+            loadCurrentMeeting();
             {
               toggleValue(true);
             }
@@ -104,6 +108,7 @@ MeetingRoomCalendar.propTypes = {
   getRoom: PropTypes.func.isRequired,
   meetings: PropTypes.array.isRequired,
   proceedScheduling: PropTypes.func.isRequired,
+  loadCurrentMeeting: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -114,4 +119,5 @@ export default connect(mapStateToProps, {
   proceedScheduling,
   getRoomMeetings,
   getRoom,
+  loadCurrentMeeting,
 })(MeetingRoomCalendar);

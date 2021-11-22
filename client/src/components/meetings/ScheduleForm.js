@@ -12,7 +12,11 @@ import Modal from "react-bootstrap/Modal";
 import MeetingRoomCalendar from "./MeetingRoomCalendar";
 import moment from "moment";
 
-const ScheduleForm = ({ getRooms, room: { rooms } }) => {
+const ScheduleForm = ({
+  getRooms,
+  room: { rooms },
+  meeting: { meetingToken },
+}) => {
   useEffect(() => {
     getRooms();
   }, [getRooms]);
@@ -131,6 +135,9 @@ const ScheduleForm = ({ getRooms, room: { rooms } }) => {
       <button className="btn btn-primary" onClick={() => setLgShow(true)}>
         Add Schedule
       </button>
+      <div>
+        {meetingToken && <button className="btn btn-primary">Submit</button>}
+      </div>
       <Modal
         size="sm"
         show={smShow}
@@ -163,10 +170,13 @@ ScheduleForm.propTypes = {
   proceedScheduling: PropTypes.func.isRequired,
   loadCurrentMeeting: PropTypes.func.isRequired,
   getRooms: PropTypes.func.isRequired,
+  room: PropTypes.object.isRequired,
+  meeting: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   room: state.room,
+  meeting: state.meetingauth,
 });
 
 export default connect(mapStateToProps, {
