@@ -107,12 +107,24 @@ router.post(
       if (req.submitSchedule.office.toString() !== req.office.id) {
         return res.status(400).json({ msg: "Invalid Credentials..." });
       }
-      const meeting = await Meeting.findOneAndUpdate(
-        { id: req.submitSchedule.id },
-        { isSubmitted: true },
+
+      console.log(req.submitSchedule);
+      console.log(req.submitSchedule.isSubmitted);
+
+      if (req.submitSchedule.isSubmitted) {
+        return res.status(400).json({ msg: "Meeting already submitted..." });
+      }
+
+      //find req.submitschdule and update isSubmitted to true
+      const submitSchedule = await Meeting.findByIdAndUpdate(
+        req.submitSchedule.id,
+        {
+          $set: { isSubmitted: true },
+        },
         { new: true }
       );
-      res.json(meeting);
+
+      res.json(submitSchedule);
     } catch (error) {
       console.error(error.message);
       res.status(500).send("Server Error");

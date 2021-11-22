@@ -94,8 +94,9 @@ router.get("/rooms/:roomId", async (req, res) => {
         $match: { room: ObjectId(req.params.roomId) },
       },
 
-      { $project: { room: 0 } },
+      //{ $project: { room: 0 } },
     ]);
+    console.log(meetingList);
 
     res.json(meetingList);
   } catch (err) {
