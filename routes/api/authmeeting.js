@@ -100,7 +100,7 @@ router.post("/", [auth, authMeeting, scheduleVerifier], async (req, res) => {
 //@desc     Submit meeting
 //@access   Private
 router.post(
-  "/submit/:meetingId",
+  "/submit/",
   [auth, authMeeting, submitVerifier],
   async (req, res) => {
     try {
