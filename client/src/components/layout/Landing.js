@@ -13,14 +13,14 @@ const Landing = ({ removeTokenMeeting }) => {
           <p className="lead">
             <Rooms />
           </p>
-          <div className="buttons">
+          {/* <div className="buttons">
             <a href="register.html" className="btn btn-primary">
               Sign Up
             </a>
             <a href="login.html" className="btn btn-light">
               Login
             </a>
-          </div>
+          </div> */}
         </div>
       </div>
     </section>

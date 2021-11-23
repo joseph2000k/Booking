@@ -10,8 +10,7 @@ const Rooms = ({ getRooms, room: { rooms } }) => {
   }, [getRooms]);
   return (
     <Fragment>
-      <h1 className="h-title">Rooms</h1>
-      <div>
+      <div className="d-flex justify-content-around">
         {rooms.map((room) => (
           <RoomItem key={room._id} room={room}></RoomItem>
         ))}

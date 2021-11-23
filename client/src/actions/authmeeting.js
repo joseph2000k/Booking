@@ -78,6 +78,18 @@ export const loadOfficeMeetings = () => async (dispatch) => {
   }
 };
 
+export const submitMeeting = (history) => async (dispatch) => {
+  try {
+    await axios.post("/api/authmeeting/submit");
+
+    history.push("/dashboard");
+  } catch (err) {
+    dispatch({
+      type: AUTH_MEETING_ERROR,
+    });
+  }
+};
+
 export const removeTokenMeeting = () => async (dispatch) => {
   dispatch({ type: REMOVE_MEETING });
 };

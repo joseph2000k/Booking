@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
@@ -7,6 +8,7 @@ import { proceedScheduling } from "../../actions/authmeeting";
 import { loadCurrentMeeting } from "../../actions/authmeeting";
 import useToggle from "../../utils/useToggle";
 import { getRooms } from "../../actions/rooms";
+import { submitMeeting } from "../../actions/authmeeting";
 import MeetingRoomItem from "./MeetingRoomItem";
 import Modal from "react-bootstrap/Modal";
 import MeetingRoomCalendar from "./MeetingRoomCalendar";
@@ -16,10 +18,13 @@ const ScheduleForm = ({
   getRooms,
   room: { rooms },
   meeting: { meetingToken },
+  submitMeeting,
 }) => {
   useEffect(() => {
     getRooms();
   }, [getRooms]);
+
+  let history = useHistory();
 
   //state for the modal
   const [smShow, setSmShow] = useState(false);
@@ -136,7 +141,14 @@ const ScheduleForm = ({
         Add Schedule
       </button>
       <div>
-        {meetingToken && <button className="btn btn-primary">Submit</button>}
+        {meetingToken && (
+          <button
+            className="btn btn-primary"
+            onClick={() => submitMeeting(history)}
+          >
+            Submit
+          </button>
+        )}
       </div>
       <Modal
         size="sm"
@@ -172,6 +184,7 @@ ScheduleForm.propTypes = {
   getRooms: PropTypes.func.isRequired,
   room: PropTypes.object.isRequired,
   meeting: PropTypes.object.isRequired,
+  submitMeeting: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -183,4 +196,5 @@ export default connect(mapStateToProps, {
   proceedScheduling,
   loadCurrentMeeting,
   getRooms,
+  submitMeeting,
 })(ScheduleForm);
