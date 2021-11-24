@@ -10,6 +10,7 @@ const Rooms = ({ getRooms, room: { rooms } }) => {
   }, [getRooms]);
   return (
     <Fragment>
+      <h4 className="mb-4">Quick View Calendar</h4>
       <div className="d-flex justify-content-around">
         {rooms.map((room) => (
           <RoomItem key={room._id} room={room}></RoomItem>
