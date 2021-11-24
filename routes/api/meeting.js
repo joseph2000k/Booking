@@ -82,6 +82,7 @@ router.get("/rooms/:roomId", async (req, res) => {
       },
       {
         $project: {
+          isApproved: 1,
           room: "$schedules.room",
           title: "$office.officeName",
           start: "$schedules.start",
@@ -96,9 +97,17 @@ router.get("/rooms/:roomId", async (req, res) => {
 
       //{ $project: { room: 0 } },
     ]);
-    console.log(meetingList);
 
-    res.json(meetingList);
+    const meetings = meetingList.map((item) => {
+      if (item.isApproved === false) {
+        item.title = "Waiting for Approval";
+      } else {
+        item.title = item.title;
+      }
+      return item;
+    });
+
+    res.json(meetings);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
@@ -295,8 +304,7 @@ router.get("/approval/:roomId", authAdmin, async (req, res) => {
 
     const pendingMeeting = meetings.filter(
       (item) =>
-        item.meeting.isNotPending === false &&
-        item.meeting.disapproved === false
+        item.meeting.isNotPending === false && item.meeting.isApproved === false
     );
 
     res.json(pendingMeeting);

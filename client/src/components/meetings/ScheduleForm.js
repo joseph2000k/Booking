@@ -61,7 +61,7 @@ const ScheduleForm = ({
   };
 
   const roomList = (
-    <div>
+    <div className="d-flex justify-content-center">
       {rooms.map((room) => (
         <MeetingRoomItem
           key={room._id}
@@ -170,7 +170,9 @@ const ScheduleForm = ({
         aria-labelledby="example-modal-sizes-title-lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title id="example-modal-sizes-title-lg">SCHEDULE</Modal.Title>
+          <Modal.Title id="example-modal-sizes-title-lg">
+            Add a Schedule
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>{value ? roomList : roomCalendar}</Modal.Body>
       </Modal>

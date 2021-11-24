@@ -138,6 +138,7 @@ a {
       -ms-flex-align: center;
           align-items: center;
   z-index: -1;
+  background-color: #faf9f6;
 }
 
 .x-large {

@@ -1,19 +1,19 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Card } from 'react-bootstrap';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Card } from "react-bootstrap";
 
 const RoomItem = ({ room: { _id, name } }) => (
   <Link
-    className='mx-4'
+    className="mx-4 shadow p-0 mb-5 bg-white rounded"
     to={`/meeting/${_id}`}
-    style={{ textDecoration: 'none', color: 'black' }}
-    variant='primary'
+    style={{ textDecoration: "none", color: "black" }}
+    variant="primary"
   >
-    <Card style={{ width: '18rem' }}>
-      <Card.Img variant='top' src={`img/${_id}.jpg`} />
+    <Card style={{ width: "15rem" }}>
+      <Card.Img variant="top" src={`img/${_id}.jpg`} />
       <Card.Body>
         <Card.Title>{name}</Card.Title>
-        <Card.Text>Room Description</Card.Text>
+        <Card.Text className="font-size: small">Room Description</Card.Text>
       </Card.Body>
     </Card>
   </Link>

@@ -42,7 +42,7 @@ const MeetingSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  disapproved: {
+  isApproved: {
     type: Boolean,
     default: false,
   },
