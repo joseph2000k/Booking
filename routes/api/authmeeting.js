@@ -25,7 +25,7 @@ router.get("/", authMeeting, async (req, res) => {
 //@access   Private
 router.post("/", [auth, authMeeting, scheduleVerifier], async (req, res) => {
   try {
-    const { specialInstructions, first, second } = req.body;
+    const { description, specialInstructions, first, second } = req.body;
 
     const newRequirements = {
       first,
@@ -36,6 +36,8 @@ router.post("/", [auth, authMeeting, scheduleVerifier], async (req, res) => {
     meetingFields.office = req.office.id;
     if (specialInstructions)
       meetingFields.specialInstructions = specialInstructions;
+
+    if (description) meetingFields.description = description;
 
     if (!req.meeting) {
       const meeting = new Meeting(meetingFields);

@@ -48,7 +48,7 @@ const ScheduleForm = ({
 
   const handleClose = (e) => setLgShow(false);
 
-  const { specialInstructions, first, second } = formData;
+  const { description, specialInstructions, first, second } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -102,6 +102,15 @@ const ScheduleForm = ({
             placeholder="Write your special instructions here if any"
             name="specialInstructions"
             value={specialInstructions}
+            onChange={onChange}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="text"
+            placeholder="Meeting Description"
+            name="description"
+            value={description}
             onChange={onChange}
           />
         </div>

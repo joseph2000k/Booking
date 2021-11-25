@@ -5,6 +5,10 @@ const MeetingSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "office",
   },
+  description: {
+    type: String,
+    required: true,
+  },
   schedules: [
     {
       room: {
