@@ -7,6 +7,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getRoomMeetings } from "../../actions/rooms";
 import { getRoom } from "../../actions/rooms";
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
 
 const RoomCalendar = ({
   getRoom,
@@ -18,6 +20,12 @@ const RoomCalendar = ({
     getRoom(match.params.id);
     getRoomMeetings(match.params.id);
   }, [getRoom, getRoomMeetings, match.params.id]);
+
+  const handleMouseEnter = (arg) => {
+    tippy(arg.el, {
+      content: arg.event.extendedProps.description,
+    });
+  };
 
   return (
     <div>
@@ -31,10 +39,8 @@ const RoomCalendar = ({
         displayEventTime={true}
         displayEventEnd={true}
         events={meetings}
+        eventMouseEnter={handleMouseEnter}
         selectable={true}
-        dateClick={(info) => {
-          alert("Clicked on: " + info.dateStr);
-        }}
       />
     </div>
   );

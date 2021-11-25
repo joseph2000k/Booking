@@ -87,6 +87,7 @@ router.get("/rooms/:roomId", async (req, res) => {
           title: "$office.officeName",
           start: "$schedules.start",
           end: "$schedules.end",
+          description: 1,
           _id: 0,
         },
       },
