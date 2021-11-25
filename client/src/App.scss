@@ -141,3 +141,14 @@ a {
   margin-top: 6rem;
   margin-bottom: 3rem;
 }
+
+.fc-event-time,
+.fc-event-title {
+  padding: 0 1px;
+  white-space: normal;
+}
+
+.calendar {
+  max-width: 900px;
+  margin: auto;
+}

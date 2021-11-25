@@ -102,8 +102,10 @@ router.get("/rooms/:roomId", async (req, res) => {
     const meetings = meetingList.map((item) => {
       if (item.isApproved === false) {
         item.title = "Waiting for Approval";
+        item.description = "Reserved (Waiting for Approval)";
       } else {
         item.title = item.title;
+        item.description = `Topic: ` + item.description;
       }
       return item;
     });

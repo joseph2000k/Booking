@@ -28,8 +28,8 @@ const RoomCalendar = ({
   };
 
   return (
-    <div>
-      <h1 className="h-title">{room.name}</h1>
+    <div className="calendar">
+      <h2 className="h-title">{room.name}</h2>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin, bootstrapPlugin]}
         weekends={false}
