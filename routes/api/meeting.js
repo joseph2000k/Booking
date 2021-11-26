@@ -13,6 +13,7 @@ var ObjectId = require("mongodb").ObjectId;
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 //@route    GET api/meeting/
 //@desc     Get all meetings for the current office
@@ -95,8 +96,6 @@ router.get("/rooms/:roomId", async (req, res) => {
       {
         $match: { room: ObjectId(req.params.roomId) },
       },
-
-      //{ $project: { room: 0 } },
     ]);
 
     const meetings = meetingList.map((item) => {
@@ -104,8 +103,11 @@ router.get("/rooms/:roomId", async (req, res) => {
         item.title = "Waiting for Approval";
         item.description = "Reserved (Waiting for Approval)";
       } else {
-        item.title = item.title;
-        item.description = `Topic: ` + item.description;
+        item.description +=
+          " on " +
+          moment(item.start).format("MMMM DD YYYY , [From] h:mm a") +
+          " - " +
+          moment(item.end).format("h:mm a");
       }
       return item;
     });

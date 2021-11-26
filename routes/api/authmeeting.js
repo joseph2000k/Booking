@@ -25,12 +25,15 @@ router.get("/", authMeeting, async (req, res) => {
 //@access   Private
 router.post("/", [auth, authMeeting, scheduleVerifier], async (req, res) => {
   try {
-    const { description, specialInstructions, first, second } = req.body;
-
-    const newRequirements = {
+    const {
+      description,
+      contactName,
+      contactNumber,
+      numberOfAtendees,
+      specialInstructions,
       first,
       second,
-    };
+    } = req.body;
 
     const meetingFields = {};
     meetingFields.office = req.office.id;
@@ -38,11 +41,14 @@ router.post("/", [auth, authMeeting, scheduleVerifier], async (req, res) => {
       meetingFields.specialInstructions = specialInstructions;
 
     if (description) meetingFields.description = description;
+    if (contactName) meetingFields.contactName = contactName;
+    if (contactNumber) meetingFields.contactNumber = contactNumber;
+    if (numberOfAtendees) meetingFields.numberOfAtendees = numberOfAtendees;
+    if (first) meetingFields.first = first;
+    if (second) meetingFields.second = second;
 
     if (!req.meeting) {
       const meeting = new Meeting(meetingFields);
-
-      meeting.requirements.unshift(newRequirements);
 
       meeting.schedules.unshift(req.verifiedSchedule);
 
@@ -68,7 +74,6 @@ router.post("/", [auth, authMeeting, scheduleVerifier], async (req, res) => {
         req.meeting.id,
         {
           $set: meetingFields,
-          $push: { requirements: newRequirements },
           $push: { schedules: req.verifiedSchedule },
         },
         { multi: true, new: true }

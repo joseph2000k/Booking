@@ -48,7 +48,15 @@ const ScheduleForm = ({
 
   const handleClose = (e) => setLgShow(false);
 
-  const { description, specialInstructions, first, second } = formData;
+  const {
+    contactName,
+    contactNumber,
+    numberOfAttendees,
+    description,
+    specialInstructions,
+    first,
+    second,
+  } = formData;
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -97,53 +105,111 @@ const ScheduleForm = ({
       <h1 className="h-title">Schedule a Meeting</h1>
       <form className="form">
         <div className="form-group">
-          <input
-            type="text"
-            placeholder="Write your special instructions here if any"
-            name="specialInstructions"
-            value={specialInstructions}
-            onChange={onChange}
-          />
+          <div class="input-group">
+            <label for="description" className="col-sm-2 col-form-label">
+              Meeting Description:
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Meeting Description"
+              name="description"
+              value={description}
+              onChange={onChange}
+            />
+          </div>
         </div>
         <div className="form-group">
-          <input
-            type="text"
-            placeholder="Meeting Description"
-            name="description"
-            value={description}
-            onChange={onChange}
-          />
+          <div class="input-group">
+            <label for="inputPassword3" class="col-sm-2 col-form-label">
+              Name of the Contact:
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Name of Contact"
+              name="contactName"
+              value={contactName}
+              onChange={onChange}
+            />
+          </div>
         </div>
         <div className="form-group">
-          <input
-            type="text"
-            placeholder="first requirement"
-            name="first"
-            value={first}
-            onChange={onChange}
-          />
+          <div class="input-group">
+            <label for="contactNumber" class="col-sm-2 col-form-label">
+              {" "}
+              Contact Number:{" "}
+            </label>
+            <input
+              className="form-control"
+              type="text"
+              placeholder="Contact Number"
+              name="contactNumber"
+              value={contactNumber}
+              onChange={onChange}
+            />
+          </div>
         </div>
         <div className="form-group">
-          <input
-            type="text"
-            placeholder="second requirement"
-            name="second"
-            value={second}
-            onChange={onChange}
-          />
+          <div class="input-group">
+            <label for="inputPassword3" class="col-sm-2 col-form-label">
+              {" "}
+              Number of Attendees:{" "}
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Estimated Number of Attendees"
+              name="numberOfAttendees"
+              value={numberOfAttendees}
+              onChange={onChange}
+            />
+          </div>
         </div>
-        <div>{roomId}</div>
-        <div>{dateValue}</div>
-        <div>{startDate.toString()}</div>
-        <div>{value.toString()}</div>
-        <input
-          type="submit"
-          value="Add Room and Date"
-          onClick={toggleValue}
-          className="btn btn-primary my-1"
-          data-toggle="modal"
-          data-target="#exampleModalCenter"
-        />
+        <div className="form-group">
+          <div class="input-group">
+            <label for="inputPassword3" class="col-sm-2 col-form-label">
+              Instructions:
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Write your special instructions here if any"
+              name="specialInstructions"
+              value={specialInstructions}
+              onChange={onChange}
+            />
+          </div>
+        </div>
+        <div className="form-group">
+          <div class="input-group">
+            <label for="inputPassword3" class="col-sm-2 col-form-label">
+              {" "}
+              Requirements:{" "}
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="second requirement"
+              name="first"
+              value={first}
+              onChange={onChange}
+            />
+          </div>
+        </div>
+        <div className="form-group">
+          <div class="input-group">
+            <label for="inputPassword3" class="col-sm-2 col-form-label" />
+            <input
+              type="text"
+              className="form-control"
+              placeholder="second requirement"
+              name="second"
+              value={second}
+              onChange={onChange}
+            />
+          </div>
+        </div>
       </form>
 
       <button className="btn btn-primary" onClick={() => setLgShow(true)}>

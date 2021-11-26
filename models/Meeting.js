@@ -9,6 +9,17 @@ const MeetingSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  contactName: {
+    type: String,
+    required: true,
+  },
+  contactNumber: {
+    type: String,
+    required: true,
+  },
+  numberOfAttendees: {
+    type: Number,
+  },
   schedules: [
     {
       room: {
@@ -25,16 +36,12 @@ const MeetingSchema = new mongoose.Schema({
       },
     },
   ],
-  requirements: [
-    {
-      first: {
-        type: String,
-      },
-      second: {
-        type: String,
-      },
-    },
-  ],
+  firstRequirements: {
+    type: String,
+  },
+  secondRequirements: {
+    type: String,
+  },
   specialInstructions: {
     type: String,
   },
