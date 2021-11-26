@@ -213,7 +213,7 @@ const ScheduleForm = ({
       </form>
 
       <button className="btn btn-primary" onClick={() => setLgShow(true)}>
-        Add Schedule
+        Add Room and Date
       </button>
       <div>
         {meetingToken && (
