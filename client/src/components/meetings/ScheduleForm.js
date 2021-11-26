@@ -121,7 +121,7 @@ const ScheduleForm = ({
         </div>
         <div className="form-group">
           <div class="input-group">
-            <label for="inputPassword3" class="col-sm-2 col-form-label">
+            <label for="contactName" class="col-sm-2 col-form-label">
               Name of the Contact:
             </label>
             <input
@@ -152,7 +152,7 @@ const ScheduleForm = ({
         </div>
         <div className="form-group">
           <div class="input-group">
-            <label for="inputPassword3" class="col-sm-2 col-form-label">
+            <label for="numberOfAttendees" class="col-sm-2 col-form-label">
               {" "}
               Number of Attendees:{" "}
             </label>
@@ -168,7 +168,7 @@ const ScheduleForm = ({
         </div>
         <div className="form-group">
           <div class="input-group">
-            <label for="inputPassword3" class="col-sm-2 col-form-label">
+            <label for="specialInstructions" class="col-sm-2 col-form-label">
               Instructions:
             </label>
             <input
@@ -183,14 +183,13 @@ const ScheduleForm = ({
         </div>
         <div className="form-group">
           <div class="input-group">
-            <label for="inputPassword3" class="col-sm-2 col-form-label">
+            <label for="first" class="col-sm-2 col-form-label">
               {" "}
               Requirements:{" "}
             </label>
             <input
               type="text"
               className="form-control"
-              placeholder="second requirement"
               name="first"
               value={first}
               onChange={onChange}
@@ -199,11 +198,10 @@ const ScheduleForm = ({
         </div>
         <div className="form-group">
           <div class="input-group">
-            <label for="inputPassword3" class="col-sm-2 col-form-label" />
+            <label for="second" class="col-sm-2 col-form-label" />
             <input
               type="text"
               className="form-control"
-              placeholder="second requirement"
               name="second"
               value={second}
               onChange={onChange}
