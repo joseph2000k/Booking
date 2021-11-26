@@ -102,7 +102,7 @@ const ScheduleForm = ({
 
   return (
     <Fragment>
-      <h1 className="h-title">Schedule a Meeting</h1>
+      <h2 className="h-title">Schedule a Meeting</h2>
       <form className="form">
         <div className="form-group">
           <div class="input-group">
