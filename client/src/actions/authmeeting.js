@@ -48,6 +48,8 @@ export const proceedScheduling = (formData) => async (dispatch) => {
       payload: res.data,
     });
 
+    dispatch(setAlert("Date Added", "success"));
+
     dispatch(loadCurrentMeeting());
   } catch (err) {
     const errors = err.response.data.errors;
