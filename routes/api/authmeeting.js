@@ -111,6 +111,30 @@ router.post(
   [auth, authMeeting, submitVerifier],
   async (req, res) => {
     try {
+      //update meetingfields with req.body
+      const {
+        description,
+        contactName,
+        contactNumber,
+        numberOfAtendees,
+        specialInstructions,
+        first,
+        second,
+      } = req.body;
+
+      const meetingFields = {};
+      meetingFields.office = req.office.id;
+      meetingFields.isSubmitted = true;
+      if (specialInstructions)
+        meetingFields.specialInstructions = specialInstructions;
+
+      if (description) meetingFields.description = description;
+      if (contactName) meetingFields.contactName = contactName;
+      if (contactNumber) meetingFields.contactNumber = contactNumber;
+      if (numberOfAtendees) meetingFields.numberOfAtendees = numberOfAtendees;
+      if (first) meetingFields.first = first;
+      if (second) meetingFields.second = second;
+
       if (req.submitSchedule.office.toString() !== req.office.id) {
         return res.status(400).json({ msg: "Invalid Credentials..." });
       }
@@ -126,7 +150,7 @@ router.post(
       const submitSchedule = await Meeting.findByIdAndUpdate(
         req.submitSchedule.id,
         {
-          $set: { isSubmitted: true },
+          $set: meetingFields,
         },
         { new: true }
       );

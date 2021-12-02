@@ -42,7 +42,6 @@ export const proceedScheduling = (formData) => async (dispatch) => {
 
   try {
     const res = await axios.post("/api/authmeeting", formData, config);
-    console.log(res.data);
 
     dispatch({
       type: LOGIN_MEETING_SUCCESS,
@@ -78,11 +77,18 @@ export const loadOfficeMeetings = () => async (dispatch) => {
   }
 };
 
-export const submitMeeting = (history) => async (dispatch) => {
+export const submitMeeting = (formData, history) => async (dispatch) => {
   try {
-    await axios.post("/api/authmeeting/submit");
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    await axios.post("/api/authmeeting/submit", formData, config);
 
     history.push("/dashboard");
+    dispatch(setAlert("Meeting submitted", "success"));
   } catch (err) {
     dispatch({
       type: AUTH_MEETING_ERROR,
