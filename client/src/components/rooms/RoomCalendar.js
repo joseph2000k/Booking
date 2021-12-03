@@ -28,7 +28,7 @@ const RoomCalendar = ({
   };
 
   return (
-    <div className="calendar">
+    <div className="calendar bg-light p-4 rounded shadow">
       <h2 className="h-title">{room.name}</h2>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin, bootstrapPlugin]}

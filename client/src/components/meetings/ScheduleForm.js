@@ -102,153 +102,161 @@ const ScheduleForm = ({
 
   return (
     <Fragment>
-      <h2 className="h-title">Schedule a Meeting</h2>
-      <form className="form">
-        <div className="form-group">
-          <div class="input-group">
-            <label for="description" className="col-sm-2 col-form-label">
-              Meeting Description:
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Meeting Description"
-              name="description"
-              value={description}
-              onChange={onChange}
-            />
-          </div>
-        </div>
-        <div className="form-group">
-          <div class="input-group">
-            <label for="contactName" class="col-sm-2 col-form-label">
-              Contact Name:
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Name of Contact"
-              name="contactName"
-              value={contactName}
-              onChange={onChange}
-            />
-          </div>
-        </div>
-        <div className="form-group">
-          <div class="input-group">
-            <label for="contactNumber" class="col-sm-2 col-form-label">
-              {" "}
-              Contact Number:{" "}
-            </label>
-            <input
-              className="form-control"
-              type="text"
-              placeholder="Contact Number"
-              name="contactNumber"
-              value={contactNumber}
-              onChange={onChange}
-            />
-          </div>
-        </div>
-        <div className="form-group">
-          <div class="input-group">
-            <label for="numberOfAttendees" class="col-sm-2 col-form-label">
-              {" "}
-              Number of Attendees:{" "}
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Estimated Number of Attendees"
-              name="numberOfAttendees"
-              value={numberOfAttendees}
-              onChange={onChange}
-            />
-          </div>
-        </div>
-        <div className="form-group">
-          <div class="input-group">
-            <label for="specialInstructions" class="col-sm-2 col-form-label">
-              Instructions:
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Write your special instructions here if any"
-              name="specialInstructions"
-              value={specialInstructions}
-              onChange={onChange}
-            />
-          </div>
-        </div>
-        <div className="form-group">
-          <div class="input-group">
-            <label for="first" class="col-sm-2 col-form-label">
-              {" "}
-              Requirements:{" "}
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              name="first"
-              value={first}
-              onChange={onChange}
-            />
-          </div>
-        </div>
-        <div className="form-group">
-          <div class="input-group">
-            <label for="second" class="col-sm-2 col-form-label" />
-            <input
-              type="text"
-              className="form-control"
-              name="second"
-              value={second}
-              onChange={onChange}
-            />
-          </div>
-        </div>
-      </form>
+      <div className="container mt-0 bg-light p-5">
+        <div className="p-2 bg-white rounded shadow-sm">
+          <h2 className="h-title">Schedule a Meeting</h2>
+          <form className="form">
+            <div className="form-group">
+              <div class="input-group">
+                <label for="description" className="col-sm-2 col-form-label">
+                  Meeting Description:
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Meeting Description"
+                  name="description"
+                  value={description}
+                  onChange={onChange}
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <div class="input-group">
+                <label for="contactName" class="col-sm-2 col-form-label">
+                  Contact Name:
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Name of Contact"
+                  name="contactName"
+                  value={contactName}
+                  onChange={onChange}
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <div class="input-group">
+                <label for="contactNumber" class="col-sm-2 col-form-label">
+                  {" "}
+                  Contact Number:{" "}
+                </label>
+                <input
+                  className="form-control"
+                  type="text"
+                  placeholder="Contact Number"
+                  name="contactNumber"
+                  value={contactNumber}
+                  onChange={onChange}
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <div class="input-group">
+                <label for="numberOfAttendees" class="col-sm-2 col-form-label">
+                  {" "}
+                  Number of Attendees:{" "}
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Estimated Number of Attendees"
+                  name="numberOfAttendees"
+                  value={numberOfAttendees}
+                  onChange={onChange}
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <div class="input-group">
+                <label
+                  for="specialInstructions"
+                  class="col-sm-2 col-form-label"
+                >
+                  Instructions:
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Write your special instructions here if any"
+                  name="specialInstructions"
+                  value={specialInstructions}
+                  onChange={onChange}
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <div class="input-group">
+                <label for="first" class="col-sm-2 col-form-label">
+                  {" "}
+                  Requirements:{" "}
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="first"
+                  value={first}
+                  onChange={onChange}
+                />
+              </div>
+            </div>
+            <div className="form-group">
+              <div class="input-group">
+                <label for="second" class="col-sm-2 col-form-label" />
+                <input
+                  type="text"
+                  className="form-control"
+                  name="second"
+                  value={second}
+                  onChange={onChange}
+                />
+              </div>
+            </div>
+          </form>
 
-      <button className="btn btn-primary" onClick={() => setLgShow(true)}>
-        Add Room and Date
-      </button>
-      <div>
-        {meetingToken && (
-          <button
-            className="btn btn-primary"
-            onClick={() => submitMeeting(formData, history)}
-          >
-            Submit
+          <button className="btn btn-primary" onClick={() => setLgShow(true)}>
+            Add Room and Date
           </button>
-        )}
+
+          <Modal
+            size="sm"
+            show={smShow}
+            onHide={() => setSmShow(false)}
+            aria-labelledby="example-modal-sizes-title-sm"
+          >
+            <Modal.Header closeButton>
+              <Modal.Title id="example-modal-sizes-title-sm">
+                Small Modal
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>...</Modal.Body>
+          </Modal>
+          <Modal
+            size="lg"
+            show={lgShow}
+            onHide={() => setLgShow(false)}
+            aria-labelledby="example-modal-sizes-title-lg"
+          >
+            <Modal.Header closeButton>
+              <Modal.Title id="example-modal-sizes-title-lg">
+                Add a Schedule
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>{value ? roomList : roomCalendar}</Modal.Body>
+          </Modal>
+        </div>
+        <div className="mt-2">
+          {meetingToken && (
+            <button
+              className="btn btn-primary"
+              onClick={() => submitMeeting(formData, history)}
+            >
+              Submit
+            </button>
+          )}
+        </div>
       </div>
-      <Modal
-        size="sm"
-        show={smShow}
-        onHide={() => setSmShow(false)}
-        aria-labelledby="example-modal-sizes-title-sm"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="example-modal-sizes-title-sm">
-            Small Modal
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>...</Modal.Body>
-      </Modal>
-      <Modal
-        size="lg"
-        show={lgShow}
-        onHide={() => setLgShow(false)}
-        aria-labelledby="example-modal-sizes-title-lg"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="example-modal-sizes-title-lg">
-            Add a Schedule
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{value ? roomList : roomCalendar}</Modal.Body>
-      </Modal>
     </Fragment>
   );
 };
