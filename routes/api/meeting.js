@@ -13,6 +13,7 @@ var ObjectId = require('mongodb').ObjectId;
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const mongoose = require('mongoose');
+const scheduleVerifier = require('../../middleware/scheduleVerifier');
 const moment = require('moment');
 
 //@route    GET api/meeting/
@@ -434,7 +435,7 @@ router.post('/testroute', async (req, res) => {
   }
 });
 
-//@route    POST api/authmeeting/
+//@route    POST api/submit/
 //@desc     Submit meeting
 //@access   Private
 router.post('/submit/', [auth], async (req, res) => {
@@ -514,6 +515,18 @@ router.post('/submit/', [auth], async (req, res) => {
     await newMeeting.save();
 
     res.json(newMeeting);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+//@route    POST api/checkschedule/
+//@desc     check if schedule is available
+//@access   Private
+router.get('/checkschedule/', [auth, scheduleVerifier], async (req, res) => {
+  try {
+    res.json(req.verifiedSchedule);
   } catch (error) {
     console.error(error.message);
     res.status(500).send('Server Error');
