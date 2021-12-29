@@ -1,7 +1,8 @@
-import { CREATE_MEETING, MEETING_ERROR } from "../actions/types";
+import { CREATE_MEETING, MEETING_ERROR, SCHEDULE } from "../actions/types";
 
 const initialState = {
   meeting: {},
+  schedule: {},
   loading: true,
   error: {},
 };
@@ -14,6 +15,13 @@ export default function meetingReducer(state = initialState, action) {
       return {
         ...state,
         meeting: payload,
+        schedule: {},
+        loading: false,
+      };
+    case SCHEDULE:
+      return {
+        ...state,
+        schedule: payload,
         loading: false,
       };
     case MEETING_ERROR:

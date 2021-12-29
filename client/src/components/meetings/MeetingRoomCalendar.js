@@ -9,21 +9,21 @@ import { getRoomMeetings } from "../../actions/rooms";
 import { getRoom } from "../../actions/rooms";
 import TimePicker from "react-time-picker";
 import Moment from "react-moment";
-import { proceedScheduling } from "../../actions/authmeeting";
 import { loadCurrentMeeting } from "../../actions/authmeeting";
+import { checkSchedule } from "../../actions/meeting";
 
 const MeetingRoomCalendar = ({
   getRoom,
   getRoomMeetings,
   roomId,
   start,
-  meeting,
+  schedule,
   startOnChange,
   end,
   endOnChange,
   dateOnChange,
   dateValue,
-  proceedScheduling,
+  checkSchedule,
   loadCurrentMeeting,
   toggleValue,
   handleClose,
@@ -71,7 +71,7 @@ const MeetingRoomCalendar = ({
         <button
           className="btn btn-primary"
           onClick={() => {
-            proceedScheduling(meeting);
+            checkSchedule(schedule);
             loadCurrentMeeting();
             {
               toggleValue(true);
@@ -107,8 +107,8 @@ MeetingRoomCalendar.propTypes = {
   getRoomMeetings: PropTypes.func.isRequired,
   getRoom: PropTypes.func.isRequired,
   meetings: PropTypes.array.isRequired,
-  proceedScheduling: PropTypes.func.isRequired,
   loadCurrentMeeting: PropTypes.func.isRequired,
+  checkSchedule: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -116,8 +116,8 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  proceedScheduling,
   getRoomMeetings,
   getRoom,
   loadCurrentMeeting,
+  checkSchedule,
 })(MeetingRoomCalendar);

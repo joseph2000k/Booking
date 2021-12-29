@@ -8,7 +8,7 @@ import { proceedScheduling } from "../../actions/authmeeting";
 import { loadCurrentMeeting } from "../../actions/authmeeting";
 import useToggle from "../../utils/useToggle";
 import { getRooms } from "../../actions/rooms";
-import { submitMeeting } from "../../actions/authmeeting";
+import { submitMeeting } from "../../actions/meeting";
 import MeetingRoomItem from "./MeetingRoomItem";
 import Modal from "react-bootstrap/Modal";
 import MeetingRoomCalendar from "./MeetingRoomCalendar";
@@ -68,6 +68,19 @@ const ScheduleForm = ({
     room: roomId,
   };
 
+  const schedule = {
+    start: startDate,
+    end: endDate,
+    room: roomId,
+  };
+
+  const hideModal = () => {
+    setLgShow(false);
+    {
+      toggleValue(true);
+    }
+  };
+
   const roomList = (
     <div className="d-flex justify-content-center">
       {rooms.map((room) => (
@@ -94,6 +107,7 @@ const ScheduleForm = ({
         dateOnChange={dateOnChange}
         dateValue={dateValue}
         meeting={meeting}
+        schedule={schedule}
         toggleValue={toggleValue}
         handleClose={handleClose}
       ></MeetingRoomCalendar>
@@ -214,11 +228,9 @@ const ScheduleForm = ({
               </div>
             </div>
           </form>
-
           <button className="btn btn-primary" onClick={() => setLgShow(true)}>
             Add Room and Date
           </button>
-
           <Modal
             size="sm"
             show={smShow}
@@ -235,7 +247,7 @@ const ScheduleForm = ({
           <Modal
             size="lg"
             show={lgShow}
-            onHide={() => setLgShow(false)}
+            onHide={hideModal}
             aria-labelledby="example-modal-sizes-title-lg"
           >
             <Modal.Header closeButton>

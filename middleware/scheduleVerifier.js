@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 module.exports = async function (req, res, next) {
   const { room, start, end } = req.body;
   let roomName = await Room.findById(room);
+  console.log(start, end);
 
   if (!roomName) {
     return res.json({ msg: "invalid room" });
