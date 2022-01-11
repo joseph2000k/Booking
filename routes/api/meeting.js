@@ -524,7 +524,7 @@ router.post('/submit/', [auth], async (req, res) => {
 //@route    POST api/checkschedule/
 //@desc     check if schedule is available
 //@access   Private
-router.get('/checkschedule/', [auth, scheduleVerifier], async (req, res) => {
+router.post('/checkschedule/', [auth, scheduleVerifier], async (req, res) => {
   try {
     res.json(req.verifiedSchedule);
   } catch (error) {
