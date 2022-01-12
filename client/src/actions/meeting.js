@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { setAlert } from './alert';
-import { CREATE_MEETING, MEETING_ERROR, SCHEDULE } from './types';
+import { CREATE_MEETING, MEETING_ERROR, MEETINGS } from './types';
 
 //Create a meeting
 export const submitMeeting = (formData) => async (dispatch) => {
@@ -45,7 +45,7 @@ export const checkSchedule = (schedule) => async (dispatch) => {
     console.log(res.data);
 
     dispatch({
-      type: SCHEDULE,
+      type: MEETINGS,
       payload: res.data,
     });
 
