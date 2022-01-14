@@ -31,6 +31,7 @@ const ScheduleForm = ({
   const [lgShow, setLgShow] = useState(false);
   //state for the calendar
   const [roomId, setRoomId] = useState('');
+
   //state for the meeting
   const [formData, setFormData] = useState({
     specialInstructions: '',

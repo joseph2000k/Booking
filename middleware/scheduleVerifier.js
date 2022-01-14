@@ -52,6 +52,7 @@ module.exports = async function (req, res, next) {
 
   const newSchedule = {
     room: roomName.id,
+    roomName: roomName.name,
     start,
     end,
   };

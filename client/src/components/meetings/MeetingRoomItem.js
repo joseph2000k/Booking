@@ -1,9 +1,9 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { getRoom, getRoomMeetings } from "../../actions/rooms";
-import PropTypes from "prop-types";
-import { Card } from "react-bootstrap";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { getRoom, getRoomMeetings } from '../../actions/rooms';
+import PropTypes from 'prop-types';
+import { Card } from 'react-bootstrap';
 const MeetingRoomItem = ({
   getRoomMeetings,
   getRoom,
@@ -23,19 +23,19 @@ const MeetingRoomItem = ({
     }
   };
   return (
-    <div className="mx-4">
+    <div className='mx-4'>
       <Card
-        className="mx-4 shadow p-0 mb-5 bg-white rounded"
-        style={{ width: "10rem", textDecoration: "none", color: "black" }}
+        className='mx-4 shadow p-0 mb-5 bg-white rounded'
+        style={{ width: '10rem', textDecoration: 'none', color: 'black' }}
       >
-        <Card.Img variant="top" src={`img/${_id}.jpg`} />
+        <Card.Img variant='top' src={`img/${_id}.jpg`} />
         <Card.Body>
-          <Card.Title className="d-flex justify-content-center">
+          <Card.Title className='d-flex justify-content-center'>
             {name}
           </Card.Title>
           <Card.Text></Card.Text>
-          <div className="d-flex justify-content-center">
-            <button className="btn btn-primary" onClick={onClick}>
+          <div className='d-flex justify-content-center'>
+            <button className='btn btn-primary' onClick={onClick}>
               Select
             </button>
           </div>
