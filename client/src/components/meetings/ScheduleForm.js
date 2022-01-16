@@ -10,6 +10,7 @@ import useToggle from '../../utils/useToggle';
 import { getRooms } from '../../actions/rooms';
 import { submitMeeting } from '../../actions/meeting';
 import MeetingRoomItem from './MeetingRoomItem';
+import Schedules from './Schedules';
 import Modal from 'react-bootstrap/Modal';
 import MeetingRoomCalendar from './MeetingRoomCalendar';
 import moment from 'moment';
@@ -19,6 +20,7 @@ const ScheduleForm = ({
   room: { rooms },
   meeting: { meetingToken },
   submitMeeting,
+  meetings: { meetings },
 }) => {
   useEffect(() => {
     getRooms();
@@ -260,13 +262,16 @@ const ScheduleForm = ({
           </Modal>
         </div>
         <div className='mt-2'>
-          {meetingToken && (
-            <button
-              className='btn btn-primary'
-              onClick={() => submitMeeting(formData, history)}
-            >
-              Submit
-            </button>
+          {meetings != 0 && (
+            <Fragment>
+              <Schedules meetings={meetings} />
+              <button
+                className='btn btn-primary'
+                onClick={() => submitMeeting(formData, history)}
+              >
+                Submit
+              </button>
+            </Fragment>
           )}
         </div>
       </div>
@@ -281,11 +286,13 @@ ScheduleForm.propTypes = {
   room: PropTypes.object.isRequired,
   meeting: PropTypes.object.isRequired,
   submitMeeting: PropTypes.func.isRequired,
+  meetings: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   room: state.room,
   meeting: state.meetingauth,
+  meetings: state.meeting,
 });
 
 export default connect(mapStateToProps, {

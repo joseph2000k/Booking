@@ -20,3 +20,4 @@ export const REMOVE_MEETING = 'REMOVE_MEETING';
 export const ADD_ROOM = 'ADD_ROOM';
 export const MEETINGS = 'MEETINGS';
 export const CLEAR_MEETINGS = 'CLEAR_MEETINGS';
+export const DELETE_SCHEDULE = 'DELETE_SCHEDULE';

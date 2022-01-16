@@ -3,6 +3,7 @@ import {
   MEETING_ERROR,
   MEETINGS,
   CLEAR_MEETINGS,
+  DELETE_SCHEDULE,
 } from '../actions/types';
 
 const initialState = {
@@ -28,6 +29,11 @@ export default function meetingReducer(state = initialState, action) {
         ...state,
         meetings: [payload, ...state.meetings],
         loading: false,
+      };
+    case DELETE_SCHEDULE:
+      return {
+        ...state,
+        meetings: state.meetings.filter((meeting) => meeting.id !== payload),
       };
     case MEETING_ERROR:
     case CLEAR_MEETINGS:
