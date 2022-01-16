@@ -18,7 +18,7 @@ import moment from 'moment';
 const ScheduleForm = ({
   getRooms,
   room: { rooms },
-  meeting: { meetingToken },
+
   submitMeeting,
   meetings: { meetings },
 }) => {
@@ -66,9 +66,7 @@ const ScheduleForm = ({
 
   const meeting = {
     ...formData,
-    start: startDate,
-    end: endDate,
-    room: roomId,
+    schedules: meetings,
   };
 
   const schedule = {
@@ -267,7 +265,7 @@ const ScheduleForm = ({
               <Schedules meetings={meetings} />
               <button
                 className='btn btn-primary'
-                onClick={() => submitMeeting(formData, history)}
+                onClick={() => submitMeeting(meeting, history)}
               >
                 Submit
               </button>

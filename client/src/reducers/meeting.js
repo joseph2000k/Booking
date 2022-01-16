@@ -20,7 +20,7 @@ export default function meetingReducer(state = initialState, action) {
     case CREATE_MEETING:
       return {
         ...state,
-        meeting: payload,
+        meeting: null,
         schedule: {},
         loading: false,
       };

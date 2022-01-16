@@ -10,20 +10,22 @@ import {
 } from './types';
 
 //Create a meeting
-export const submitMeeting = (formData) => async (dispatch) => {
+export const submitMeeting = (meetings, history) => async (dispatch) => {
   try {
     const config = {
       headers: { 'Content-Type': 'application/json' },
     };
+    console.log(meetings);
 
-    const res = await axios.post('/api/meeting/submit', formData, config);
+    const res = await axios.post('/api/meeting/submit', meetings, config);
 
     dispatch({
       type: CREATE_MEETING,
       payload: res.data,
     });
 
-    dispatch(setAlert('Meeting Created', 'success'));
+    history.push('/dashboard');
+    dispatch(setAlert('Meeting submitted', 'success'));
   } catch (err) {
     const errors = err.response.data.errors;
 
