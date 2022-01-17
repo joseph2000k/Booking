@@ -9,10 +9,13 @@ const Schedules = ({ meetings, deleteSchedule }) => {
     <tr key={meeting.id}>
       <td>{meeting.roomName}</td>
       <td>
-        <Moment format='h:mm:ss A, YYYY/MM/DD'>{meeting.start}</Moment>
+        <Moment format='h:mm A'>{meeting.start}</Moment>
       </td>
       <td>
-        <Moment format='h:mm:ss A, YYYY/MM/DD'>{meeting.end}</Moment>
+        <Moment format='h:mm A'>{meeting.end}</Moment>
+      </td>
+      <td>
+        <Moment format='YYYY/MM/DD'>{meeting.end}</Moment>
       </td>
       <td>
         <button
@@ -30,8 +33,9 @@ const Schedules = ({ meetings, deleteSchedule }) => {
         <thead>
           <tr>
             <th>Room</th>
-            <th>Start</th>
-            <th>End</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody>{allSchedules}</tbody>

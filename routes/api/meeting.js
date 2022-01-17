@@ -508,6 +508,8 @@ router.post('/submit/', [auth], async (req, res) => {
       first,
       second,
       schedules,
+      office: req.office.id,
+      isSubmitted: true,
     };
 
     const newMeeting = new Meeting(meeting);
