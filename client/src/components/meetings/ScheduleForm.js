@@ -18,9 +18,8 @@ import moment from 'moment';
 const ScheduleForm = ({
   getRooms,
   room: { rooms },
-
   submitMeeting,
-  meetings: { meetings },
+  meetings: { schedules },
 }) => {
   useEffect(() => {
     getRooms();
@@ -66,7 +65,7 @@ const ScheduleForm = ({
 
   const meeting = {
     ...formData,
-    schedules: meetings,
+    schedules: schedules,
   };
 
   const schedule = {
@@ -260,9 +259,9 @@ const ScheduleForm = ({
           </Modal>
         </div>
         <div className='mt-2'>
-          {meetings != 0 && (
+          {schedules != 0 && (
             <Fragment>
-              <Schedules meetings={meetings} />
+              <Schedules schedules={schedules} />
               <button
                 className='btn btn-primary'
                 onClick={() => submitMeeting(meeting, history)}
@@ -284,7 +283,7 @@ ScheduleForm.propTypes = {
   room: PropTypes.object.isRequired,
   meeting: PropTypes.object.isRequired,
   submitMeeting: PropTypes.func.isRequired,
-  meetings: PropTypes.array.isRequired,
+  meetings: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({

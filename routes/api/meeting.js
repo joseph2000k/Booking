@@ -21,7 +21,9 @@ const moment = require('moment');
 //@access   Private
 router.get('/', auth, async (req, res) => {
   try {
-    const meetings = await Meeting.find({ office: req.office.id });
+    const meetings = await Meeting.find({ office: req.office.id }).sort({
+      dateCreated: -1,
+    });
 
     if (meetings.length < 1) {
       return res.status(404).json({ msg: 'No meeting found' });
@@ -34,7 +36,7 @@ router.get('/', auth, async (req, res) => {
       return res.status(401).json({ msg: 'User not Authorized' });
     }
 
-    res.json(meeting);
+    res.json(meeting.slice(0, 3));
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

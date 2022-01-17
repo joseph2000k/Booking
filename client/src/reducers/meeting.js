@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   meeting: null,
-  meetings: [],
+  schedules: [],
   loading: true,
   error: {},
 };
@@ -27,13 +27,15 @@ export default function meetingReducer(state = initialState, action) {
     case MEETINGS:
       return {
         ...state,
-        meetings: [payload, ...state.meetings],
+        schedules: [payload, ...state.schedules],
         loading: false,
       };
     case DELETE_SCHEDULE:
       return {
         ...state,
-        meetings: state.meetings.filter((meeting) => meeting.id !== payload),
+        schedules: state.schedules.filter(
+          (schedule) => schedule.id !== payload
+        ),
       };
     case MEETING_ERROR:
     case CLEAR_MEETINGS:
@@ -41,7 +43,7 @@ export default function meetingReducer(state = initialState, action) {
         ...state,
         error: {},
         loading: false,
-        meetings: [],
+        schedules: [],
       };
     default:
       return state;

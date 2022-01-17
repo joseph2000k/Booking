@@ -4,23 +4,23 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteSchedule } from '../../actions/meeting';
 
-const Schedules = ({ meetings, deleteSchedule }) => {
-  const allSchedules = meetings.map((meeting) => (
-    <tr key={meeting.id}>
-      <td>{meeting.roomName}</td>
+const Schedules = ({ schedules, deleteSchedule }) => {
+  const allSchedules = schedules.map((schedule) => (
+    <tr key={schedule.id}>
+      <td>{schedule.roomName}</td>
       <td>
-        <Moment format='h:mm A'>{meeting.start}</Moment>
+        <Moment format='h:mm A'>{schedule.start}</Moment>
       </td>
       <td>
-        <Moment format='h:mm A'>{meeting.end}</Moment>
+        <Moment format='h:mm A'>{schedule.end}</Moment>
       </td>
       <td>
-        <Moment format='YYYY/MM/DD'>{meeting.end}</Moment>
+        <Moment format='YYYY/MM/DD'>{schedule.end}</Moment>
       </td>
       <td>
         <button
           className='btn btn-danger'
-          onClick={() => deleteSchedule(meeting.id)}
+          onClick={() => deleteSchedule(schedule.id)}
         >
           Delete
         </button>
@@ -45,7 +45,7 @@ const Schedules = ({ meetings, deleteSchedule }) => {
 };
 
 Schedules.propTypes = {
-  meetings: PropTypes.array.isRequired,
+  Schedules: PropTypes.array.isRequired,
   deleteSchedule: PropTypes.func.isRequired,
 };
 
