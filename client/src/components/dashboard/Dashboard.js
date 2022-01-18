@@ -1,11 +1,11 @@
-import React, { useEffect, Fragment } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import { removeTokenMeeting } from "../../actions/authmeeting";
-import { loadOfficeMeetings } from "../../actions/authmeeting";
-import { clearMeetings } from "../../actions/meeting";
-import { getMeetings } from "../../actions/meeting";
+import React, { useEffect, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { removeTokenMeeting } from '../../actions/authmeeting';
+import { loadOfficeMeetings } from '../../actions/authmeeting';
+import { clearMeetings } from '../../actions/meeting';
+import { getMeetings } from '../../actions/meeting';
 
 const Dashboard = ({
   auth: { office },
@@ -24,10 +24,13 @@ const Dashboard = ({
   return (
     <Fragment>
       <div>
-        <h1 className="">{office.officeName} Office Dashboard</h1>
-        <Link to="create-meeting">
-          <button className="btn btn-primary m-3 position-absolute bottom-0 end-0">
-            Schedule Meeting
+        <h3 className=''>{office.officeName} Office Dashboard</h3>
+        <Link to='create-meeting'>
+          <button className='btn btn-primary shadow m-3 position-absolute bottom-0 end-0'>
+            <h5>
+              <i class='fa fa-pencil-square' aria-hidden='true'></i> Schedule a
+              Meeting
+            </h5>
           </button>
         </Link>
       </div>
