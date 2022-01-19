@@ -1,6 +1,12 @@
 import axios from "axios";
 import { setAlert } from "./alert";
-import { OFFICE_LOADED, AUTH_ERROR, LOGIN_SUCCESS, LOGIN_FAIL } from "./types";
+import {
+  OFFICE_LOADED,
+  AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT,
+} from "./types";
 import setAuthToken from "../utils/setAuthToken";
 
 export const loadOffice = () => async (dispatch) => {
@@ -53,3 +59,5 @@ export const login = (officeName, password) => async (dispatch) => {
     });
   }
 };
+
+export const logout = () => ({ type: LOGOUT });
