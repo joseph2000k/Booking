@@ -6,30 +6,22 @@ import PropTypes from "prop-types";
 
 const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
   const authLinks = (
-    <ul className="navbar-nav ml-auto">
-      {/* <li className="nav-item">
-        <Link className="nav-link" to="/dashboard">
-          Dashboard
-        </Link>
-      </li> */}
-      <li>
-        <a onClick={logout} href="#!" className="nav-link">
-          <i className="fas fa-sign-out-alt"></i>{" "}
-          <span className="text-dark">Logout</span>
-        </a>
-      </li>
-    </ul>
+    <div className="d-flex align-items-center">
+      <a
+        onClick={logout}
+        href="#!"
+        className="text-decoration-none link-light mx-4"
+      >
+        <i className="fas fa-sign-out-alt"></i> Logout
+      </a>
+    </div>
   );
 
   const guestLinks = (
     <div className="d-flex align-items-center">
-      <ul className="navbar-nav ml-auto">
-        <li className="nav-item">
-          <Link className="nav-link" to="/login">
-            Login
-          </Link>
-        </li>
-      </ul>
+      <Link className="text-decoration-none link-light mx-4 " to="/login">
+        <i class="fa fa-sign-in" aria-hidden="true"></i> Login
+      </Link>
     </div>
   );
 

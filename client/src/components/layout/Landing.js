@@ -1,12 +1,19 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 import Rooms from "../rooms/Rooms";
 import PropTypes from "prop-types";
-import { removeTokenMeeting } from "../../actions/authmeeting";
+import ClockLoader from "react-spinners/ClockLoader";
 
-const Landing = ({ removeTokenMeeting }) => {
-  useEffect(() => removeTokenMeeting(), [removeTokenMeeting]);
-  return (
+const Landing = ({ isAuthenticated, loading }) => {
+  if (isAuthenticated) {
+    return <Redirect to="/dashboard" />;
+  }
+  return loading ? (
+    <div className="d-flex justify-content-center">
+      <ClockLoader />
+    </div>
+  ) : (
     <section className="landing">
       <div className="dark-overlay">
         <div className="landing-inner">
@@ -28,7 +35,13 @@ const Landing = ({ removeTokenMeeting }) => {
 };
 
 Landing.propTypes = {
-  removeTokenMeeting: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+  loading: PropTypes.bool,
 };
 
-export default connect(null, { removeTokenMeeting })(Landing);
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  loading: state.auth.loading,
+});
+
+export default connect(mapStateToProps)(Landing);
