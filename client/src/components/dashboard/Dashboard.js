@@ -7,6 +7,7 @@ import { loadOfficeMeetings } from "../../actions/authmeeting";
 import { clearMeetings } from "../../actions/meeting";
 import { getMeetings } from "../../actions/meeting";
 import ClockLoader from "react-spinners/ClockLoader";
+import ToApprovedMeeting from "./ToApprovedMeeting";
 
 const Dashboard = ({
   auth: { office },
@@ -14,6 +15,7 @@ const Dashboard = ({
   loadOfficeMeetings,
   clearMeetings,
   getMeetings,
+  meeting: { meetings },
 }) => {
   useEffect(() => {
     removeTokenMeeting();
@@ -39,6 +41,7 @@ const Dashboard = ({
           </button>
         </Link>
       </div>
+      <ToApprovedMeeting meetings={meetings} />
     </Fragment>
   );
 };
