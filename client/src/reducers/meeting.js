@@ -6,7 +6,8 @@ import {
   DELETE_SCHEDULE,
   GET_MEETINGS,
   MEETING_HISTORY,
-} from "../actions/types";
+  CLEAR_SCHEDULES,
+} from '../actions/types';
 
 const initialState = {
   meeting: null,
@@ -53,6 +54,11 @@ export default function meetingReducer(state = initialState, action) {
         schedules: state.schedules.filter(
           (schedule) => schedule.id !== payload
         ),
+      };
+    case CLEAR_SCHEDULES:
+      return {
+        ...state,
+        schedules: [],
       };
     case MEETING_ERROR:
     case CLEAR_MEETINGS:
