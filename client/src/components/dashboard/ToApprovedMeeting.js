@@ -2,9 +2,10 @@ import React, { Fragment } from "react";
 import Moment from "react-moment";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import ClockLoader from "react-spinners/ClockLoader";
 
-const ToApprovedMeeting = ({ meetings }) => {
-  const allMeetings = meetings.map((meeting) => (
+const ToApprovedMeeting = ({ history, loading }) => {
+  const allMeetings = history.map((meeting) => (
     <tr key={meeting._id}>
       <td>{meeting.description}</td>
       <td>{meeting.dateCreated}</td>
@@ -12,7 +13,7 @@ const ToApprovedMeeting = ({ meetings }) => {
   ));
   return (
     <Fragment>
-      <h2 className="text-center">To Approved Meetings</h2>
+      <h2 className="text-left">History</h2>
       <table className="table table-striped">
         <thead>
           <tr>
@@ -20,7 +21,7 @@ const ToApprovedMeeting = ({ meetings }) => {
             <th>Date Created</th>
           </tr>
         </thead>
-        <tbody>{allMeetings}</tbody>
+        <tbody>{loading ? <ClockLoader /> : allMeetings}</tbody>
       </table>
     </Fragment>
   );

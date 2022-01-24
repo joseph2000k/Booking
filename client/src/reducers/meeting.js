@@ -5,11 +5,13 @@ import {
   CLEAR_MEETINGS,
   DELETE_SCHEDULE,
   GET_MEETINGS,
+  MEETING_HISTORY,
 } from "../actions/types";
 
 const initialState = {
   meeting: null,
   meetings: [],
+  history: [],
   schedules: [],
   loading: true,
   error: {},
@@ -38,6 +40,13 @@ export default function meetingReducer(state = initialState, action) {
         schedules: [payload, ...state.schedules],
         loading: false,
       };
+    case MEETING_HISTORY:
+      return {
+        ...state,
+        history: payload,
+        loading: false,
+      };
+
     case DELETE_SCHEDULE:
       return {
         ...state,
@@ -49,6 +58,8 @@ export default function meetingReducer(state = initialState, action) {
     case CLEAR_MEETINGS:
       return {
         ...state,
+        history: [],
+        meetings: [],
         error: {},
         loading: false,
         schedules: [],

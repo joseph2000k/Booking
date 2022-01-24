@@ -1,10 +1,16 @@
-import React, { Fragment, useState } from "react";
+import React, { useEffect, Fragment, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import propTypes from "prop-types";
 import { login } from "../../actions/auth";
+import { clearMeetings } from "../../actions/meeting";
+import ClockLoader from "react-spinners/ClockLoader";
 
-export const Login = ({ login, isAuthenticated }) => {
+const Login = ({ login, isAuthenticated, clearMeetings, isSendingRequest }) => {
+  useEffect(() => {
+    clearMeetings();
+  }, [clearMeetings]);
+
   const [formData, setFormData] = useState({
     officeName: "",
     password: "",
@@ -25,7 +31,9 @@ export const Login = ({ login, isAuthenticated }) => {
     return <Redirect to="/dashboard" />;
   }
 
-  return (
+  return isSendingRequest === true ? (
+    <ClockLoader />
+  ) : (
     <Fragment>
       <h1 className="large text-primary">Sign In</h1>
       <p className="lead">
@@ -64,10 +72,13 @@ export const Login = ({ login, isAuthenticated }) => {
 Login.propTypes = {
   login: propTypes.func.isRequired,
   isAuthenticated: propTypes.bool,
+  isSendingRequest: propTypes.bool,
+  clearMeetings: propTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  isSendingRequest: state.auth.isSendingRequest,
 });
 
-export default connect(mapStateToProps, { login })(Login);
+export default connect(mapStateToProps, { login, clearMeetings })(Login);

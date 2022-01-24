@@ -9,7 +9,7 @@ import {
 const initialState = {
   token: localStorage.getItem("token"),
   isAuthenticated: null,
-  loading: true,
+  isSendingRequest: true,
   office: null,
 };
 
@@ -20,7 +20,7 @@ export default function authReducer(state = initialState, action) {
       return {
         ...state,
         isAuthenticated: true,
-        loading: false,
+        isSendingRequest: false,
         office: payload,
       };
     case LOGIN_SUCCESS:
@@ -29,7 +29,7 @@ export default function authReducer(state = initialState, action) {
         ...state,
         ...payload,
         isAuthenticated: true,
-        loading: false,
+        isSendingRequest: false,
       };
     case AUTH_ERROR:
     case LOGIN_FAIL:
@@ -40,7 +40,7 @@ export default function authReducer(state = initialState, action) {
         token: null,
         isAuthenticated: false,
         office: null,
-        loading: false,
+        isSendingRequest: false,
       };
     default:
       return state;

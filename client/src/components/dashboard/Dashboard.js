@@ -2,36 +2,30 @@ import React, { useEffect, Fragment } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { removeTokenMeeting } from "../../actions/authmeeting";
-import { loadOfficeMeetings } from "../../actions/authmeeting";
-import { clearMeetings } from "../../actions/meeting";
+import { meetingHistory } from "../../actions/meeting";
 import { getMeetings } from "../../actions/meeting";
 import ClockLoader from "react-spinners/ClockLoader";
 import ToApprovedMeeting from "./ToApprovedMeeting";
 
 const Dashboard = ({
-  auth: { office },
-  removeTokenMeeting,
-  loadOfficeMeetings,
-  clearMeetings,
+  auth: { office, isSendingRequest },
+  meetingHistory,
   getMeetings,
-  meeting: { meetings },
+  meeting: { history, loading },
 }) => {
   useEffect(() => {
-    removeTokenMeeting();
-    loadOfficeMeetings();
-    clearMeetings();
+    meetingHistory();
     getMeetings();
-  }, [removeTokenMeeting, loadOfficeMeetings, clearMeetings, getMeetings]);
+  }, [meetingHistory, getMeetings]);
 
-  return office === null ? (
+  return office === null || isSendingRequest ? (
     <div className="d-flex justify-content-center">
       <ClockLoader />
     </div>
   ) : (
     <Fragment>
       <div>
-        <h3 className="">{office.officeName} Office Dashboard</h3>
+        <h3 className="text-center">{office.officeName} Office Dashboard</h3>
         <Link to="create-meeting">
           <button className="btn btn-primary shadow m-3 position-absolute bottom-0 end-0">
             <h5>
@@ -41,15 +35,13 @@ const Dashboard = ({
           </button>
         </Link>
       </div>
-      <ToApprovedMeeting meetings={meetings} />
+      <ToApprovedMeeting history={history} loading={loading} />
     </Fragment>
   );
 };
 
 Dashboard.propTypes = {
-  removeTokenMeeting: PropTypes.func.isRequired,
-  loadOfficeMeetings: PropTypes.func.isRequired,
-  clearMeetings: PropTypes.func.isRequired,
+  meetingHistory: PropTypes.func.isRequired,
   getMeetings: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   meeting: PropTypes.object.isRequired,
@@ -61,8 +53,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  removeTokenMeeting,
-  loadOfficeMeetings,
-  clearMeetings,
+  meetingHistory,
   getMeetings,
 })(Dashboard);

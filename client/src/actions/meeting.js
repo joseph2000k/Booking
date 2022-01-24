@@ -8,6 +8,7 @@ import {
   CLEAR_MEETINGS,
   DELETE_SCHEDULE,
   GET_SCHEDULES,
+  MEETING_HISTORY,
 } from "./types";
 
 //Get all meetings for the current office
@@ -58,6 +59,23 @@ export const submitMeeting = (meetings, history) => async (dispatch) => {
   }
 };
 
+//Meeting history
+export const meetingHistory = () => async (dispatch) => {
+  try {
+    const res = await axios.get("/api/meeting");
+
+    dispatch({
+      type: MEETING_HISTORY,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: MEETING_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
 //check schedule
 export const checkSchedule = (schedule) => async (dispatch) => {
   try {
@@ -93,24 +111,7 @@ export const checkSchedule = (schedule) => async (dispatch) => {
 };
 
 //clear meetings
-export const clearMeetings = () => async (dispatch) => {
-  try {
-    dispatch({
-      type: CLEAR_MEETINGS,
-    });
-  } catch (err) {
-    const errors = err.response.data.errors;
-
-    if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
-    }
-
-    dispatch({
-      type: MEETING_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
-  }
-};
+export const clearMeetings = () => ({ type: CLEAR_MEETINGS });
 
 //delete schedule
 export const deleteSchedule = (id) => async (dispatch) => {
