@@ -8,7 +8,9 @@ const ToApprovedMeeting = ({ history, loading }) => {
   const allMeetings = history.map((meeting) => (
     <tr key={meeting._id}>
       <td>{meeting.description}</td>
-      <td>{meeting.dateCreated}</td>
+      <td>
+        <Moment format="YYYY/MM/DD h:mm A">{meeting.dateCreated}</Moment>
+      </td>
     </tr>
   ));
   return (
