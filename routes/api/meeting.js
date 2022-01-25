@@ -43,6 +43,18 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+//@route GET api/meeting/upcoming
+//@desc Get all upcoming schedules for the current office
+//@access Private
+router.get("/upcoming", auth, async (req, res) => {
+  try {
+    //TODO
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 //@route    GET api/meeting/office/:meetingId
 //@desc     get meeting by Id
 //@access   Private
