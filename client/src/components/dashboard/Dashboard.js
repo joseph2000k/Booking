@@ -40,7 +40,8 @@ const Dashboard = ({
           </button>
         </Link>
       </div>
-      <ForApproval meetings={meetings} />
+      {meetings.length > 0 && <ForApproval meetings={meetings} />}
+
       <History history={history} loading={loading} />
     </Fragment>
   );
