@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import ClockLoader from "react-spinners/ClockLoader";
 
-const ToApprovedMeeting = ({ history, loading }) => {
-  const allMeetings = history.map((meeting) => (
+const ForApproval = ({ meetings, loading }) => {
+  const allMeetings = meetings.map((meeting) => (
     <tr key={meeting._id}>
       <td>{meeting.description}</td>
       <td>
@@ -15,7 +15,7 @@ const ToApprovedMeeting = ({ history, loading }) => {
   ));
   return (
     <Fragment>
-      <h2 className="text-left">History</h2>
+      <h2 className="text-left">For Approval</h2>
       <table className="table table-striped">
         <thead>
           <tr>
@@ -29,8 +29,8 @@ const ToApprovedMeeting = ({ history, loading }) => {
   );
 };
 
-ToApprovedMeeting.propTypes = {
+ForApproval.propTypes = {
   meetings: PropTypes.array.isRequired,
 };
 
-export default connect(null, null)(ToApprovedMeeting);
+export default connect(null, null)(ForApproval);

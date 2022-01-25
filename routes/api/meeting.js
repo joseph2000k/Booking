@@ -322,6 +322,26 @@ router.get("/approval/:roomId", authAdmin, async (req, res) => {
   }
 });
 
+//@route    GET api/meeting/forapproval/
+//@desc     view all meetings that needs to be approve
+//@access   Private
+router.get("/forapproval/", auth, async (req, res) => {
+  try {
+    const meetings = await Meeting.find({
+      office: req.office.id,
+      isApproved: false,
+    }).sort({ dateCreated: -1 });
+
+    if (!meetings) {
+      return res.status(404).json({ msg: "No meetings found" });
+    }
+    res.json(meetings);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 //@route    PUT api/meeting/approval/:id
 //@desc     approve a meeting
 //@access   Private/admin
