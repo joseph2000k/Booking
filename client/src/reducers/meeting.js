@@ -7,12 +7,14 @@ import {
   GET_MEETINGS,
   MEETING_HISTORY,
   CLEAR_SCHEDULES,
+  GET_UPCOMING_MEETINGS,
 } from '../actions/types';
 
 const initialState = {
   meeting: null,
   meetings: [],
   history: [],
+  upcoming: [],
   schedules: [],
   loading: true,
   error: {},
@@ -45,6 +47,12 @@ export default function meetingReducer(state = initialState, action) {
       return {
         ...state,
         history: payload,
+        loading: false,
+      };
+    case GET_UPCOMING_MEETINGS:
+      return {
+        ...state,
+        upcoming: payload,
         loading: false,
       };
 

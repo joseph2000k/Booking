@@ -1,22 +1,22 @@
-import React, { Fragment } from "react";
-import Moment from "react-moment";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import ClockLoader from "react-spinners/ClockLoader";
+import React, { Fragment } from 'react';
+import Moment from 'react-moment';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import ClockLoader from 'react-spinners/ClockLoader';
 
 const History = ({ history, loading }) => {
   const allMeetings = history.map((meeting) => (
     <tr key={meeting._id}>
       <td>{meeting.description}</td>
       <td>
-        <Moment format="YYYY/MM/DD h:mm A">{meeting.dateCreated}</Moment>
+        <Moment format='YYYY/MM/DD h:mm A'>{meeting.dateCreated}</Moment>
       </td>
     </tr>
   ));
   return (
     <Fragment>
-      <h2 className="text-left">History</h2>
-      <table className="table table-striped">
+      <h4 className='text-left'>History</h4>
+      <table className='table table-striped'>
         <thead>
           <tr>
             <th>Description</th>

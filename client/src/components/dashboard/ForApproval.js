@@ -1,26 +1,26 @@
-import React, { Fragment } from "react";
-import Moment from "react-moment";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import ClockLoader from "react-spinners/ClockLoader";
+import React, { Fragment } from 'react';
+import Moment from 'react-moment';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import ClockLoader from 'react-spinners/ClockLoader';
 
 const ForApproval = ({ meetings, loading }) => {
   const allMeetings = meetings.map((meeting) => (
     <tr key={meeting._id}>
       <td>{meeting.description}</td>
       <td>
-        <Moment format="YYYY/MM/DD h:mm A">{meeting.dateCreated}</Moment>
+        <Moment format='YYYY/MM/DD h:mm A'>{meeting.dateCreated}</Moment>
       </td>
     </tr>
   ));
   return (
     <Fragment>
-      <h2 className="text-left">For Approval</h2>
-      <table className="table table-striped">
+      <h4 className='text-left'>For Approval</h4>
+      <table className='table table-striped'>
         <thead>
           <tr>
             <th>Description</th>
-            <th>Date Created</th>
+            <th>Date Submitted</th>
           </tr>
         </thead>
         <tbody>{loading ? <ClockLoader /> : allMeetings}</tbody>
