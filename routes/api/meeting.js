@@ -48,7 +48,65 @@ router.get("/", auth, async (req, res) => {
 //@access Private
 router.get("/upcoming", auth, async (req, res) => {
   try {
-    //TODO
+    const meetings = await Meeting.aggregate([
+      {
+        $match: {
+          office: new ObjectId(req.office.id),
+          isApproved: true,
+        },
+      },
+      { $unwind: "$schedules" },
+
+      {
+        $lookup: {
+          from: "rooms",
+          localField: "schedules.room",
+          foreignField: "_id",
+          as: "schedules.room",
+        },
+      },
+
+      {
+        $unwind: {
+          path: "$schedules.room",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+
+      {
+        $project: {
+          _id: "$schedules._id",
+          start: {
+            $cond: {
+              if: { $lt: ["$schedules.start", new Date()] },
+              then: "$$REMOVE",
+              else: "$schedules.start",
+            },
+          },
+          end: "$schedules.end",
+          room: "$schedules.room.name",
+          description: "$description",
+        },
+      },
+    ]);
+
+    if (meetings.length < 1) {
+      return res.status(404).json({ msg: "No meeting found" });
+    }
+
+    res.json(meetings);
+    /* console.log(meetings);
+
+    if (meetings.length < 1) {
+      return res.status(404).json({ msg: "No meeting found" });
+    }
+    for (let i = 0; i < meetings.length; i++) {
+      meetings[i].id = uuidv4();
+      var schedules = meetings.filter(
+        (item) => item.start.getTime() > Date.now()
+      );
+    }
+    res.json(schedules); */
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
