@@ -135,6 +135,28 @@ export const clearMeetings = () => ({ type: CLEAR_MEETINGS });
 //clear schedules
 export const clearSchedules = () => ({ type: CLEAR_SCHEDULES });
 
+//delete meeting
+export const deleteMeeting = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`/api/meeting/${id}`);
+
+    dispatch(setAlert("Meeting deleted", "success"));
+
+    dispatch(getMeetings());
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    dispatch(getMeetings());
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+    }
+
+    dispatch(getMeetings());
+    dispatch(getUpcomingMeetings());
+  }
+};
+
 //delete schedule
 export const deleteSchedule = (id) => async (dispatch) => {
   try {

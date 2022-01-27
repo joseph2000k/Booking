@@ -345,6 +345,11 @@ router.delete("/:meetingId", auth, async (req, res) => {
     if (!meeting) {
       return res.status(404).json({ msg: "Meeting does not exist" });
     }
+    if (meeting.isApproved) {
+      return res
+        .status(406)
+        .json({ errors: [{ msg: "Cannot Delete, Meeting already approved" }] });
+    }
     if (meeting.office.toString() !== req.office.id) {
       return res.status(401).json({ msg: "User not Authorized" });
     }

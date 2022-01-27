@@ -63,6 +63,7 @@ export default function meetingReducer(state = initialState, action) {
           (schedule) => schedule.id !== payload
         ),
       };
+
     case CLEAR_SCHEDULES:
       return {
         ...state,
