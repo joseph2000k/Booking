@@ -4,13 +4,13 @@ import {
   AUTH_ERROR,
   LOGIN_FAIL,
   LOGOUT,
-} from "../actions/types";
+} from '../actions/types';
 
 const initialState = {
-  token: localStorage.getItem("token"),
+  token: localStorage.getItem('token'),
   isAuthenticated: null,
-  isSendingRequest: true,
   office: null,
+  isSendingRequest: true,
 };
 
 export default function authReducer(state = initialState, action) {
@@ -20,11 +20,11 @@ export default function authReducer(state = initialState, action) {
       return {
         ...state,
         isAuthenticated: true,
-        isSendingRequest: false,
         office: payload,
+        isSendingRequest: false,
       };
     case LOGIN_SUCCESS:
-      localStorage.setItem("token", payload.token);
+      localStorage.setItem('token', payload.token);
       return {
         ...state,
         ...payload,
@@ -34,7 +34,7 @@ export default function authReducer(state = initialState, action) {
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT:
-      localStorage.removeItem("token");
+      localStorage.removeItem('token');
       return {
         ...state,
         token: null,
