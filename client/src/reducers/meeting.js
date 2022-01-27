@@ -8,7 +8,7 @@ import {
   MEETING_HISTORY,
   CLEAR_SCHEDULES,
   GET_UPCOMING_MEETINGS,
-} from '../actions/types';
+} from "../actions/types";
 
 const initialState = {
   meeting: null,
@@ -75,8 +75,9 @@ export default function meetingReducer(state = initialState, action) {
         history: [],
         meetings: [],
         error: {},
-        loading: false,
         schedules: [],
+        upcoming: [],
+        loading: false,
       };
     default:
       return state;

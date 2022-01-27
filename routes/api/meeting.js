@@ -51,7 +51,7 @@ router.get("/upcoming", auth, async (req, res) => {
     const meetings = await Meeting.aggregate([
       {
         $match: {
-          office: new ObjectId(req.office.id),
+          office: ObjectId(req.office.id),
           isApproved: true,
         },
       },
@@ -342,21 +342,15 @@ router.put("/schedule/:meetingId", auth, async (req, res) => {
 router.delete("/:meetingId", auth, async (req, res) => {
   try {
     const meeting = await Meeting.findById(req.params.meetingId);
-    const schedule = await Schedule.find({ meeting: req.params.meetingId });
-    if (!meeting || !schedule) {
+    if (!meeting) {
       return res.status(404).json({ msg: "Meeting does not exist" });
     }
     if (meeting.office.toString() !== req.office.id) {
       return res.status(401).json({ msg: "User not Authorized" });
     }
 
-    if (meeting && schedule.length > 0) {
-      await Schedule.deleteMany({ meeting: req.params.meetingId });
-      await meeting.remove();
-      return res.status(200).json({ msg: "Meeting Deleted" });
-    } else {
-      return res.json({ msg: "Deleting a meeting failed" });
-    }
+    await Meeting.findByIdAndRemove(meeting.id);
+    res.json({ msg: "Meeting Deleted" });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");

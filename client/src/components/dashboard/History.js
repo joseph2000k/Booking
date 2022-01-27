@@ -7,7 +7,7 @@ import ClockLoader from 'react-spinners/ClockLoader';
 const History = ({ history, loading }) => {
   const allMeetings = history.map((meeting) => (
     <tr key={meeting._id}>
-      <td>{meeting.description}</td>
+      <td><span>&#9989;</span> {meeting.description}</td>
       <td>
         <Moment format='YYYY/MM/DD h:mm A'>{meeting.dateCreated}</Moment>
       </td>
