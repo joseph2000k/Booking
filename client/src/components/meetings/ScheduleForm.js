@@ -19,7 +19,7 @@ const ScheduleForm = ({
   getRooms,
   room: { rooms },
   submitMeeting,
-  meetings: { schedules },
+  meetings: { toSubmit },
 }) => {
   useEffect(() => {
     getRooms();
@@ -65,7 +65,7 @@ const ScheduleForm = ({
 
   const meeting = {
     ...formData,
-    schedules: schedules,
+    schedules: toSubmit,
   };
 
   const schedule = {
@@ -259,9 +259,9 @@ const ScheduleForm = ({
           </Modal>
         </div>
         <div className='mt-2'>
-          {schedules != 0 && (
+          {toSubmit != 0 && (
             <Fragment>
-              <Schedules schedules={schedules} />
+              <Schedules toSubmit={toSubmit} />
               <button
                 className='btn btn-primary'
                 onClick={() => submitMeeting(meeting, history)}

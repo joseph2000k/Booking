@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteSchedule } from '../../actions/meeting';
 
-const Schedules = ({ schedules, deleteSchedule }) => {
-  const allSchedules = schedules.map((schedule) => (
+const Schedules = ({ toSubmit, deleteSchedule }) => {
+  const allSchedules = toSubmit.map((schedule) => (
     <tr key={schedule.id}>
       <td>{schedule.roomName}</td>
       <td>
