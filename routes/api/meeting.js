@@ -36,7 +36,59 @@ router.get('/', auth, async (req, res) => {
       return res.status(401).json({ msg: 'User not Authorized' });
     }
 
-    res.json(meeting.slice(0, 5));
+    res.json(meeting);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+//@route GET api/meeting/schedules
+//@desc Get all schedules for the current office
+//@access Private
+router.get('/schedules', auth, async (req, res) => {
+  try {
+    const meetings = await Meeting.aggregate([
+      {
+        $match: {
+          office: ObjectId(req.office.id),
+          isApproved: true,
+        },
+      },
+      { $unwind: '$schedules' },
+
+      {
+        $lookup: {
+          from: 'rooms',
+          localField: 'schedules.room',
+          foreignField: '_id',
+          as: 'schedules.room',
+        },
+      },
+
+      {
+        $unwind: {
+          path: '$schedules.room',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+
+      {
+        $project: {
+          _id: '$schedules._id',
+          start: '$schedules.start',
+          end: '$schedules.end',
+          room: '$schedules.room.name',
+          description: '$description',
+        },
+      },
+    ]);
+
+    if (meetings.length < 1) {
+      return res.status(404).json({ msg: 'No meeting found' });
+    }
+
+    res.json(meetings);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

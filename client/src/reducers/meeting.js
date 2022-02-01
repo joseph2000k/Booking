@@ -2,17 +2,19 @@ import {
   CREATE_MEETING,
   MEETING_ERROR,
   GET_SCHEDULES,
+  GET_TO_SUBMIT_MEETINGS,
   CLEAR_MEETINGS,
   DELETE_SCHEDULE,
   GET_MEETINGS,
   MEETING_HISTORY,
-  CLEAR_SCHEDULES,
+  CLEAR_GET_TO_SUBMIT_MEETINGS,
   GET_UPCOMING_MEETINGS,
 } from '../actions/types';
 
 const initialState = {
   meeting: null,
   meetings: [],
+  schedules: [],
   history: [],
   upcoming: [],
   toSubmit: [],
@@ -40,6 +42,12 @@ export default function meetingReducer(state = initialState, action) {
     case GET_SCHEDULES:
       return {
         ...state,
+        schedules: payload,
+        loading: false,
+      };
+    case GET_TO_SUBMIT_MEETINGS:
+      return {
+        ...state,
         toSubmit: [payload, ...state.toSubmit],
         loading: false,
       };
@@ -62,7 +70,7 @@ export default function meetingReducer(state = initialState, action) {
         toSubmit: state.toSubmit.filter((schedule) => schedule.id !== payload),
       };
 
-    case CLEAR_SCHEDULES:
+    case CLEAR_GET_TO_SUBMIT_MEETINGS:
       return {
         ...state,
         toSubmit: [],
@@ -73,6 +81,7 @@ export default function meetingReducer(state = initialState, action) {
         ...state,
         history: [],
         meetings: [],
+        schedules: [],
         error: {},
         toSubmit: [],
         upcoming: [],

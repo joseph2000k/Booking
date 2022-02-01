@@ -7,9 +7,16 @@ import ClockLoader from 'react-spinners/ClockLoader';
 const History = ({ history, loading }) => {
   const allMeetings = history.map((meeting) => (
     <tr key={meeting._id}>
-      <td><span>&#9989;</span> {meeting.description}</td>
+      <td>{meeting.description}</td>
+      <td>{meeting.room}</td>
       <td>
-        <Moment format='YYYY/MM/DD h:mm A'>{meeting.dateCreated}</Moment>
+        <Moment format='h:mm a'>{meeting.start}</Moment>
+      </td>
+      <td>
+        <Moment format='h:mm a'>{meeting.end}</Moment>
+      </td>
+      <td>
+        <Moment format='MMMM Do YYYY, dddd'>{meeting.start}</Moment>
       </td>
     </tr>
   ));
@@ -20,7 +27,10 @@ const History = ({ history, loading }) => {
         <thead>
           <tr>
             <th>Description</th>
-            <th>Date Created</th>
+            <th>Room</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody>{loading ? <ClockLoader /> : allMeetings}</tbody>
@@ -30,7 +40,7 @@ const History = ({ history, loading }) => {
 };
 
 History.propTypes = {
-  meetings: PropTypes.array.isRequired,
+  history: PropTypes.array.isRequired,
 };
 
 export default connect(null, null)(History);

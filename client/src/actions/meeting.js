@@ -8,8 +8,9 @@ import {
   CLEAR_MEETINGS,
   DELETE_SCHEDULE,
   GET_SCHEDULES,
+  GET_TO_SUBMIT_MEETINGS,
   MEETING_HISTORY,
-  CLEAR_SCHEDULES,
+  CLEAR_GET_TO_SUBMIT_MEETINGS,
   GET_UPCOMING_MEETINGS,
 } from './types';
 
@@ -79,12 +80,12 @@ export const meetingHistory = () => async (dispatch) => {
 };
 
 //Get upcoming meetings
-export const getUpcomingMeetings = () => async (dispatch) => {
+export const getSchedules = () => async (dispatch) => {
   try {
-    const res = await axios.get('/api/meeting/upcoming');
+    const res = await axios.get('/api/meeting/schedules');
 
     dispatch({
-      type: GET_UPCOMING_MEETINGS,
+      type: GET_SCHEDULES,
       payload: res.data,
     });
   } catch (err) {
@@ -110,7 +111,7 @@ export const checkSchedule = (schedule) => async (dispatch) => {
     console.log(res.data);
 
     dispatch({
-      type: GET_SCHEDULES,
+      type: GET_TO_SUBMIT_MEETINGS,
       payload: { ...res.data, id: id },
     });
 
@@ -133,7 +134,7 @@ export const checkSchedule = (schedule) => async (dispatch) => {
 export const clearMeetings = () => ({ type: CLEAR_MEETINGS });
 
 //clear schedules
-export const clearSchedules = () => ({ type: CLEAR_SCHEDULES });
+export const clearSchedules = () => ({ type: CLEAR_GET_TO_SUBMIT_MEETINGS });
 
 //delete meeting
 export const deleteMeeting = (id) => async (dispatch) => {
@@ -153,7 +154,7 @@ export const deleteMeeting = (id) => async (dispatch) => {
     }
 
     dispatch(getMeetings());
-    dispatch(getUpcomingMeetings());
+    dispatch(getSchedules());
   }
 };
 
