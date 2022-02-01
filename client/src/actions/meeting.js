@@ -11,7 +11,6 @@ import {
   GET_TO_SUBMIT_MEETINGS,
   MEETING_HISTORY,
   CLEAR_GET_TO_SUBMIT_MEETINGS,
-  GET_UPCOMING_MEETINGS,
 } from './types';
 
 //Get all meetings for the current office
@@ -134,7 +133,9 @@ export const checkSchedule = (schedule) => async (dispatch) => {
 export const clearMeetings = () => ({ type: CLEAR_MEETINGS });
 
 //clear schedules
-export const clearSchedules = () => ({ type: CLEAR_GET_TO_SUBMIT_MEETINGS });
+export const clearSubmitMeetings = () => ({
+  type: CLEAR_GET_TO_SUBMIT_MEETINGS,
+});
 
 //delete meeting
 export const deleteMeeting = (id) => async (dispatch) => {

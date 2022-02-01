@@ -6,7 +6,7 @@ import { getMeetings } from '../../actions/meeting';
 import ClockLoader from 'react-spinners/ClockLoader';
 import History from './History';
 import ForApproval from './ForApproval';
-import { clearSchedules } from '../../actions/meeting';
+import { clearSubmitMeetings } from '../../actions/meeting';
 import { getSchedules } from '../../actions/meeting';
 import { deleteMeeting } from '../../actions/meeting';
 import UpcomingMeetings from './UpcomingMeetings';
@@ -16,16 +16,18 @@ const Dashboard = ({
   auth: { office, isSendingRequest },
   getMeetings,
   getSchedules,
-  clearSchedules,
+  clearSubmitMeetings,
   meeting: { loading, schedules },
   meetings,
   deleteMeeting,
 }) => {
   useEffect(() => {
-    getSchedules();
     getMeetings();
-    clearSchedules();
-  }, [getMeetings, getSchedules, clearSchedules]);
+    clearSubmitMeetings();
+    if (meetings.length > 0) {
+      getSchedules();
+    }
+  }, [getMeetings, getSchedules, clearSubmitMeetings]);
 
   const forApproval = meetings.filter(
     (meeting) => meeting.isApproved === false
@@ -76,7 +78,7 @@ Dashboard.propTypes = {
   getMeetings: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   meeting: PropTypes.object.isRequired,
-  clearSchedules: PropTypes.func.isRequired,
+  clearSubmitMeetings: PropTypes.func.isRequired,
   meetings: PropTypes.array.isRequired,
   getSchedules: PropTypes.func.isRequired,
   deleteMeeting: PropTypes.func.isRequired,
@@ -90,7 +92,7 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, {
   getMeetings,
-  clearSchedules,
+  clearSubmitMeetings,
   getSchedules,
   deleteMeeting,
 })(Dashboard);
