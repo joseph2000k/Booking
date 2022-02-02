@@ -1,9 +1,9 @@
-import React, { Fragment } from "react";
-import Moment from "react-moment";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import ClockLoader from "react-spinners/ClockLoader";
-import { cancelSchedule } from "../../actions/meeting";
+import React, { Fragment } from 'react';
+import Moment from 'react-moment';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import ClockLoader from 'react-spinners/ClockLoader';
+import { cancelSchedule } from '../../actions/meeting';
 
 const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
   const allMeetings = upcoming.map((meeting) => (
@@ -11,18 +11,18 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
       <td>{meeting.description}</td>
       <td>{meeting.room}</td>
       <td>
-        <Moment format="h:mm a">{meeting.start}</Moment>
+        <Moment format='h:mm a'>{meeting.start}</Moment>
       </td>
       <td>
-        <Moment format="h:mm a">{meeting.end}</Moment>
+        <Moment format='h:mm a'>{meeting.end}</Moment>
       </td>
       <td>
-        <Moment format="MMMM Do YYYY, dddd">{meeting.start}</Moment>
+        <Moment format='MMMM Do YYYY, dddd'>{meeting.start}</Moment>
       </td>
       <td>
         <button
-          className="btn btn-danger"
-          onClick={() => cancelSchedule(meeting._id)}
+          className='btn btn-danger'
+          onClick={() => cancelSchedule(meeting.meetingId, meeting._id)}
         >
           Cancel
         </button>
@@ -31,8 +31,8 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
   ));
   return (
     <Fragment>
-      <h4 className="text-left">Upcoming Meetings</h4>
-      <table className="table table-striped">
+      <h4 className='text-left'>Upcoming Meetings</h4>
+      <table className='table table-striped'>
         <thead>
           <tr>
             <th>Description</th>
