@@ -34,6 +34,10 @@ const MeetingSchema = new mongoose.Schema({
         type: Date,
         required: true,
       },
+      isCancelled: {
+        type: Boolean,
+        default: false,
+      },
     },
   ],
   firstRequirements: {

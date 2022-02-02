@@ -48,8 +48,6 @@ const Dashboard = ({
     }
   }
 
-  console.log(historyMeetings);
-
   return office === null || isSendingRequest ? (
     <div className="d-flex justify-content-center">
       <ClockLoader />

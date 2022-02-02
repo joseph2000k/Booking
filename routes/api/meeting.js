@@ -96,6 +96,18 @@ router.get("/schedules", auth, async (req, res) => {
   }
 });
 
+//@route   PUT api/meeting/schedules/:id
+//@desc    Cancel a schedule
+//@access  Private
+router.put("/cancelschedule/:id", auth, async (req, res) => {
+  try {
+    //find id in meeting.schedules array and change isCancelled to true
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 //@route GET api/meeting/upcoming
 //@desc Get all upcoming schedules for the current office
 //@access Private
