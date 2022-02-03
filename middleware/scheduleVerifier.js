@@ -1,6 +1,6 @@
-const Meeting = require('../models/Meeting');
-const Room = require('../models/Room');
-const mongoose = require('mongoose');
+const Meeting = require("../models/Meeting");
+const Room = require("../models/Room");
+const mongoose = require("mongoose");
 
 module.exports = async function (req, res, next) {
   const { room, start, end } = req.body;
@@ -8,37 +8,43 @@ module.exports = async function (req, res, next) {
   console.log(start, end);
 
   if (!roomName) {
-    return res.json({ msg: 'invalid room' });
+    return res.json({ msg: "invalid room" });
   }
 
   const meetingList = await Meeting.aggregate([
     { $match: { isSubmitted: true } },
-    { $unwind: '$schedules' },
+    { $unwind: "$schedules" },
     {
       $lookup: {
-        from: 'offices',
-        localField: 'office',
-        foreignField: '_id',
-        as: 'office',
+        from: "offices",
+        localField: "office",
+        foreignField: "_id",
+        as: "office",
       },
     },
 
     {
       $unwind: {
-        path: '$office',
+        path: "$office",
         preserveNullAndEmptyArrays: true,
       },
     },
     {
       $project: {
-        room: '$schedules.room',
-        title: '$office.officeName',
-        start: '$schedules.start',
-        end: '$schedules.end',
+        room: "$schedules.room",
+        title: "$office.officeName",
+        start: "$schedules.start",
+        end: "$schedules.end",
+        isCancelled: "$schedules.isCancelled",
         _id: 0,
       },
     },
-    { $match: { room: mongoose.Types.ObjectId(roomName.id) } },
+    {
+      $match: {
+        room: mongoose.Types.ObjectId(roomName.id),
+        isCancelled: false,
+      },
+    },
     { $project: { room: 0 } },
   ]);
 
