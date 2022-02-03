@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import ClockLoader from "react-spinners/ClockLoader";
 import Modal from "react-bootstrap/Modal";
+import { deleteMeeting } from "../../actions/meeting";
 
 const ForApproval = ({ meetings, loading, deleteMeeting }) => {
   const [show, setShow] = useState(false);
@@ -81,6 +82,7 @@ const ForApproval = ({ meetings, loading, deleteMeeting }) => {
 
 ForApproval.propTypes = {
   meetings: PropTypes.array.isRequired,
+  deleteMeeting: PropTypes.func.isRequired,
 };
 
-export default connect(null, null)(ForApproval);
+export default connect(null, { deleteMeeting })(ForApproval);
