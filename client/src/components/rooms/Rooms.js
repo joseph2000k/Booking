@@ -13,7 +13,7 @@ const Rooms = ({ getRooms, room: { rooms } }) => {
   const RoomItem = ({ room: { _id, name } }) => (
     <Link
       className='mx-4 shadow p-0 mb-5 bg-white rounded'
-      to={`/meeting/${_id}`}
+      to={`/rooms/${_id}`}
       style={{ textDecoration: 'none', color: 'black' }}
       variant='primary'
     >
