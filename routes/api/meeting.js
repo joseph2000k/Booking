@@ -134,6 +134,48 @@ router.put("/schedule/:meetingId/:id", auth, async (req, res) => {
   }
 });
 
+//@route  PUT api/meeting/:meetingId/:id
+//@desc   Replace start and end time in meeting schedule
+//@access Private
+
+router.put("/:meetingId/:id", [auth, scheduleVerifier], async (req, res) => {
+  try {
+    const meeting = await Meeting.findById(req.params.meetingId);
+
+    if (!meeting) {
+      return res.status(404).json({ msg: "Meeting not found" });
+    }
+
+    //check user
+    if (meeting.office.toString() !== req.office.id) {
+      return res.status(401).json({ msg: "User not Authorized" });
+    }
+
+    //check if meeting is approved
+    if (!meeting.isApproved && !meeting.isCancelled) {
+      return res.status(401).json({ msg: "Meeting not approved" });
+    }
+
+    const schedule = await meeting.schedules.find(
+      (item) => item._id == req.params.id
+    );
+
+    if (!schedule) {
+      return res.status(404).json({ msg: "Schedule not found" });
+    }
+
+    //update room, start and end time using verifiedSchedule
+    schedule.start = req.verifiedSchedule.start;
+    schedule.end = req.verifiedSchedule.end;
+    schedule.room = req.verifiedSchedule.room;
+
+    await meeting.save();
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 //@route GET api/meeting/upcoming
 //@desc Get all upcoming schedules for the current office
 //@access Private
