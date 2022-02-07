@@ -9,7 +9,6 @@ import { getRoomMeetings } from "../../actions/rooms";
 import { getRoom } from "../../actions/rooms";
 import TimePicker from "react-time-picker";
 import Moment from "react-moment";
-import { loadCurrentMeeting } from "../../actions/authmeeting";
 import { checkSchedule } from "../../actions/meeting";
 
 const MeetingRoomCalendar = ({
@@ -24,7 +23,6 @@ const MeetingRoomCalendar = ({
   dateOnChange,
   dateValue,
   checkSchedule,
-  loadCurrentMeeting,
   toggleValue,
   handleClose,
   meetings: { meetings, room },
@@ -32,8 +30,7 @@ const MeetingRoomCalendar = ({
   useEffect(() => {
     getRoom(roomId);
     getRoomMeetings(roomId);
-    loadCurrentMeeting();
-  }, [getRoom, getRoomMeetings, loadCurrentMeeting]);
+  }, [getRoom, getRoomMeetings]);
 
   const selectAllow = (e) => {
     if (e.end.getTime() / 1000 - e.start.getTime() / 1000 <= 86400) {
@@ -72,7 +69,6 @@ const MeetingRoomCalendar = ({
           className="btn btn-primary"
           onClick={() => {
             checkSchedule(schedule);
-            loadCurrentMeeting();
             {
               toggleValue(true);
             }
@@ -107,7 +103,6 @@ MeetingRoomCalendar.propTypes = {
   getRoomMeetings: PropTypes.func.isRequired,
   getRoom: PropTypes.func.isRequired,
   meetings: PropTypes.array.isRequired,
-  loadCurrentMeeting: PropTypes.func.isRequired,
   checkSchedule: PropTypes.func.isRequired,
 };
 
@@ -118,6 +113,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   getRoomMeetings,
   getRoom,
-  loadCurrentMeeting,
   checkSchedule,
 })(MeetingRoomCalendar);
