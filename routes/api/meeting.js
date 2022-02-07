@@ -138,9 +138,11 @@ router.put("/schedule/:meetingId/:id", auth, async (req, res) => {
 //@desc   Replace start and end time in meeting schedule
 //@access Private
 
-router.put("/:meetingId/:id", [auth, scheduleVerifier], async (req, res) => {
+router.put("/changeschedule", [auth, scheduleVerifier], async (req, res) => {
   try {
-    const meeting = await Meeting.findById(req.params.meetingId);
+    const { meetingId, scheduleId } = req.body;
+
+    const meeting = await Meeting.findById(meetingId);
 
     if (!meeting) {
       return res.status(404).json({ msg: "Meeting not found" });
@@ -157,7 +159,7 @@ router.put("/:meetingId/:id", [auth, scheduleVerifier], async (req, res) => {
     }
 
     const schedule = await meeting.schedules.find(
-      (item) => item._id == req.params.id
+      (item) => item._id == scheduleId
     );
 
     if (!schedule) {
