@@ -1,14 +1,14 @@
-import React, { Fragment, useState } from "react";
-import Moment from "react-moment";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import ClockLoader from "react-spinners/ClockLoader";
-import { cancelSchedule } from "../../actions/meeting";
-import Modal from "react-bootstrap/Modal";
-import MeetingRooms from "./MeetingRooms";
-import RoomCalendar from "./RoomCalendar";
-import useToggle from "../../utils/useToggle";
-import moment from "moment";
+import React, { Fragment, useState } from 'react';
+import Moment from 'react-moment';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import ClockLoader from 'react-spinners/ClockLoader';
+import { cancelSchedule } from '../../actions/meeting';
+import Modal from 'react-bootstrap/Modal';
+import MeetingRooms from './MeetingRooms';
+import RoomCalendar from './RoomCalendar';
+import useToggle from '../../utils/useToggle';
+import moment from 'moment';
 
 const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
   const [roomId, setRoomId] = useState(null);
@@ -40,11 +40,11 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
   };
 
   //for RoomCalendar
-  const [dateValue, dateOnChange] = useState("");
-  const [start, startOnChange] = useState("08:00");
-  const [end, endOnChange] = useState("17:00");
-  const startDate = moment(dateValue + " " + start, "YYYY-MM-DD HH:mm");
-  const endDate = moment(dateValue + " " + end, "YYYY-MM-DD HH:mm");
+  const [dateValue, dateOnChange] = useState('');
+  const [start, startOnChange] = useState('08:00');
+  const [end, endOnChange] = useState('17:00');
+  const startDate = moment(dateValue + ' ' + start, 'YYYY-MM-DD HH:mm');
+  const endDate = moment(dateValue + ' ' + end, 'YYYY-MM-DD HH:mm');
   const handleCloseCalendar = (e) => setLgShow(false);
 
   const hideModal = () => {
@@ -59,25 +59,30 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
       <td>{meeting.description}</td>
       <td>{meeting.room}</td>
       <td>
-        <Moment format="h:mm a">{meeting.start}</Moment>
+        <Moment format='h:mm a'>{meeting.start}</Moment>
       </td>
       <td>
-        <Moment format="h:mm a">{meeting.end}</Moment>
+        <Moment format='h:mm a'>{meeting.end}</Moment>
       </td>
       <td>
-        <Moment format="MMMM Do YYYY, dddd">{meeting.start}</Moment>
+        <Moment format='MMMM Do YYYY, dddd'>{meeting.start}</Moment>
       </td>
       <td>
-        <button className="btn btn-primary" onClick={() => setLgShow(true)}>
-          Reschedule
-        </button>
+        <div className='d-flex justify-content-end'>
+          <button
+            className='btn btn-primary mx-1'
+            onClick={() => setLgShow(true)}
+          >
+            Reschedule
+          </button>
 
-        <button
-          className="btn btn-danger"
-          onClick={() => handleCancelClick(meeting.meetingId, meeting._id)}
-        >
-          Cancel
-        </button>
+          <button
+            className='btn btn-danger mx-1'
+            onClick={() => handleCancelClick(meeting.meetingId, meeting._id)}
+          >
+            Cancel
+          </button>
+        </div>
       </td>
     </tr>
   ));
@@ -103,8 +108,8 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
 
   return (
     <Fragment>
-      <h4 className="text-left">Upcoming Meetings</h4>
-      <table className="table table-striped">
+      <h4 className='text-left'>Upcoming Meetings</h4>
+      <table className='table table-striped'>
         <thead>
           <tr>
             <th>Description</th>
@@ -120,7 +125,7 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
       <Modal
         show={show}
         onHide={handleClose}
-        backdrop="static"
+        backdrop='static'
         keyboard={false}
       >
         <Modal.Header closeButton>
@@ -130,36 +135,36 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
           <p>Are you sure you want to Cancel this Schedule?</p>
         </Modal.Body>
         <Modal.Footer>
-          <button className="btn btn-secondary" onClick={handleClose}>
+          <button className='btn btn-secondary' onClick={handleClose}>
             No
           </button>
-          <button className="btn btn-danger" onClick={handleCancel}>
+          <button className='btn btn-danger' onClick={handleCancel}>
             Yes, Cancel
           </button>
         </Modal.Footer>
       </Modal>
 
       <Modal
-        size="sm"
+        size='sm'
         show={smShow}
         onHide={() => setSmShow(false)}
-        aria-labelledby="example-modal-sizes-title-sm"
+        aria-labelledby='example-modal-sizes-title-sm'
       >
         <Modal.Header closeButton>
-          <Modal.Title id="example-modal-sizes-title-sm">
+          <Modal.Title id='example-modal-sizes-title-sm'>
             Small Modal
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>...</Modal.Body>
       </Modal>
       <Modal
-        size="lg"
+        size='lg'
         show={lgShow}
         onHide={hideModal}
-        aria-labelledby="example-modal-sizes-title-lg"
+        aria-labelledby='example-modal-sizes-title-lg'
       >
         <Modal.Header closeButton>
-          <Modal.Title id="example-modal-sizes-title-lg">
+          <Modal.Title id='example-modal-sizes-title-lg'>
             Change Schedule &nbsp; &nbsp;
           </Modal.Title>
         </Modal.Header>
