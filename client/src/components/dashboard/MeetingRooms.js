@@ -5,12 +5,10 @@ import PropTypes from "prop-types";
 import { Card } from "react-bootstrap";
 import { getRooms } from "../../actions/rooms";
 
-const MeetingRoomItem = ({ getRooms, toggleValue, rooms }) => {
+const MeetingRoomItem = ({ getRooms, toggleValue, rooms, setRoomId }) => {
   useEffect(() => {
     getRooms();
   }, [getRooms]);
-
-  const [roomId, setRoomId] = useState(null);
 
   return (
     <div className="mx-4 d-flex justify-content-center">
@@ -30,6 +28,8 @@ const MeetingRoomItem = ({ getRooms, toggleValue, rooms }) => {
                 className="btn btn-primary"
                 onClick={(e) => {
                   e.preventDefault();
+                  getRoom(room._id);
+                  getRoomMeetings(room._id);
                   setRoomId(room._id);
                   {
                     toggleValue(false);

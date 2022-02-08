@@ -11,7 +11,7 @@ import useToggle from "../../utils/useToggle";
 import moment from "moment";
 
 const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
-  const [roomId, setRoomId] = useState(null);
+  const [roomId, setRoomId] = useState("");
 
   //toggle for modal
   const [value, toggleValue] = useToggle(true);
@@ -165,7 +165,7 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
       >
         <Modal.Header closeButton>
           <Modal.Title id="example-modal-sizes-title-lg">
-            Change Schedule &nbsp; &nbsp;
+            Change Schedule
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>{value ? meetingRooms : roomCalendar}</Modal.Body>
