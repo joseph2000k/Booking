@@ -10,6 +10,7 @@ import { getRoom } from "../../actions/rooms";
 import TimePicker from "react-time-picker";
 import Moment from "react-moment";
 import { checkSchedule } from "../../actions/meeting";
+import { rescheduleMeeting } from "../../actions/meeting";
 
 const MeetingRoomCalendar = ({
   getRoom,
@@ -22,7 +23,7 @@ const MeetingRoomCalendar = ({
   endOnChange,
   dateOnChange,
   dateValue,
-  checkSchedule,
+  rescheduleMeeting,
   toggleValue,
   handleCloseCalendar,
   meetings: { meetings, room },
@@ -36,6 +37,12 @@ const MeetingRoomCalendar = ({
     if (e.end.getTime() / 1000 - e.start.getTime() / 1000 <= 86400) {
       return true;
     }
+  };
+
+  const handleConfirmClick = () => {
+    rescheduleMeeting(schedule);
+    toggleValue(true);
+    handleCloseCalendar();
   };
 
   return (
@@ -65,20 +72,11 @@ const MeetingRoomCalendar = ({
         ) : (
           <Moment format="MM-DD-YYYY">{dateValue}</Moment>
         )}
-        <button
-          className="btn btn-primary"
-          onClick={() => {
-            checkSchedule(schedule);
-            {
-              toggleValue(true);
-            }
-            handleCloseCalendar();
-          }}
-        >
+        <button className="btn btn-primary" onClick={handleConfirmClick}>
           Confirm
         </button>
       </div>
-      <h1 className="h-title">{room.name}</h1>
+      <h2 className="h-title">{room.name}</h2>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin, bootstrapPlugin]}
         weekends={false}
@@ -104,6 +102,7 @@ MeetingRoomCalendar.propTypes = {
   getRoom: PropTypes.func.isRequired,
   meetings: PropTypes.array.isRequired,
   checkSchedule: PropTypes.func.isRequired,
+  rescheduleMeeting: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -114,4 +113,5 @@ export default connect(mapStateToProps, {
   getRoomMeetings,
   getRoom,
   checkSchedule,
+  rescheduleMeeting,
 })(MeetingRoomCalendar);

@@ -138,7 +138,7 @@ router.put("/schedule/:meetingId/:id", auth, async (req, res) => {
 //@desc   Replace start and end time in meeting schedule
 //@access Private
 
-router.put("/changeschedule", [auth, scheduleVerifier], async (req, res) => {
+router.put("/reschedule", [auth, scheduleVerifier], async (req, res) => {
   try {
     const { meetingId, scheduleId } = req.body;
 
@@ -159,7 +159,7 @@ router.put("/changeschedule", [auth, scheduleVerifier], async (req, res) => {
     }
 
     const schedule = await meeting.schedules.find(
-      (item) => item._id == scheduleId
+      (item) => item._id.toString() === scheduleId
     );
 
     if (!schedule) {
@@ -172,6 +172,8 @@ router.put("/changeschedule", [auth, scheduleVerifier], async (req, res) => {
     schedule.room = req.verifiedSchedule.room;
 
     await meeting.save();
+
+    return res.json({ msg: "Schedule updated" });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");

@@ -28,6 +28,9 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
   const [cancelMeetingId, setCancelMeetingId] = useState(null);
   const [cancelScheduleId, setCancelScheduleId] = useState(null);
 
+  const [meetingId, setMeetingId] = useState(null);
+  const [scheduleId, setScheduleId] = useState(null);
+
   const handleCancel = () => {
     cancelSchedule(cancelMeetingId, cancelScheduleId);
     handleClose();
@@ -53,6 +56,20 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
     }
   };
 
+  const handleRescheduleClick = (meetingId, scheduleId) => {
+    setLgShow(true);
+    setMeetingId(meetingId);
+    setScheduleId(scheduleId);
+  };
+
+  const schedule = {
+    start: startDate,
+    end: endDate,
+    room: roomId,
+    meetingId: meetingId,
+    scheduleId: scheduleId,
+  };
+
   const allMeetings = upcoming.map((meeting) => (
     <tr key={meeting._id}>
       <td>{meeting.description}</td>
@@ -70,9 +87,11 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
         <div className="d-flex justify-content-end">
           <button
             className="btn btn-primary mx-1"
-            onClick={() => setLgShow(true)}
+            onClick={() =>
+              handleRescheduleClick(meeting.meetingId, meeting._id)
+            }
           >
-            Reschedule
+            Rechedule
           </button>
 
           <button
@@ -96,6 +115,8 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
       endDate={endDate}
       roomId={roomId}
       start={start}
+      toggleValue={toggleValue}
+      schedule={schedule}
       end={end}
       handleCloseCalendar={handleCloseCalendar}
     />
