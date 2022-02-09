@@ -128,7 +128,7 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
 
   return (
     <Fragment>
-      <h4 className="text-left">Upcoming Meetings</h4>
+      <h4 className="text-left">Upcoming Schedules</h4>
       <table className="table table-striped">
         <thead>
           <tr>
