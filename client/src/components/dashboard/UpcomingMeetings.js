@@ -50,6 +50,17 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
   const endDate = moment(dateValue + " " + end, "YYYY-MM-DD HH:mm");
   const handleCloseCalendar = (e) => setLgShow(false);
 
+  const displayDate = (dateValue) => {
+    if (dateValue === "") {
+      return "Please select a date";
+    }
+    if (dateValue < moment().format("YYYY-MM-DD")) {
+      return "Please select future date";
+    } else {
+      return dateValue;
+    }
+  };
+
   const hideModal = () => {
     {
       toggleValue(true);
@@ -107,7 +118,7 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
 
   const roomCalendar = (
     <RoomCalendar
-      dateValue={dateValue}
+      dateValue={displayDate(dateValue)}
       startOnChange={startOnChange}
       endOnChange={endOnChange}
       dateOnChange={dateOnChange}

@@ -76,12 +76,7 @@ const MeetingRoomCalendar = ({
           onChange={endOnChange}
           value={end}
         />
-        Date:{" "}
-        {dateValue === "" ? (
-          " Please select a date below"
-        ) : (
-          <Moment format="MM-DD-YYYY">{dateValue}</Moment>
-        )}
+        Date: {dateValue}
         <button className="btn btn-primary" onClick={handleConfirmClick}>
           Confirm
         </button>
