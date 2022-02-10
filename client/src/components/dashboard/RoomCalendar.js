@@ -11,6 +11,7 @@ import TimePicker from "react-time-picker";
 import Moment from "react-moment";
 import { checkSchedule } from "../../actions/meeting";
 import { rescheduleMeeting } from "../../actions/meeting";
+import moment from "moment";
 
 const MeetingRoomCalendar = ({
   getRoom,
@@ -44,6 +45,15 @@ const MeetingRoomCalendar = ({
     toggleValue(true);
     handleCloseCalendar();
   };
+
+  const pastDates = {
+    start: "1970-01-01",
+    end: moment().format("YYYY-MM-DD"),
+    display: "background",
+    color: "#E8E8E8",
+  };
+
+  meetings.push(pastDates);
 
   return (
     <div>
