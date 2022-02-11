@@ -1,6 +1,7 @@
-const Meeting = require("../models/Meeting");
-const Room = require("../models/Room");
-const mongoose = require("mongoose");
+const Meeting = require('../models/Meeting');
+const Room = require('../models/Room');
+const mongoose = require('mongoose');
+const moment = require('moment');
 
 module.exports = async function (req, res, next) {
   const { room, start, end } = req.body;
@@ -8,34 +9,39 @@ module.exports = async function (req, res, next) {
   console.log(start, end);
 
   if (!roomName) {
-    return res.json({ msg: "invalid room" });
+    return res.json({ msg: 'invalid room' });
+  }
+
+  //if start is past or end is past return error
+  if (moment(start) < moment() || moment(end) < moment()) {
+    return res.status(403).json({ errors: [{ msg: 'invalid time' }] });
   }
 
   const meetingList = await Meeting.aggregate([
     { $match: { isSubmitted: true } },
-    { $unwind: "$schedules" },
+    { $unwind: '$schedules' },
     {
       $lookup: {
-        from: "offices",
-        localField: "office",
-        foreignField: "_id",
-        as: "office",
+        from: 'offices',
+        localField: 'office',
+        foreignField: '_id',
+        as: 'office',
       },
     },
 
     {
       $unwind: {
-        path: "$office",
+        path: '$office',
         preserveNullAndEmptyArrays: true,
       },
     },
     {
       $project: {
-        room: "$schedules.room",
-        title: "$office.officeName",
-        start: "$schedules.start",
-        end: "$schedules.end",
-        isCancelled: "$schedules.isCancelled",
+        room: '$schedules.room',
+        title: '$office.officeName',
+        start: '$schedules.start',
+        end: '$schedules.end',
+        isCancelled: '$schedules.isCancelled',
         _id: 0,
       },
     },
