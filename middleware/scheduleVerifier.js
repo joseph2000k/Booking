@@ -12,11 +12,6 @@ module.exports = async function (req, res, next) {
     return res.json({ msg: 'invalid room' });
   }
 
-  //if start is past or end is past return error
-  if (moment(start) < moment() || moment(end) < moment()) {
-    return res.status(403).json({ errors: [{ msg: 'invalid time' }] });
-  }
-
   const meetingList = await Meeting.aggregate([
     { $match: { isSubmitted: true } },
     { $unwind: '$schedules' },
@@ -70,8 +65,15 @@ module.exports = async function (req, res, next) {
   };
   if (schedule) {
     return res.status(406).json({
-      msg: `Please check overlapping dates`,
+      errors: [
+        {
+          msg: `Please check overlapping dates`,
+        },
+      ],
     });
+  } //if start is past or end is past return error
+  if (moment(start).isBefore(moment()) || moment(end).isBefore(moment())) {
+    return res.status(403).json({ errors: [{ msg: 'invalid time' }] });
   } else {
     req.verifiedSchedule = newSchedule;
     next();
