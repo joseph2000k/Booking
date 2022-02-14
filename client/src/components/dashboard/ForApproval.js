@@ -1,10 +1,10 @@
-import React, { Fragment, useState } from 'react';
-import Moment from 'react-moment';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import ClockLoader from 'react-spinners/ClockLoader';
-import Modal from 'react-bootstrap/Modal';
-import { deleteMeeting } from '../../actions/meeting';
+import React, { Fragment, useState } from "react";
+import Moment from "react-moment";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import ClockLoader from "react-spinners/ClockLoader";
+import Modal from "react-bootstrap/Modal";
+import { deleteMeeting } from "../../actions/meeting";
 
 const ForApproval = ({ meetings, loading, deleteMeeting }) => {
   const [show, setShow] = useState(false);
@@ -29,12 +29,12 @@ const ForApproval = ({ meetings, loading, deleteMeeting }) => {
       <td>{meeting.description}</td>
       <td>{meeting.contactName}</td>
       <td>
-        <Moment format='YYYY/MM/DD h:mm A'>{meeting.dateCreated}</Moment>
+        <Moment format="YYYY/MM/DD h:mm A">{meeting.dateCreated}</Moment>
       </td>
       <td>
-        <div className='d-flex justify-content-end'>
+        <div className="d-flex justify-content-end">
           <button
-            className='btn btn-danger mx-1'
+            className="btn btn-danger mx-1"
             onClick={() => handleDeleteClick(meeting._id)}
           >
             Delete
@@ -45,8 +45,8 @@ const ForApproval = ({ meetings, loading, deleteMeeting }) => {
   ));
   return (
     <Fragment>
-      <h4 className='text-left'>For Approval</h4>
-      <table className='table table-striped'>
+      <h4 className="text-left">Waiting For Approval of Admin</h4>
+      <table className="table table-striped">
         <thead>
           <tr>
             <th>Description</th>
@@ -60,7 +60,7 @@ const ForApproval = ({ meetings, loading, deleteMeeting }) => {
       <Modal
         show={show}
         onHide={handleClose}
-        backdrop='static'
+        backdrop="static"
         keyboard={false}
       >
         <Modal.Header closeButton>
@@ -70,10 +70,10 @@ const ForApproval = ({ meetings, loading, deleteMeeting }) => {
           <p>Are you sure you want to delete this meeting?</p>
         </Modal.Body>
         <Modal.Footer>
-          <button className='btn btn-secondary' onClick={handleClose}>
+          <button className="btn btn-secondary" onClick={handleClose}>
             Close
           </button>
-          <button className='btn btn-danger' onClick={handleDelete}>
+          <button className="btn btn-danger" onClick={handleDelete}>
             Delete
           </button>
         </Modal.Footer>
