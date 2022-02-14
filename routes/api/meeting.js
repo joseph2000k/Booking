@@ -552,7 +552,7 @@ router.get("/forapproval/", auth, async (req, res) => {
 //@route    PUT api/meeting/approval/:id
 //@desc     approve a meeting
 //@access   Private/admin
-router.put("/approval/:roomId/:meetingId", authAdmin, async (req, res) => {
+/* router.put("/approval/:roomId/:meetingId", authAdmin, async (req, res) => {
   try {
     //Check user
     const roomCheck = await Room.findById(req.params.roomId);
@@ -595,7 +595,7 @@ router.put("/approval/:roomId/:meetingId", authAdmin, async (req, res) => {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
-});
+}); */
 
 //@route    PUT api/meeting/approval/:id
 //@desc     TEST ROUTE approve a meeting
@@ -769,6 +769,107 @@ router.post("/submit/", [auth], async (req, res) => {
 router.post("/checkschedule/", [auth, scheduleVerifier], async (req, res) => {
   try {
     res.json(req.verifiedSchedule);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+//@route GET  api/adminforapproval/
+//@desc     get all meetings for approval
+//@access   Private/admin
+router.get("/adminforapproval/", [auth], async (req, res) => {
+  try {
+    const office = await Office.findById(req.office.id);
+
+    if (office.role !== "admin" && office.role !== "manager") {
+      return res.status(401).json({ msg: "Unauthorized" });
+    }
+
+    const rooms = office.rooms;
+
+    const meetingList = await Meeting.aggregate([
+      { $match: { isSubmitted: true, isApproved: false } },
+      { $unwind: "$schedules" },
+      {
+        $lookup: {
+          from: "offices",
+          localField: "office",
+          foreignField: "_id",
+          as: "office",
+        },
+      },
+
+      {
+        $unwind: {
+          path: "$office",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $project: {
+          isApproved: 1,
+          room: "$schedules.room",
+          meetingId: "$_id",
+          isCancelled: "$schedules.isCancelled",
+          title: "$office.officeName",
+          contactName: 1,
+          dateCreated: 1,
+          description: 1,
+          _id: 0,
+        },
+      },
+    ]);
+
+    let forApprovals = [];
+    for (let i = 0; i < meetingList.length; i++) {
+      var room = rooms.find(
+        (item) => item.toString() === meetingList[i].room.toString()
+      );
+      if (
+        room &&
+        !forApprovals.find(
+          (item) =>
+            item.meetingId.toString() === meetingList[i].meetingId.toString()
+        )
+      ) {
+        forApprovals.push(meetingList[i]);
+      }
+    }
+
+    console.log(forApprovals);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+//@route PUT /approval/:meetingId
+//@desc     approve meeting
+//@access   Private/admin
+router.put("/approval/:meetingId", [auth], async (req, res) => {
+  try {
+    const office = await Office.findById(req.office.id);
+
+    if (office.role !== "admin" && office.role !== "manager") {
+      return res.status(401).json({ msg: "Unauthorized" });
+    }
+
+    const meeting = await Meeting.findById(req.params.meetingId);
+
+    if (!meeting) {
+      return res.status(404).json({ msg: "Meeting not found" });
+    }
+
+    if (meeting.isApproved) {
+      return res.status(409).json({ msg: "Meeting has already been approved" });
+    }
+
+    meeting.isApproved = true;
+
+    await meeting.save();
+
+    res.json("Meeting has been approved");
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");

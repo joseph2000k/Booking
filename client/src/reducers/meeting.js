@@ -9,14 +9,14 @@ import {
   MEETING_HISTORY,
   CLEAR_GET_TO_SUBMIT_MEETINGS,
   GET_UPCOMING_MEETINGS,
-} from '../actions/types';
+} from "../actions/types";
 
 const initialState = {
   meeting: null,
   meetings: [],
   schedules: [],
-  history: [],
-  upcoming: [],
+  //history: [],
+  //upcoming: [],
   toSubmit: [],
   loading: true,
   error: {},
@@ -51,7 +51,7 @@ export default function meetingReducer(state = initialState, action) {
         toSubmit: [payload, ...state.toSubmit],
         loading: false,
       };
-    case MEETING_HISTORY:
+    /*  case MEETING_HISTORY:
       return {
         ...state,
         history: payload,
@@ -62,7 +62,7 @@ export default function meetingReducer(state = initialState, action) {
         ...state,
         upcoming: payload,
         loading: false,
-      };
+      }; */
 
     case DELETE_SCHEDULE:
       return {

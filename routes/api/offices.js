@@ -1,21 +1,22 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const config = require('config');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { check, validationResult } = require('express-validator');
+const config = require("config");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { check, validationResult } = require("express-validator");
 
-const Office = require('../../models/Office');
+const Office = require("../../models/Office");
 //@route    POST api/offices
 //@desc     Register office
 //@access   Public
 router.post(
-  '/',
+  "/",
   [
-    check('officeName', 'Office Name is required').not().isEmpty(),
+    check("officeName", "Office Name is required").not().isEmpty(),
+    check("role", "Role is required").not().isEmpty(),
     check(
-      'password',
-      'Please enter a password with 6 or more characters'
+      "password",
+      "Please enter a password with 6 or more characters"
     ).isLength({ min: 6 }),
   ],
   async (req, res) => {
@@ -24,7 +25,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { officeName, password } = req.body;
+    const { officeName, password, role, rooms } = req.body;
 
     try {
       let office = await Office.findOne({ officeName });
@@ -32,12 +33,14 @@ router.post(
       if (office) {
         return res
           .status(400)
-          .json({ errors: [{ msg: 'Office already exists' }] });
+          .json({ errors: [{ msg: "Office already exists" }] });
       }
 
       office = new Office({
         officeName,
         password,
+        role,
+        rooms,
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -54,7 +57,7 @@ router.post(
 
       jwt.sign(
         payload,
-        config.get('jwtSecret'),
+        config.get("jwtSecret"),
         { expiresIn: 360000 },
         (err, token) => {
           if (err) throw err;
@@ -63,7 +66,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server Error');
+      res.status(500).send("Server Error");
     }
   }
 );
