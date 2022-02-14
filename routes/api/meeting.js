@@ -1,52 +1,52 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const { check, validationResult } = require("express-validator");
-const Meeting = require("../../models/Meeting");
-const OfficeProfile = require("../../models/OfficeProfile");
-const auth = require("../../middleware/auth");
-const Office = require("../../models/Office");
-const Room = require("../../models/Room");
-const authAdmin = require("../../middleware/authAdmin");
-const authMeeting = require("../../middleware/authMeeting");
-const Schedule = require("../../models/Schedule");
-var ObjectId = require("mongodb").ObjectId;
-const jwt = require("jsonwebtoken");
-const config = require("config");
-const mongoose = require("mongoose");
-const scheduleVerifier = require("../../middleware/scheduleVerifier");
-const moment = require("moment");
+const { check, validationResult } = require('express-validator');
+const Meeting = require('../../models/Meeting');
+const OfficeProfile = require('../../models/OfficeProfile');
+const auth = require('../../middleware/auth');
+const Office = require('../../models/Office');
+const Room = require('../../models/Room');
+const authAdmin = require('../../middleware/authAdmin');
+const authMeeting = require('../../middleware/authMeeting');
+const Schedule = require('../../models/Schedule');
+var ObjectId = require('mongodb').ObjectId;
+const jwt = require('jsonwebtoken');
+const config = require('config');
+const mongoose = require('mongoose');
+const scheduleVerifier = require('../../middleware/scheduleVerifier');
+const moment = require('moment');
 
 //@route    GET api/meeting/
 //@desc     Get all past meetings for the current office
 //@access   Private
-router.get("/", auth, async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const meetings = await Meeting.find({ office: req.office.id }).sort({
       dateCreated: -1,
     });
 
     if (meetings.length < 1) {
-      return res.status(404).json({ msg: "No meeting found" });
+      return res.status(404).json({ msg: 'No meeting found' });
     }
     const meeting = meetings.filter(
       (item) => item.office.toString() === req.office.id
     );
 
     if (!meeting) {
-      return res.status(401).json({ msg: "User not Authorized" });
+      return res.status(401).json({ msg: 'User not Authorized' });
     }
 
     res.json(meeting);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
 //@route GET api/meeting/schedules
 //@desc Get all schedules for the current office
 //@access Private
-router.get("/schedules", auth, async (req, res) => {
+router.get('/schedules', auth, async (req, res) => {
   try {
     const meetings = await Meeting.aggregate([
       {
@@ -55,63 +55,63 @@ router.get("/schedules", auth, async (req, res) => {
           //isApproved: true,
         },
       },
-      { $unwind: "$schedules" },
+      { $unwind: '$schedules' },
 
       {
         $lookup: {
-          from: "rooms",
-          localField: "schedules.room",
-          foreignField: "_id",
-          as: "schedules.room",
+          from: 'rooms',
+          localField: 'schedules.room',
+          foreignField: '_id',
+          as: 'schedules.room',
         },
       },
 
       {
         $unwind: {
-          path: "$schedules.room",
+          path: '$schedules.room',
           preserveNullAndEmptyArrays: true,
         },
       },
 
       {
         $project: {
-          _id: "$schedules._id",
-          meetingId: "$_id",
-          isApproved: "$isApproved",
-          isCancelled: "$schedules.isCancelled",
-          start: "$schedules.start",
-          end: "$schedules.end",
-          room: "$schedules.room.name",
-          description: "$description",
+          _id: '$schedules._id',
+          meetingId: '$_id',
+          isApproved: '$isApproved',
+          isCancelled: '$schedules.isCancelled',
+          start: '$schedules.start',
+          end: '$schedules.end',
+          room: '$schedules.room.name',
+          description: '$description',
         },
       },
     ]);
 
     if (meetings.length < 1) {
-      return res.status(404).json({ msg: "No meeting found" });
+      return res.status(404).json({ msg: 'No meeting found' });
     }
 
     res.json(meetings);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
 //@route   PUT api/meeting/schedules/:id
 //@desc    Cancel a schedule
 //@access  Private
-router.put("/schedule/:meetingId/:id", auth, async (req, res) => {
+router.put('/schedule/:meetingId/:id', auth, async (req, res) => {
   try {
     const meeting = await Meeting.findById(req.params.meetingId);
 
     if (!meeting) {
-      return res.status(404).json({ msg: "Meeting not found" });
+      return res.status(404).json({ msg: 'Meeting not found' });
     }
 
     //check user
     if (meeting.office.toString() !== req.office.id) {
-      return res.status(401).json({ msg: "User not Authorized" });
+      return res.status(401).json({ msg: 'User not Authorized' });
     }
 
     //set schedule isCancelled to true
@@ -120,17 +120,17 @@ router.put("/schedule/:meetingId/:id", auth, async (req, res) => {
     );
 
     if (!schedule) {
-      return res.status(404).json({ msg: "Schedule not found" });
+      return res.status(404).json({ msg: 'Schedule not found' });
     }
 
     schedule.isCancelled = true;
 
     await meeting.save();
 
-    return res.json({ msg: "Schedule cancelled" });
+    return res.json({ msg: 'Schedule cancelled' });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
@@ -138,24 +138,24 @@ router.put("/schedule/:meetingId/:id", auth, async (req, res) => {
 //@desc   Replace start and end time in meeting schedule
 //@access Private
 
-router.put("/reschedule", [auth, scheduleVerifier], async (req, res) => {
+router.put('/reschedule', [auth, scheduleVerifier], async (req, res) => {
   try {
     const { meetingId, scheduleId } = req.body;
 
     const meeting = await Meeting.findById(meetingId);
 
     if (!meeting) {
-      return res.status(404).json({ msg: "Meeting not found" });
+      return res.status(404).json({ msg: 'Meeting not found' });
     }
 
     //check user
     if (meeting.office.toString() !== req.office.id) {
-      return res.status(401).json({ msg: "User not Authorized" });
+      return res.status(401).json({ msg: 'User not Authorized' });
     }
 
     //check if meeting is approved
     if (!meeting.isApproved && !meeting.isCancelled) {
-      return res.status(401).json({ msg: "Meeting not approved" });
+      return res.status(401).json({ msg: 'Meeting not approved' });
     }
 
     const schedule = await meeting.schedules.find(
@@ -163,7 +163,7 @@ router.put("/reschedule", [auth, scheduleVerifier], async (req, res) => {
     );
 
     if (!schedule) {
-      return res.status(404).json({ msg: "Schedule not found" });
+      return res.status(404).json({ msg: 'Schedule not found' });
     }
 
     //update room, start and end time using verifiedSchedule
@@ -173,17 +173,17 @@ router.put("/reschedule", [auth, scheduleVerifier], async (req, res) => {
 
     await meeting.save();
 
-    return res.json({ msg: "Schedule updated" });
+    return res.json({ msg: 'Schedule updated' });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
 //@route GET api/meeting/upcoming
 //@desc Get all upcoming schedules for the current office
 //@access Private
-router.get("/upcoming", auth, async (req, res) => {
+router.get('/upcoming', auth, async (req, res) => {
   try {
     const meetings = await Meeting.aggregate([
       {
@@ -192,43 +192,43 @@ router.get("/upcoming", auth, async (req, res) => {
           isApproved: true,
         },
       },
-      { $unwind: "$schedules" },
+      { $unwind: '$schedules' },
 
       {
         $lookup: {
-          from: "rooms",
-          localField: "schedules.room",
-          foreignField: "_id",
-          as: "schedules.room",
+          from: 'rooms',
+          localField: 'schedules.room',
+          foreignField: '_id',
+          as: 'schedules.room',
         },
       },
 
       {
         $unwind: {
-          path: "$schedules.room",
+          path: '$schedules.room',
           preserveNullAndEmptyArrays: true,
         },
       },
 
       {
         $project: {
-          _id: "$schedules._id",
+          _id: '$schedules._id',
           start: {
             $cond: {
-              if: { $lt: ["$schedules.start", new Date()] },
-              then: "$$REMOVE",
-              else: "$schedules.start",
+              if: { $lt: ['$schedules.start', new Date()] },
+              then: '$$REMOVE',
+              else: '$schedules.start',
             },
           },
-          end: "$schedules.end",
-          room: "$schedules.room.name",
-          description: "$description",
+          end: '$schedules.end',
+          room: '$schedules.room.name',
+          description: '$description',
         },
       },
     ]);
 
     if (meetings.length < 1) {
-      return res.status(404).json({ msg: "No meeting found" });
+      return res.status(404).json({ msg: 'No meeting found' });
     }
 
     res.json(meetings);
@@ -246,59 +246,59 @@ router.get("/upcoming", auth, async (req, res) => {
     res.json(schedules); */
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
 //@route    GET api/meeting/office/:meetingId
 //@desc     get meeting by Id
 //@access   Private
-router.get("/office/:meetingId", auth, async (req, res) => {
+router.get('/office/:meetingId', auth, async (req, res) => {
   try {
     const meeting = await Meeting.findById(req.params.meetingId);
 
     if (!meeting) {
-      return res.status(404).json({ msg: "Meeting not found" });
+      return res.status(404).json({ msg: 'Meeting not found' });
     }
 
     res.json(meeting);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("server Error");
+    res.status(500).send('server Error');
   }
 });
 
 //@route    GET api/meeting/rooms/:roomId
 //@desc     view all meetings in a room
 //@access   Public
-router.get("/rooms/:roomId", async (req, res) => {
+router.get('/rooms/:roomId', async (req, res) => {
   try {
     const meetingList = await Meeting.aggregate([
       { $match: { isSubmitted: true } },
-      { $unwind: "$schedules" },
+      { $unwind: '$schedules' },
       {
         $lookup: {
-          from: "offices",
-          localField: "office",
-          foreignField: "_id",
-          as: "office",
+          from: 'offices',
+          localField: 'office',
+          foreignField: '_id',
+          as: 'office',
         },
       },
 
       {
         $unwind: {
-          path: "$office",
+          path: '$office',
           preserveNullAndEmptyArrays: true,
         },
       },
       {
         $project: {
           isApproved: 1,
-          room: "$schedules.room",
-          isCancelled: "$schedules.isCancelled",
-          title: "$office.officeName",
-          start: "$schedules.start",
-          end: "$schedules.end",
+          room: '$schedules.room',
+          isCancelled: '$schedules.isCancelled',
+          title: '$office.officeName',
+          start: '$schedules.start',
+          end: '$schedules.end',
           description: 1,
           _id: 0,
         },
@@ -311,14 +311,14 @@ router.get("/rooms/:roomId", async (req, res) => {
 
     const meetings = meetingList.map((item) => {
       if (item.isApproved === false) {
-        item.title = "Waiting for Approval";
-        item.description = "Reserved (Waiting for Approval)";
+        item.title = 'Waiting for Approval';
+        item.description = 'Reserved (Waiting for Approval)';
       } else {
         item.description +=
-          " on " +
-          moment(item.start).format("MMMM DD YYYY , [From] h:mm a") +
-          " - " +
-          moment(item.end).format("h:mm a");
+          ' on ' +
+          moment(item.start).format('MMMM DD YYYY , [From] h:mm a') +
+          ' - ' +
+          moment(item.end).format('h:mm a');
       }
       return item;
     });
@@ -326,14 +326,14 @@ router.get("/rooms/:roomId", async (req, res) => {
     res.json(meetings);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
 //@route    GET api/meeting/schedule/
 //@desc     Schedule a meeting
 //@access   Private
-router.post("/schedule", [auth, authMeeting], async (req, res) => {
+router.post('/schedule', [auth, authMeeting], async (req, res) => {
   try {
     const { specialInstructions, first, second } = req.body;
 
@@ -360,7 +360,7 @@ router.post("/schedule", [auth, authMeeting], async (req, res) => {
 
       jwt.sign(
         payload,
-        config.get("jwtSecretMeeting"),
+        config.get('jwtSecretMeeting'),
         { expiresIn: 360000 },
         (err, meetingToken) => {
           if (err) throw err;
@@ -389,7 +389,7 @@ router.post("/schedule", [auth, authMeeting], async (req, res) => {
 
       jwt.sign(
         payload,
-        config.get("jwtSecretMeeting"),
+        config.get('jwtSecretMeeting'),
         { expiresIn: 360000 },
         (err, meetingToken) => {
           if (err) throw err;
@@ -399,49 +399,49 @@ router.post("/schedule", [auth, authMeeting], async (req, res) => {
     }
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 //@route    PUT
 //@desc     add schedule to the meeting
 //@access   Private
-router.put("/schedule/:meetingId", auth, async (req, res) => {
+router.put('/schedule/:meetingId', auth, async (req, res) => {
   try {
     const meeting = await Meeting.findById(req.params.meetingId);
 
     if (!meeting) {
-      console.log("meeting not found");
+      console.log('meeting not found');
     }
     const { room, start, end } = req.body;
     let roomName = await Room.findOne({ name: room });
 
     if (!roomName) {
-      return res.json({ msg: "invalid room" });
+      return res.json({ msg: 'invalid room' });
     }
 
     const meetingList = await Meeting.aggregate([
-      { $unwind: "$schedules" },
+      { $unwind: '$schedules' },
       {
         $lookup: {
-          from: "offices",
-          localField: "office",
-          foreignField: "_id",
-          as: "office",
+          from: 'offices',
+          localField: 'office',
+          foreignField: '_id',
+          as: 'office',
         },
       },
 
       {
         $unwind: {
-          path: "$office",
+          path: '$office',
           preserveNullAndEmptyArrays: true,
         },
       },
       {
         $project: {
-          room: "$schedules.room",
-          title: "$office.officeName",
-          start: "$schedules.start",
-          end: "$schedules.end",
+          room: '$schedules.room',
+          title: '$office.officeName',
+          start: '$schedules.start',
+          end: '$schedules.end',
           _id: 0,
         },
       },
@@ -477,26 +477,26 @@ router.put("/schedule/:meetingId", auth, async (req, res) => {
 //@route    GET api/meeting/approval/
 //@desc     delete a meeting test route
 //@access   Private/admin
-router.delete("/:meetingId", auth, async (req, res) => {
+router.delete('/:meetingId', auth, async (req, res) => {
   try {
     const meeting = await Meeting.findById(req.params.meetingId);
     if (!meeting) {
-      return res.status(404).json({ msg: "Meeting does not exist" });
+      return res.status(404).json({ msg: 'Meeting does not exist' });
     }
     if (meeting.isApproved) {
       return res
         .status(406)
-        .json({ errors: [{ msg: "Cannot Delete, Meeting already approved" }] });
+        .json({ errors: [{ msg: 'Cannot Delete, Meeting already approved' }] });
     }
     if (meeting.office.toString() !== req.office.id) {
-      return res.status(401).json({ msg: "User not Authorized" });
+      return res.status(401).json({ msg: 'User not Authorized' });
     }
 
     await Meeting.findByIdAndRemove(meeting.id);
-    res.json({ msg: "Meeting Deleted" });
+    res.json({ msg: 'Meeting Deleted' });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
@@ -504,17 +504,17 @@ router.delete("/:meetingId", auth, async (req, res) => {
 //@desc     view all meetings that needs to be approve
 //@access   Private/admin
 //TODO  VERIFY ADMIN BEFORE APPROVAL
-router.get("/approval/:roomId", authAdmin, async (req, res) => {
+router.get('/approval/:roomId', authAdmin, async (req, res) => {
   try {
     const room = await Room.findById(req.params.roomId);
 
     const admin = room.admins.includes(req.admin.id);
     if (!admin) {
-      return res.status(410).json("Not Authorized");
+      return res.status(410).json('Not Authorized');
     }
 
     const meetings = await Schedule.find({ room: req.params.roomId }).populate(
-      "meeting"
+      'meeting'
     );
 
     const pendingMeeting = meetings.filter(
@@ -525,14 +525,14 @@ router.get("/approval/:roomId", authAdmin, async (req, res) => {
     res.json(pendingMeeting);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
 //@route    GET api/meeting/forapproval/
 //@desc     view all meetings that needs to be approve
 //@access   Private
-router.get("/forapproval/", auth, async (req, res) => {
+router.get('/forapproval/', auth, async (req, res) => {
   try {
     const meetings = await Meeting.find({
       office: req.office.id,
@@ -540,12 +540,12 @@ router.get("/forapproval/", auth, async (req, res) => {
     }).sort({ dateCreated: -1 });
 
     if (!meetings) {
-      return res.status(404).json({ msg: "No meetings found" });
+      return res.status(404).json({ msg: 'No meetings found' });
     }
     res.json(meetings);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
@@ -600,32 +600,32 @@ router.get("/forapproval/", auth, async (req, res) => {
 //@route    PUT api/meeting/approval/:id
 //@desc     TEST ROUTE approve a meeting
 //@access   Private/admin
-router.post("/testroute", async (req, res) => {
+router.post('/testroute', async (req, res) => {
   try {
     var allMeeting = await Meeting.aggregate([
       { $match: { isSubmitted: true } },
-      { $unwind: "$schedules" },
+      { $unwind: '$schedules' },
       {
         $lookup: {
-          from: "offices",
-          localField: "office",
-          foreignField: "_id",
-          as: "office",
+          from: 'offices',
+          localField: 'office',
+          foreignField: '_id',
+          as: 'office',
         },
       },
 
       {
         $unwind: {
-          path: "$office",
+          path: '$office',
           preserveNullAndEmptyArrays: true,
         },
       },
       {
         $project: {
-          room: "$schedules.room",
-          title: "$office.officeName",
-          start: "$schedules.start",
-          end: "$schedules.end",
+          room: '$schedules.room',
+          title: '$office.officeName',
+          start: '$schedules.start',
+          end: '$schedules.end',
           _id: 0,
         },
       },
@@ -634,7 +634,7 @@ router.post("/testroute", async (req, res) => {
     ]);
 
     const schedule = await Meeting.findById(req.body.meetingId).populate(
-      "schedules"
+      'schedules'
     );
     for (let i = 0; i < schedule.schedules.length; i++) {
       var scheduleList = allMeeting.find(
@@ -656,18 +656,18 @@ router.post("/testroute", async (req, res) => {
       }
     }
 
-    res.status(200).json({ msg: "Meeting is available" });
+    res.status(200).json({ msg: 'Meeting is available' });
     //res.json(schedule);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
 //@route    POST api/submit/
 //@desc     Submit meeting
 //@access   Private
-router.post("/submit/", [auth], async (req, res) => {
+router.post('/submit/', [auth], async (req, res) => {
   try {
     const {
       description,
@@ -685,29 +685,29 @@ router.post("/submit/", [auth], async (req, res) => {
 
     var allMeeting = await Meeting.aggregate([
       { $match: { isSubmitted: true } },
-      { $unwind: "$schedules" },
+      { $unwind: '$schedules' },
       {
         $lookup: {
-          from: "offices",
-          localField: "office",
-          foreignField: "_id",
-          as: "office",
+          from: 'offices',
+          localField: 'office',
+          foreignField: '_id',
+          as: 'office',
         },
       },
 
       {
         $unwind: {
-          path: "$office",
+          path: '$office',
           preserveNullAndEmptyArrays: true,
         },
       },
       {
         $project: {
-          room: "$schedules.room",
-          title: "$office.officeName",
-          start: "$schedules.start",
-          end: "$schedules.end",
-          isCancelled: "$schedules.isCancelled",
+          room: '$schedules.room',
+          title: '$office.officeName',
+          start: '$schedules.start',
+          end: '$schedules.end',
+          isCancelled: '$schedules.isCancelled',
           _id: 0,
         },
       },
@@ -729,7 +729,7 @@ router.post("/submit/", [auth], async (req, res) => {
       if (scheduleList) {
         var scheduleError = {
           msg: `${moment(schedules[i].start).format(
-            "MMMM Do YYYY, h:mm:ss "
+            'MMMM Do YYYY, h:mm:ss '
           )} has already been taken`,
         };
       }
@@ -759,60 +759,60 @@ router.post("/submit/", [auth], async (req, res) => {
     res.json(newMeeting);
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
 //@route    POST api/checkschedule/
 //@desc     check if schedule is available
 //@access   Private
-router.post("/checkschedule/", [auth, scheduleVerifier], async (req, res) => {
+router.post('/checkschedule/', [auth, scheduleVerifier], async (req, res) => {
   try {
     res.json(req.verifiedSchedule);
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
 //@route GET  api/adminforapproval/
 //@desc     get all meetings for approval
 //@access   Private/admin
-router.get("/adminforapproval/", [auth], async (req, res) => {
+router.get('/adminforapproval/', [auth], async (req, res) => {
   try {
     const office = await Office.findById(req.office.id);
 
-    if (office.role !== "admin" && office.role !== "manager") {
-      return res.status(401).json({ msg: "Unauthorized" });
+    if (office.role !== 'admin' && office.role !== 'manager') {
+      return res.status(401).json({ msg: 'Unauthorized' });
     }
 
     const rooms = office.rooms;
 
     const meetingList = await Meeting.aggregate([
       { $match: { isSubmitted: true, isApproved: false } },
-      { $unwind: "$schedules" },
+      { $unwind: '$schedules' },
       {
         $lookup: {
-          from: "offices",
-          localField: "office",
-          foreignField: "_id",
-          as: "office",
+          from: 'offices',
+          localField: 'office',
+          foreignField: '_id',
+          as: 'office',
         },
       },
 
       {
         $unwind: {
-          path: "$office",
+          path: '$office',
           preserveNullAndEmptyArrays: true,
         },
       },
       {
         $project: {
           isApproved: 1,
-          room: "$schedules.room",
-          meetingId: "$_id",
-          isCancelled: "$schedules.isCancelled",
-          title: "$office.officeName",
+          room: '$schedules.room',
+          meetingId: '$_id',
+          isCancelled: '$schedules.isCancelled',
+          title: '$office.officeName',
           contactName: 1,
           dateCreated: 1,
           description: 1,
@@ -833,46 +833,52 @@ router.get("/adminforapproval/", [auth], async (req, res) => {
             item.meetingId.toString() === meetingList[i].meetingId.toString()
         )
       ) {
-        forApprovals.push(meetingList[i]);
+        const meeting = {
+          meetingId: meetingList[i].meetingId,
+          description: meetingList[i].description,
+          contactName: meetingList[i].contactName,
+          dateCreated: meetingList[i].dateCreated,
+        };
+        forApprovals.push(meeting);
       }
     }
 
-    console.log(forApprovals);
+    res.json(forApprovals);
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
 //@route PUT /approval/:meetingId
 //@desc     approve meeting
 //@access   Private/admin
-router.put("/approval/:meetingId", [auth], async (req, res) => {
+router.put('/approval/:meetingId', [auth], async (req, res) => {
   try {
     const office = await Office.findById(req.office.id);
 
-    if (office.role !== "admin" && office.role !== "manager") {
-      return res.status(401).json({ msg: "Unauthorized" });
+    if (office.role !== 'admin' && office.role !== 'manager') {
+      return res.status(401).json({ msg: 'Unauthorized' });
     }
 
     const meeting = await Meeting.findById(req.params.meetingId);
 
     if (!meeting) {
-      return res.status(404).json({ msg: "Meeting not found" });
+      return res.status(404).json({ msg: 'Meeting not found' });
     }
 
     if (meeting.isApproved) {
-      return res.status(409).json({ msg: "Meeting has already been approved" });
+      return res.status(409).json({ msg: 'Meeting has already been approved' });
     }
 
     meeting.isApproved = true;
 
     await meeting.save();
 
-    res.json("Meeting has been approved");
+    res.json('Meeting has been approved');
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("Server Error");
+    res.status(500).send('Server Error');
   }
 });
 
