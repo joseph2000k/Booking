@@ -6,8 +6,7 @@ import { getMeetings } from "../../actions/meeting";
 import ClockLoader from "react-spinners/ClockLoader";
 import History from "./History";
 import ForApproval from "./ForApproval";
-import Admin from "./admin/Admin";
-import { getForApprovalMeetings } from "../../actions/meeting";
+import ForApprovalofAdmin from "./admin/ForApprovalofAdmin";
 import { clearSubmitMeetings } from "../../actions/meeting";
 import { getSchedules } from "../../actions/meeting";
 import UpcomingMeetings from "./UpcomingMeetings";
@@ -20,7 +19,6 @@ const Dashboard = ({
   clearSubmitMeetings,
   meeting: { loading, schedules },
   meetings,
-  getForApprovalMeetings,
   deleteMeeting,
 }) => {
   useEffect(() => {
@@ -28,10 +26,6 @@ const Dashboard = ({
     clearSubmitMeetings();
     getSchedules();
   }, [getMeetings, clearSubmitMeetings, getSchedules]);
-
-  if (isSendingRequest && office.rooms.length > 0) {
-    getForApprovalMeetings();
-  }
 
   const forApproval = meetings.filter(
     (meeting) => meeting.isApproved === false
@@ -73,7 +67,9 @@ const Dashboard = ({
         </Link>
       </div>
 
-      {office.role === "admin" || office.role === "manager" ? <Admin /> : null}
+      {office.role === "admin" || office.role === "manager" ? (
+        <ForApprovalofAdmin />
+      ) : null}
       {meetings.length > 0 && <ForApproval meetings={forApproval} />}
       {upcomingMeetings.length > 0 && (
         <UpcomingMeetings upcoming={upcomingMeetings} />
@@ -91,7 +87,6 @@ Dashboard.propTypes = {
   clearSubmitMeetings: PropTypes.func.isRequired,
   meetings: PropTypes.array.isRequired,
   getSchedules: PropTypes.func.isRequired,
-  getForApprovalMeetings: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -104,5 +99,4 @@ export default connect(mapStateToProps, {
   getMeetings,
   clearSubmitMeetings,
   getSchedules,
-  getForApprovalMeetings,
 })(Dashboard);
