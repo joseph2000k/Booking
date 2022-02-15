@@ -1,6 +1,6 @@
-import { v4 as uuid } from 'uuid';
-import axios from 'axios';
-import { setAlert } from './alert';
+import { v4 as uuid } from "uuid";
+import axios from "axios";
+import { setAlert } from "./alert";
 import {
   CREATE_MEETING,
   MEETING_ERROR,
@@ -11,12 +11,13 @@ import {
   GET_TO_SUBMIT_MEETINGS,
   MEETING_HISTORY,
   CLEAR_GET_TO_SUBMIT_MEETINGS,
-} from './types';
+  GET_FOR_APPROVAL_MEETINGS,
+} from "./types";
 
 //Get all meetings for the current office
 export const getMeetings = () => async (dispatch) => {
   try {
-    const res = await axios.get('/api/meeting');
+    const res = await axios.get("/api/meeting");
 
     dispatch({
       type: GET_MEETINGS,
@@ -34,24 +35,24 @@ export const getMeetings = () => async (dispatch) => {
 export const submitMeeting = (meetings, history) => async (dispatch) => {
   try {
     const config = {
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     };
     console.log(meetings);
 
-    const res = await axios.post('/api/meeting/submit', meetings, config);
+    const res = await axios.post("/api/meeting/submit", meetings, config);
 
     dispatch({
       type: CREATE_MEETING,
       payload: res.data,
     });
 
-    history.push('/dashboard');
-    dispatch(setAlert('Meeting submitted', 'success'));
+    history.push("/dashboard");
+    dispatch(setAlert("Meeting submitted", "success"));
   } catch (err) {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
 
     dispatch({
@@ -64,7 +65,7 @@ export const submitMeeting = (meetings, history) => async (dispatch) => {
 //Meeting history
 export const meetingHistory = () => async (dispatch) => {
   try {
-    const res = await axios.get('/api/meeting');
+    const res = await axios.get("/api/meeting");
 
     dispatch({
       type: MEETING_HISTORY,
@@ -81,7 +82,7 @@ export const meetingHistory = () => async (dispatch) => {
 //Get upcoming meetings
 export const getSchedules = () => async (dispatch) => {
   try {
-    const res = await axios.get('/api/meeting/schedules');
+    const res = await axios.get("/api/meeting/schedules");
 
     dispatch({
       type: GET_SCHEDULES,
@@ -100,10 +101,10 @@ export const checkSchedule = (schedule) => async (dispatch) => {
   try {
     const id = uuid();
     const config = {
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     };
     const res = await axios.post(
-      '/api/meeting/checkSchedule',
+      "/api/meeting/checkSchedule",
       schedule,
       config
     );
@@ -114,12 +115,35 @@ export const checkSchedule = (schedule) => async (dispatch) => {
       payload: { ...res.data, id: id },
     });
 
-    dispatch(setAlert('Date is available', 'success'));
+    dispatch(setAlert("Date is available", "success"));
   } catch (err) {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+    }
+
+    dispatch({
+      type: MEETING_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+//Get for approval meetings (admin)
+export const getForApprovalMeetings = () => async (dispatch) => {
+  try {
+    const res = await axios.get("/api/meeting/adminforApproval");
+
+    dispatch({
+      type: GET_FOR_APPROVAL_MEETINGS,
+      payload: res.data,
+    });
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
 
     dispatch({
@@ -141,18 +165,18 @@ export const clearSubmitMeetings = () => ({
 export const rescheduleMeeting = (meeting) => async (dispatch) => {
   try {
     const config = {
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     };
-    const res = await axios.put('/api/meeting/reschedule', meeting, config);
+    const res = await axios.put("/api/meeting/reschedule", meeting, config);
 
-    dispatch(setAlert('Meeting rescheduled', 'success'));
+    dispatch(setAlert("Meeting rescheduled", "success"));
 
     dispatch(getSchedules());
   } catch (err) {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
   }
 };
@@ -162,7 +186,7 @@ export const deleteMeeting = (id) => async (dispatch) => {
   try {
     await axios.delete(`/api/meeting/${id}`);
 
-    dispatch(setAlert('Meeting deleted', 'success'));
+    dispatch(setAlert("Meeting deleted", "success"));
 
     dispatch(getMeetings());
   } catch (err) {
@@ -171,7 +195,7 @@ export const deleteMeeting = (id) => async (dispatch) => {
     dispatch(getMeetings());
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
 
     dispatch(getMeetings());
@@ -184,14 +208,14 @@ export const cancelSchedule = (meetingId, id) => async (dispatch) => {
   try {
     await axios.put(`/api/meeting/schedule/${meetingId}/${id}`);
 
-    dispatch(setAlert('Schedule cancelled', 'success'));
+    dispatch(setAlert("Schedule cancelled", "success"));
 
     dispatch(getSchedules());
   } catch (err) {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
 
     dispatch(getSchedules());
@@ -210,7 +234,7 @@ export const deleteSchedule = (id) => async (dispatch) => {
     const errors = err.response.data.errors;
 
     if (errors) {
-      errors.forEach((error) => dispatch(setAlert(error.msg, 'danger')));
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
 
     dispatch({

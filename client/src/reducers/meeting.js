@@ -6,9 +6,8 @@ import {
   CLEAR_MEETINGS,
   DELETE_SCHEDULE,
   GET_MEETINGS,
-  MEETING_HISTORY,
   CLEAR_GET_TO_SUBMIT_MEETINGS,
-  GET_UPCOMING_MEETINGS,
+  GET_FOR_APPROVAL_MEETINGS,
 } from "../actions/types";
 
 const initialState = {
@@ -18,6 +17,7 @@ const initialState = {
   //history: [],
   //upcoming: [],
   toSubmit: [],
+  forApproval: [],
   loading: true,
   error: {},
 };
@@ -43,6 +43,12 @@ export default function meetingReducer(state = initialState, action) {
       return {
         ...state,
         schedules: payload,
+        loading: false,
+      };
+    case GET_FOR_APPROVAL_MEETINGS:
+      return {
+        ...state,
+        forApproval: payload,
         loading: false,
       };
     case GET_TO_SUBMIT_MEETINGS:
@@ -84,6 +90,7 @@ export default function meetingReducer(state = initialState, action) {
         schedules: [],
         error: {},
         toSubmit: [],
+        forApproval: [],
         upcoming: [],
         loading: false,
       };
