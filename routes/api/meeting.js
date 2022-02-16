@@ -836,6 +836,7 @@ router.get("/adminforapproval/", [auth], async (req, res) => {
         const meeting = {
           meetingId: meetingList[i].meetingId,
           description: meetingList[i].description,
+          officeName: meetingList[i].title,
           contactName: meetingList[i].contactName,
           dateCreated: meetingList[i].dateCreated,
         };
