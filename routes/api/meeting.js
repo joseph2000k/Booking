@@ -858,17 +858,19 @@ router.put("/approval/:meetingId", [auth], async (req, res) => {
     const office = await Office.findById(req.office.id);
 
     if (office.role !== "admin" && office.role !== "manager") {
-      return res.status(401).json({ msg: "Unauthorized" });
+      return res.status(401).json({ errors: [{ msg: "Unauthorized" }] });
     }
 
     const meeting = await Meeting.findById(req.params.meetingId);
 
     if (!meeting) {
-      return res.status(404).json({ msg: "Meeting not found" });
+      return res.status(404).json({ errors: [{ msg: "Meeting not found" }] });
     }
 
     if (meeting.isApproved) {
-      return res.status(409).json({ msg: "Meeting has already been approved" });
+      return res
+        .status(409)
+        .json({ errors: [{ msg: "Meeting already approved" }] });
     }
 
     meeting.isApproved = true;

@@ -167,6 +167,28 @@ export const getForApprovalMeetings = () => async (dispatch) => {
   }
 };
 
+//approve a meeting (admin)
+export const approveMeeting = (id) => async (dispatch) => {
+  try {
+    await axios.put(`/api/meeting/approval/${id}`);
+
+    dispatch(getForApprovalMeetings());
+
+    dispatch(setAlert("Meeting approved", "success"));
+  } catch (err) {
+    /* const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+    }
+ */
+    dispatch({
+      type: MEETING_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
 //clear meetings
 export const clearMeetings = () => ({ type: CLEAR_MEETINGS });
 
