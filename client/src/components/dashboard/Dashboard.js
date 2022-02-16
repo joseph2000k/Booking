@@ -70,7 +70,7 @@ const Dashboard = ({
       {office.role === "admin" || office.role === "manager" ? (
         <ForApprovalofAdmin />
       ) : null}
-      {meetings.length > 0 && <ForApproval meetings={forApproval} />}
+      {forApproval.length > 0 && <ForApproval meetings={forApproval} />}
       {upcomingMeetings.length > 0 && (
         <UpcomingMeetings upcoming={upcomingMeetings} />
       )}
