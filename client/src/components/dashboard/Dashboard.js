@@ -75,7 +75,9 @@ const Dashboard = ({
         <UpcomingMeetings upcoming={upcomingMeetings} />
       )}
 
-      <History history={historyMeetings} loading={loading} />
+      {historyMeetings.length > 0 && (
+        <History history={historyMeetings} loading={loading} />
+      )}
     </Fragment>
   );
 };

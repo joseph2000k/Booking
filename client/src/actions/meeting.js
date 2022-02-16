@@ -24,6 +24,13 @@ export const getMeetings = () => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors[0].msg === "No meetings found") {
+      console.log("No meetings found");
+      return;
+    }
+
     dispatch({
       type: MEETING_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status },
@@ -89,6 +96,13 @@ export const getSchedules = () => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors[0].msg === "No schedules found") {
+      console.log("No schedules found");
+      return;
+    }
+
     dispatch({
       type: MEETING_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status },
