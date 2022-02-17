@@ -134,6 +134,33 @@ router.put("/schedule/:meetingId/:id", auth, async (req, res) => {
   }
 });
 
+//@route  GET api/meeting/meetingdetails/:id
+//@desc   Get meeting details
+//@access Private
+router.get("/:meetingId", auth, async (req, res) => {
+  try {
+    const meeting = await Meeting.findById(req.params.meetingId);
+    const office = await Office.findById(req.office.id);
+
+    if (!meeting) {
+      return res.status(404).json({ msg: "Meeting not found" });
+    }
+
+    //check user
+    if (
+      meeting.office.toString() === req.office.id ||
+      office.role === "admin"
+    ) {
+      res.json(meeting);
+    } else {
+      return res.status(401).json({ msg: "User not Authorized" });
+    }
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 //@route  PUT api/meeting/:meetingId/:id
 //@desc   Replace start and end time in meeting schedule
 //@access Private
