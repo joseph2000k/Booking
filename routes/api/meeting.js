@@ -139,7 +139,9 @@ router.put("/schedule/:meetingId/:id", auth, async (req, res) => {
 //@access Private
 router.get("/:meetingId", auth, async (req, res) => {
   try {
-    const meeting = await Meeting.findById(req.params.meetingId);
+    const meeting = await Meeting.findById(req.params.meetingId).populate(
+      "schedules.room"
+    );
     const office = await Office.findById(req.office.id);
 
     if (!meeting) {
@@ -151,7 +153,7 @@ router.get("/:meetingId", auth, async (req, res) => {
       meeting.office.toString() === req.office.id ||
       office.role === "admin"
     ) {
-      res.json(meeting);
+      return res.json(meeting);
     } else {
       return res.status(401).json({ msg: "User not Authorized" });
     }
