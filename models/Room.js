@@ -9,14 +9,12 @@ const RoomSchema = new Schema({
     type: String,
   },
   capacity: {
-    type: String,
+    type: Number,
   },
-  admins: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "admin",
-    },
-  ],
+  admin: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "office",
+  },
 });
 
 module.exports = Room = mongoose.model("room", RoomSchema);
