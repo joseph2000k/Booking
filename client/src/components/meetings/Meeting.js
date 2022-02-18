@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { getMeeting } from "../../actions/meeting";
 import PropTypes from "prop-types";
 
-const Meeting = ({ match, getMeeting }) => {
+const Meeting = ({ getMeeting, match }) => {
   useEffect(() => {
     getMeeting(match.params.id);
   }, [getMeeting, match.params.id]);
