@@ -1,11 +1,12 @@
-import React, { Fragment, useState, useEffect } from "react";
-import Moment from "react-moment";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import ClockLoader from "react-spinners/ClockLoader";
-import { getForApprovalMeetings } from "../../../actions/meeting";
-import { approveMeeting } from "../../../actions/meeting";
-import Modal from "react-bootstrap/Modal";
+import React, { Fragment, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Moment from 'react-moment';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import ClockLoader from 'react-spinners/ClockLoader';
+import { getForApprovalMeetings } from '../../../actions/meeting';
+import { approveMeeting } from '../../../actions/meeting';
+import Modal from 'react-bootstrap/Modal';
 
 const ForApprovalofAdmin = ({
   getForApprovalMeetings,
@@ -40,27 +41,35 @@ const ForApprovalofAdmin = ({
       <td>{forApproval.officeName}</td>
       <td>{forApproval.contactName}</td>
       <td>
-        <Moment format="YYYY/MM/DD h:mm A">{forApproval.dateCreated}</Moment>
+        <Moment format='YYYY/MM/DD h:mm A'>{forApproval.dateCreated}</Moment>
       </td>
-      <td>
-        <div className="d-flex justify-content-end">
+      <div className='d-flex justify-content-end'>
+        <td>
+          <Link
+            to={`meeting/view/${forApproval.meetingId}`}
+            className='btn btn-primary'
+          >
+            View
+          </Link>
+        </td>
+        <td>
           <button
-            className="btn btn-success mx-1"
+            className='btn btn-success mx-1'
             onClick={() => handleApproveClick(forApproval.meetingId)}
           >
             Approve
           </button>
-        </div>
-      </td>
+        </td>
+      </div>
     </tr>
   ));
 
   return (
     <Fragment>
-      <div className="d-flex justify-content-between">
-        <h4 className="text-left">For your Approval</h4>
+      <div className='d-flex justify-content-between'>
+        <h4 className='text-left'>For your Approval</h4>
       </div>
-      <table className="table table-striped">
+      <table className='table table-striped'>
         <thead>
           <tr>
             <th>Description</th>
@@ -75,7 +84,7 @@ const ForApprovalofAdmin = ({
       <Modal
         show={show}
         onHide={handleClose}
-        backdrop="static"
+        backdrop='static'
         keyboard={false}
       >
         <Modal.Header closeButton>
@@ -85,10 +94,10 @@ const ForApprovalofAdmin = ({
           <p>Are you sure you want to Approve this meeting?</p>
         </Modal.Body>
         <Modal.Footer>
-          <button className="btn btn-secondary" onClick={handleClose}>
+          <button className='btn btn-secondary' onClick={handleClose}>
             Close
           </button>
-          <button className="btn btn-danger" onClick={handleApprove}>
+          <button className='btn btn-danger' onClick={handleApprove}>
             Yes, Approve
           </button>
         </Modal.Footer>
