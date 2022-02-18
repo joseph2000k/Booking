@@ -134,12 +134,15 @@ router.put("/schedule/:meetingId/:id", auth, async (req, res) => {
   }
 });
 
-//@route  GET api/meeting/meetingdetails/:id
+//@route  GET api/meeting/view/:id
 //@desc   Get meeting details
 //@access Private
-router.get("/:meetingId", auth, async (req, res) => {
+router.get("/view/:id", auth, async (req, res) => {
   try {
-    const meeting = await Meeting.findById(req.params.meetingId);
+    const meeting = await Meeting.findById(req.params.id).populate(
+      "office",
+      "-password"
+    );
     const office = await Office.findById(req.office.id);
 
     if (!meeting) {
@@ -148,7 +151,7 @@ router.get("/:meetingId", auth, async (req, res) => {
 
     //check user
     if (
-      meeting.office.toString() === req.office.id ||
+      meeting.office.id.toString() === req.office.id ||
       office.role === "admin"
     ) {
       res.json(meeting);

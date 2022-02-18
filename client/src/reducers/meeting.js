@@ -5,6 +5,7 @@ import {
   GET_TO_SUBMIT_MEETINGS,
   CLEAR_MEETINGS,
   DELETE_SCHEDULE,
+  GET_MEETING,
   GET_MEETINGS,
   CLEAR_GET_TO_SUBMIT_MEETINGS,
   GET_FOR_APPROVAL_MEETINGS,
@@ -31,6 +32,12 @@ export default function meetingReducer(state = initialState, action) {
         ...state,
         meeting: null,
         schedule: {},
+        loading: false,
+      };
+    case GET_MEETING:
+      return {
+        ...state,
+        meeting: payload,
         loading: false,
       };
     case GET_MEETINGS:

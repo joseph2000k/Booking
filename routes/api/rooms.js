@@ -88,7 +88,7 @@ router.get("/meetings", auth, async (req, res) => {
 router.get("/room/:roomId", async (req, res) => {
   try {
     const room = await Room.findById(req.params.roomId).populate(
-      "admins",
+      "admin",
       "-password"
     );
     res.json(room);
@@ -106,7 +106,7 @@ router.get("/room/", async (req, res) => {
   try {
     const { roomId } = req.body;
 
-    const room = await Room.findById(roomId).populate("admins", "-password");
+    const room = await Room.findById(roomId).populate("admin", "-password");
     res.json(room);
   } catch (err) {
     console.error(err.message);

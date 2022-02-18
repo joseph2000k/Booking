@@ -1,10 +1,12 @@
 import React, { Fragment, useState } from "react";
 import Moment from "react-moment";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import ClockLoader from "react-spinners/ClockLoader";
 import Modal from "react-bootstrap/Modal";
 import { deleteMeeting } from "../../actions/meeting";
+import Meeting from "../meetings/Meeting";
 
 const ForApproval = ({ meetings, loading, deleteMeeting }) => {
   const [show, setShow] = useState(false);
@@ -30,6 +32,11 @@ const ForApproval = ({ meetings, loading, deleteMeeting }) => {
       <td>{meeting.contactName}</td>
       <td>
         <Moment format="YYYY/MM/DD h:mm A">{meeting.dateCreated}</Moment>
+      </td>
+      <td>
+        <Link to={`meeting/view/${meeting._id}`} className="btn btn-primary">
+          View
+        </Link>
       </td>
       <td>
         <div className="d-flex justify-content-end">

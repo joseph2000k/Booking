@@ -4,6 +4,7 @@ import { setAlert } from "./alert";
 import {
   CREATE_MEETING,
   MEETING_ERROR,
+  GET_MEETING,
   GET_MEETINGS,
   CLEAR_MEETINGS,
   DELETE_SCHEDULE,
@@ -31,6 +32,23 @@ export const getMeetings = () => async (dispatch) => {
       return;
     }
 
+    dispatch({
+      type: MEETING_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+//Get meeting
+export const getMeeting = (id) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/meeting/view/${id}`);
+
+    dispatch({
+      type: GET_MEETING,
+      payload: res.data,
+    });
+  } catch (err) {
     dispatch({
       type: MEETING_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status },
