@@ -32,21 +32,21 @@ const ForApproval = ({ meetings, loading, deleteMeeting }) => {
       <td>
         <Moment format='YYYY/MM/DD h:mm A'>{meeting.dateCreated}</Moment>
       </td>
-      <td>
-        <Link to={`meeting/view/${meeting._id}`} className='btn btn-primary'>
-          View
-        </Link>
-      </td>
-      <td>
-        <div className='d-flex justify-content-end'>
+      <div className='d-flex justify-content-end'>
+        <td>
+          <Link to={`meeting/view/${meeting._id}`} className='btn btn-primary'>
+            View
+          </Link>
+        </td>
+        <td>
           <button
             className='btn btn-danger mx-1'
             onClick={() => handleDeleteClick(meeting._id)}
           >
             Delete
           </button>
-        </div>
-      </td>
+        </td>
+      </div>
     </tr>
   ));
   return (
