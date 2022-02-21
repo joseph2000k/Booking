@@ -9,8 +9,7 @@ import {
   GET_MEETINGS,
   CLEAR_GET_TO_SUBMIT_MEETINGS,
   GET_FOR_APPROVAL_MEETINGS,
-  CLEAR_GET_MEETING,
-} from '../actions/types';
+} from "../actions/types";
 
 const initialState = {
   meeting: null,
@@ -88,13 +87,6 @@ export default function meetingReducer(state = initialState, action) {
       return {
         ...state,
         toSubmit: [],
-      };
-
-    case CLEAR_GET_MEETING:
-      return {
-        ...state,
-        meeting: null,
-        loading: false,
       };
     case MEETING_ERROR:
     case CLEAR_MEETINGS:
