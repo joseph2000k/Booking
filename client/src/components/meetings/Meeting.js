@@ -35,9 +35,30 @@ const Meeting = ({ getMeeting, meeting: { loading, meeting }, match }) => {
                   <h5>Contact number</h5>
                   <p>{meeting.contactNumber}</p>
 
-                  <h5>Number of attendees</h5>
+                  <h5>Number of Attendees</h5>
                   <p>{meeting.numberOfAttendees}</p>
-                  
+
+                  <h5>Requirements</h5>
+                  <p>{meeting.firstRequirements}</p>
+                  <p>{meeting.secondRequirements}</p>
+
+                  <h5>Instructions</h5>
+                  <p>{meeting.specialInstructions}</p>
+                </div>
+
+                <div className="col-md-6">
+                  <h5>Schedules</h5>
+                  <ul>
+                    {meeting.schedules.map((schedule) => (
+                      <li key={schedule._id}>
+                        <Moment format="MMMM Do YYYY">{schedule.start}</Moment>
+                        {", "}
+                        <Moment format="h:mm a">{schedule.start}</Moment> -{" "}
+                        <Moment format="h:mm a">{schedule.end}</Moment>-{" "}
+                        {schedule.room.name}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </div>
