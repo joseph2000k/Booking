@@ -139,10 +139,9 @@ router.put("/schedule/:meetingId/:id", auth, async (req, res) => {
 //@access Private
 router.get("/view/:id", auth, async (req, res) => {
   try {
-    const meeting = await Meeting.findById(req.params.id).populate(
-      "office",
-      "-password"
-    );
+    const meeting = await Meeting.findById(req.params.id)
+      .populate("office", "-password")
+      .populate("schedules.room");
     const office = await Office.findById(req.office.id);
 
     if (!meeting) {
@@ -703,7 +702,7 @@ router.post("/submit/", [auth], async (req, res) => {
       description,
       contactName,
       contactNumber,
-      numberOfAtendees,
+      numberOfAttendees,
       specialInstructions,
       first,
       second,
@@ -773,7 +772,7 @@ router.post("/submit/", [auth], async (req, res) => {
       description,
       contactName,
       contactNumber,
-      numberOfAtendees,
+      numberOfAttendees,
       specialInstructions,
       first,
       second,

@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import Moment from "react-moment";
 import { connect } from "react-redux";
 import { getMeeting } from "../../actions/meeting";
 import PropTypes from "prop-types";
@@ -15,7 +16,34 @@ const Meeting = ({ getMeeting, meeting: { loading, meeting }, match }) => {
     </div>
   ) : (
     <div>
-      <h1>{meeting.office.officeName}</h1>
+      {
+        //wrap in a container with card
+        <div className="container">
+          <div className="card">
+            <div className="card-header">
+              <h3>{meeting.office.officeName}</h3>
+            </div>
+            <div className="card-body">
+              <div className="row">
+                <div className="col-md-6">
+                  <h5>Meeting description</h5>
+                  <p>{meeting.description}</p>
+
+                  <h5>Contact name</h5>
+                  <p>{meeting.contactName}</p>
+
+                  <h5>Contact number</h5>
+                  <p>{meeting.contactNumber}</p>
+
+                  <h5>Number of attendees</h5>
+                  <p>{meeting.numberOfAttendees}</p>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
     </div>
   );
 };
