@@ -1,11 +1,17 @@
 import React, { useEffect } from "react";
 import Moment from "react-moment";
 import { connect } from "react-redux";
-import { getMeeting } from "../../actions/meeting";
+import { getMeeting, approveMeeting } from "../../actions/meeting";
 import PropTypes from "prop-types";
 import ClockLoader from "react-spinners/ClockLoader";
 
-const Meeting = ({ getMeeting, meeting: { loading, meeting }, match }) => {
+const Meeting = ({
+  getMeeting,
+  approveMeeting,
+  meeting: { loading, meeting },
+  auth: { isSendingRequest, office },
+  match,
+}) => {
   useEffect(() => {
     getMeeting(match.params.id);
   }, [getMeeting, match.params.id]);
@@ -65,17 +71,30 @@ const Meeting = ({ getMeeting, meeting: { loading, meeting }, match }) => {
           </div>
         </div>
       }
+      {!isSendingRequest && office.role === "admin" && (
+        <button
+          className="btn btn-success mx-1"
+          onClick={() => approveMeeting(meeting._id)}
+        >
+          Approve
+        </button>
+      )}
     </div>
   );
 };
 
 Meeting.propTypes = {
   getMeeting: PropTypes.func.isRequired,
+  approveMeeting: PropTypes.func.isRequired,
   meeting: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   meeting: state.meeting,
+  auth: state.auth,
 });
 
-export default connect(mapStateToProps, { getMeeting })(Meeting);
+export default connect(mapStateToProps, { getMeeting, approveMeeting })(
+  Meeting
+);
