@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
-import Moment from "react-moment";
-import { connect } from "react-redux";
-import { getMeeting, approveMeeting } from "../../actions/meeting";
-import PropTypes from "prop-types";
-import ClockLoader from "react-spinners/ClockLoader";
+import React, { useEffect } from 'react';
+import Moment from 'react-moment';
+import { connect } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { getMeeting, approveMeeting } from '../../actions/meeting';
+import PropTypes from 'prop-types';
+import ClockLoader from 'react-spinners/ClockLoader';
 
 const Meeting = ({
   getMeeting,
@@ -16,22 +17,29 @@ const Meeting = ({
     getMeeting(match.params.id);
   }, [getMeeting, match.params.id]);
 
+  const history = useHistory();
+
+  const handleApprove = () => {
+    approveMeeting(match.params.id);
+    history.push('/dashboard');
+  };
+
   return meeting === null || meeting._id !== match.params.id || loading ? (
-    <div className="d-flex justify-content-center">
-      <ClockLoader size={50} color={"#123abc"} />
+    <div className='d-flex justify-content-center'>
+      <ClockLoader size={50} color={'#123abc'} />
     </div>
   ) : (
     <div>
       {
         //wrap in a container with card
-        <div className="container">
-          <div className="card">
-            <div className="card-header">
+        <div className='container'>
+          <div className='card'>
+            <div className='card-header'>
               <h3>{meeting.office.officeName}</h3>
             </div>
-            <div className="card-body">
-              <div className="row">
-                <div className="col-md-6">
+            <div className='card-body'>
+              <div className='row'>
+                <div className='col-md-6'>
                   <h5>Meeting description</h5>
                   <p>{meeting.description}</p>
 
@@ -52,15 +60,15 @@ const Meeting = ({
                   <p>{meeting.specialInstructions}</p>
                 </div>
 
-                <div className="col-md-6">
+                <div className='col-md-6'>
                   <h5>Schedules</h5>
                   <ul>
                     {meeting.schedules.map((schedule) => (
                       <li key={schedule._id}>
-                        <Moment format="MMMM Do YYYY">{schedule.start}</Moment>
-                        {", "}
-                        <Moment format="h:mm a">{schedule.start}</Moment> -{" "}
-                        <Moment format="h:mm a">{schedule.end}</Moment>-{" "}
+                        <Moment format='MMMM Do YYYY'>{schedule.start}</Moment>
+                        {', '}
+                        <Moment format='h:mm a'>{schedule.start}</Moment> -{' '}
+                        <Moment format='h:mm a'>{schedule.end}</Moment>-{' '}
                         {schedule.room.name}
                       </li>
                     ))}
@@ -71,10 +79,10 @@ const Meeting = ({
           </div>
         </div>
       }
-      {!isSendingRequest && office.role === "admin" && (
+      {!isSendingRequest && office.role === 'admin' && (
         <button
-          className="btn btn-success mx-1"
-          onClick={() => approveMeeting(meeting._id)}
+          className='btn btn-success mx-1'
+          onClick={() => handleApprove()}
         >
           Approve
         </button>
