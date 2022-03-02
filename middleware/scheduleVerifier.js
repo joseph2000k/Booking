@@ -1,7 +1,7 @@
-const Meeting = require('../models/Meeting');
-const Room = require('../models/Room');
-const mongoose = require('mongoose');
-const moment = require('moment');
+const Meeting = require("../models/Meeting");
+const Room = require("../models/Room");
+const mongoose = require("mongoose");
+const moment = require("moment");
 
 module.exports = async function (req, res, next) {
   const { room, start, end } = req.body;
@@ -9,34 +9,42 @@ module.exports = async function (req, res, next) {
   console.log(start, end);
 
   if (!roomName) {
-    return res.json({ msg: 'invalid room' });
+    return res.json({ msg: "invalid room" });
   }
 
   const meetingList = await Meeting.aggregate([
     { $match: { isSubmitted: true } },
-    { $unwind: '$schedules' },
+    { $unwind: "$schedules" },
     {
       $lookup: {
-        from: 'offices',
-        localField: 'office',
-        foreignField: '_id',
-        as: 'office',
+        from: "offices",
+        localField: "office",
+        foreignField: "_id",
+        as: "office",
       },
     },
-
+    //lookup the room
+    {
+      $lookup: {
+        from: "rooms",
+        localField: "schedules.room",
+        foreignField: "_id",
+        as: "room",
+      },
+    },
     {
       $unwind: {
-        path: '$office',
+        path: "$office",
         preserveNullAndEmptyArrays: true,
       },
     },
     {
       $project: {
-        room: '$schedules.room',
-        title: '$office.officeName',
-        start: '$schedules.start',
-        end: '$schedules.end',
-        isCancelled: '$schedules.isCancelled',
+        room: "$room.admin",
+        title: "$office.officeName",
+        start: "$schedules.start",
+        end: "$schedules.end",
+        isCancelled: "$schedules.isCancelled",
         _id: 0,
       },
     },
@@ -59,6 +67,7 @@ module.exports = async function (req, res, next) {
 
   const newSchedule = {
     room: roomName.id,
+    admin: roomName.admin,
     roomName: roomName.name,
     start,
     end,
@@ -73,7 +82,7 @@ module.exports = async function (req, res, next) {
     });
   } //if start is past or end is past return error
   if (moment(start).isBefore(moment()) || moment(end).isBefore(moment())) {
-    return res.status(403).json({ errors: [{ msg: 'invalid time' }] });
+    return res.status(403).json({ errors: [{ msg: "invalid time" }] });
   } else {
     req.verifiedSchedule = newSchedule;
     next();
