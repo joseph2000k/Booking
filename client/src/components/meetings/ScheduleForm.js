@@ -80,9 +80,17 @@ const ScheduleForm = ({
     }
   };
 
+  //select rooms with the samee admin
+  let roomItems;
+  if (toSubmit.length === 0) {
+    roomItems = rooms;
+  } else {
+    roomItems = rooms.filter((room) => room.admin === toSubmit[0].admin);
+  }
+
   const roomList = (
     <div className="d-flex justify-content-center">
-      {rooms.map((room) => (
+      {roomItems.map((room) => (
         <MeetingRoomItem
           key={room._id}
           room={room}
