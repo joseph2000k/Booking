@@ -33,6 +33,8 @@ const ScheduleForm = ({
   //state for the calendar
   const [roomId, setRoomId] = useState("");
 
+  const [roomAdmin, setRoomAdmin] = useState();
+
   //state for the meeting
   const [formData, setFormData] = useState({
     specialInstructions: "",
@@ -72,6 +74,7 @@ const ScheduleForm = ({
     start: startDate,
     end: endDate,
     room: roomId,
+    roomAdmin: roomAdmin,
   };
 
   const hideModal = () => {
@@ -98,6 +101,7 @@ const ScheduleForm = ({
           toggleValue={toggleValue}
           value={value}
           setRoomId={setRoomId}
+          setRoomAdmin={setRoomAdmin}
         ></MeetingRoomItem>
       ))}
     </div>

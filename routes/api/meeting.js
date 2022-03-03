@@ -706,11 +706,23 @@ router.post("/submit/", [auth], async (req, res) => {
       specialInstructions,
       first,
       second,
-      schedules: [start, end, room],
+      schedules: [start, end, room, roomAdmin],
     } = req.body;
 
     //get schedules in req.body and remove null
     const schedules = req.body.schedules.filter((item) => item !== null);
+
+    const checkAdmin = schedules.map((item) => {
+      if (item.roomAdmin != schedules[0].roomAdmin) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+
+    if (checkAdmin.includes(false)) {
+      return res.status(400).json({ msg: "Room admins not match" });
+    }
 
     var allMeeting = await Meeting.aggregate([
       { $match: { isSubmitted: true } },
