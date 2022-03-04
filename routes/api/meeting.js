@@ -82,6 +82,7 @@ router.get("/schedules", auth, async (req, res) => {
           start: "$schedules.start",
           end: "$schedules.end",
           room: "$schedules.room.name",
+          roomAdmin: "$schedules.room.admin",
           description: "$description",
         },
       },
