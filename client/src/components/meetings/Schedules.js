@@ -1,35 +1,35 @@
-import React, { Fragment } from 'react';
-import Moment from 'react-moment';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { deleteSchedule } from '../../actions/meeting';
+import React, { Fragment } from "react";
+import Moment from "react-moment";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { deleteSchedule } from "../../actions/meeting";
 
 const Schedules = ({ toSubmit, deleteSchedule }) => {
   const allSchedules = toSubmit.map((schedule) => (
     <tr key={schedule.id}>
       <td>{schedule.roomName}</td>
       <td>
-        <Moment format='h:mm A'>{schedule.start}</Moment>
+        <Moment format="h:mm A">{schedule.start}</Moment>
       </td>
       <td>
-        <Moment format='h:mm A'>{schedule.end}</Moment>
+        <Moment format="h:mm A">{schedule.end}</Moment>
       </td>
       <td>
-        <Moment format='YYYY/MM/DD'>{schedule.end}</Moment>
+        <Moment format="YYYY/MM/DD">{schedule.end}</Moment>
       </td>
       <td>
         <button
-          className='btn btn-danger'
+          className="btn btn-danger"
           onClick={() => deleteSchedule(schedule.id)}
         >
-          Delete
+          Remove
         </button>
       </td>
     </tr>
   ));
   return (
     <Fragment>
-      <table className='table table-striped'>
+      <table className="table table-striped">
         <thead>
           <tr>
             <th>Room</th>

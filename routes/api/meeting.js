@@ -170,9 +170,15 @@ router.get("/view/:id", auth, async (req, res) => {
 
 router.put("/reschedule", [auth, scheduleVerifier], async (req, res) => {
   try {
-    const { meetingId, scheduleId } = req.body;
+    const { meetingId, scheduleId, roomAdmin } = req.body;
 
-    const meeting = await Meeting.findById(meetingId);
+    const meeting = await Meeting.findById(meetingId).populate(
+      "schedules.room"
+    );
+
+    if (meeting.schedules[0].room.admin.toString() !== roomAdmin) {
+      return res.status(403).json({ msg: "Invalid room" });
+    }
 
     if (!meeting) {
       return res.status(404).json({ msg: "Meeting not found" });

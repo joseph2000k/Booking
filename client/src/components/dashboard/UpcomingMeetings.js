@@ -30,6 +30,7 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
 
   const [meetingId, setMeetingId] = useState(null);
   const [scheduleId, setScheduleId] = useState(null);
+  const [roomAdmin, setRoomAdmin] = useState(null);
 
   const handleCancel = () => {
     cancelSchedule(cancelMeetingId, cancelScheduleId);
@@ -67,10 +68,11 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
     }
   };
 
-  const handleRescheduleClick = (meetingId, scheduleId) => {
+  const handleRescheduleClick = (meetingId, scheduleId, roomAdmin) => {
     setLgShow(true);
     setMeetingId(meetingId);
     setScheduleId(scheduleId);
+    setRoomAdmin(roomAdmin);
   };
 
   const schedule = {
@@ -79,6 +81,7 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
     room: roomId,
     meetingId: meetingId,
     scheduleId: scheduleId,
+    roomAdmin: roomAdmin,
   };
 
   const allMeetings = upcoming.map((meeting) => (
@@ -99,7 +102,11 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
           <button
             className="btn btn-primary mx-1"
             onClick={() =>
-              handleRescheduleClick(meeting.meetingId, meeting._id)
+              handleRescheduleClick(
+                meeting.meetingId,
+                meeting._id,
+                meeting.roomAdmin
+              )
             }
           >
             Rechedule
@@ -134,7 +141,11 @@ const UpcomingMeetings = ({ upcoming, loading, cancelSchedule }) => {
   );
 
   const meetingRooms = (
-    <MeetingRooms toggleValue={toggleValue} setRoomId={setRoomId} />
+    <MeetingRooms
+      toggleValue={toggleValue}
+      setRoomId={setRoomId}
+      roomAdmin={roomAdmin}
+    />
   );
 
   return (

@@ -5,14 +5,22 @@ import PropTypes from "prop-types";
 import { Card } from "react-bootstrap";
 import { getRooms } from "../../actions/rooms";
 
-const MeetingRoomItem = ({ getRooms, toggleValue, rooms, setRoomId }) => {
+const MeetingRoomItem = ({
+  getRooms,
+  toggleValue,
+  rooms,
+  setRoomId,
+  roomAdmin,
+}) => {
   useEffect(() => {
     getRooms();
   }, [getRooms]);
 
+  const roomList = rooms.filter((room) => room.admin === roomAdmin.toString());
+
   return (
     <div className="mx-4 d-flex justify-content-center">
-      {rooms.map((room) => (
+      {roomList.map((room) => (
         <Card
           className="mx-4 shadow p-0 mb-5 bg-white rounded"
           style={{ width: "10rem", textDecoration: "none", color: "black" }}
