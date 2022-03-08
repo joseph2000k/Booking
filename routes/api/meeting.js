@@ -933,4 +933,126 @@ router.put("/approval/:meetingId", [auth], async (req, res) => {
   }
 });
 
+//@route    POST api/meeting/submitadmin
+//@desc     submit meeting for admin
+//@access   Private/admin
+router.post("/submitadmin", [auth], async (req, res) => {
+  try {
+    const {
+      description,
+      contactName,
+      contactNumber,
+      numberOfAttendees,
+      specialInstructions,
+      first,
+      second,
+      office,
+      schedules: [start, end, room, roomAdmin],
+    } = req.body;
+
+    const admin = await Office.findById(req.office.id);
+
+    //get schedules in req.body and remove null
+    const schedules = req.body.schedules.filter((item) => item !== null);
+
+    if (
+      admin.role !== "admin" ||
+      admin.id.toString() !== schedules[0].roomAdmin.toString()
+    ) {
+      return res.status(401).json({ errors: [{ msg: "Unauthorized" }] });
+    }
+
+    const checkAdmin = schedules.map((item) => {
+      if (item.roomAdmin != schedules[0].roomAdmin) {
+        return false;
+      } else {
+        return true;
+      }
+    });
+
+    if (checkAdmin.includes(false)) {
+      return res.status(400).json({ msg: "Room admins not match" });
+    }
+
+    var allMeeting = await Meeting.aggregate([
+      { $match: { isSubmitted: true } },
+      { $unwind: "$schedules" },
+      {
+        $lookup: {
+          from: "offices",
+          localField: "office",
+          foreignField: "_id",
+          as: "office",
+        },
+      },
+
+      {
+        $unwind: {
+          path: "$office",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $project: {
+          room: "$schedules.room",
+          title: "$office.officeName",
+          start: "$schedules.start",
+          end: "$schedules.end",
+          isCancelled: "$schedules.isCancelled",
+          _id: 0,
+        },
+      },
+
+      {
+        $match: { isCancelled: false },
+      },
+    ]);
+
+    for (let i = 0; i < schedules.length; i++) {
+      var scheduleList = allMeeting.find(
+        (item) =>
+          (item.start.getTime() <= new Date(schedules[i].start).getTime() ||
+            item.start.getTime() <= new Date(schedules[i].end).getTime()) &&
+          (item.end.getTime() >= new Date(schedules[i].start).getTime() ||
+            item.end.getTime() >= new Date(schedules[i].end).getTime()) &&
+          item.room.toString() === schedules[i].room.toString()
+      );
+      if (scheduleList) {
+        var scheduleError = {
+          msg: `${moment(schedules[i].start).format(
+            "MMMM Do YYYY, h:mm:ss "
+          )} has already been taken`,
+        };
+      }
+    }
+
+    if (scheduleError) {
+      return res.status(409).json({ errors: [scheduleError] });
+    }
+
+    const meeting = {
+      description,
+      contactName,
+      contactNumber,
+      numberOfAttendees,
+      specialInstructions,
+      first,
+      second,
+      schedules,
+      office,
+      isSubmitted: true,
+      isApproved: true,
+    };
+
+    const newMeeting = new Meeting(meeting);
+
+    await newMeeting.save();
+
+    res.json(newMeeting);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = router;
