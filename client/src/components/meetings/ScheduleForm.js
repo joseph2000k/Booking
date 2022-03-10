@@ -19,6 +19,7 @@ const ScheduleForm = ({
   getRooms,
   room: { rooms },
   submitMeeting,
+  auth: { office },
   meetings: { toSubmit },
 }) => {
   useEffect(() => {
@@ -271,6 +272,11 @@ const ScheduleForm = ({
           </Modal>
         </div>
         <div className="mt-2">
+          {toSubmit.length > 0 && office._id === toSubmit[0].admin ? (
+            <span>display a dropdown of office here</span>
+          ) : null}
+        </div>
+        <div className="mt-2">
           {toSubmit != 0 && (
             <Fragment>
               <Schedules toSubmit={toSubmit} />
@@ -296,12 +302,14 @@ ScheduleForm.propTypes = {
   meeting: PropTypes.object.isRequired,
   submitMeeting: PropTypes.func.isRequired,
   meetings: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   room: state.room,
   meeting: state.meetingauth,
   meetings: state.meeting,
+  auth: state.auth,
 });
 
 export default connect(mapStateToProps, {
