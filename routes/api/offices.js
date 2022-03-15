@@ -3,6 +3,7 @@ const router = express.Router();
 const config = require("config");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 
 const Office = require("../../models/Office");
@@ -70,5 +71,18 @@ router.post(
     }
   }
 );
+
+//@route   GET api/offices
+//@desc    Get all offices
+//@access  Private
+router.get("/", auth, async (req, res) => {
+  try {
+    const offices = await Office.find().sort({ date: -1 });
+    res.json(offices);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;

@@ -25,6 +25,8 @@ const MeetingRoomCalendar = ({
   checkSchedule,
   toggleValue,
   handleClose,
+  setOfficeId,
+  toSubmit,
   meetings: { meetings, room },
 }) => {
   useEffect(() => {
@@ -72,6 +74,9 @@ const MeetingRoomCalendar = ({
             {
               toggleValue(true);
             }
+            if (toSubmit.length === 0) {
+              setOfficeId("");
+            }
             handleClose();
           }}
         >
@@ -85,7 +90,6 @@ const MeetingRoomCalendar = ({
         defaultView="dayGridMonth"
         themeSystem="standard"
         height="auto"
-        displayEventTime={false}
         events={meetings}
         selectable={true}
         selectAllow={selectAllow}
@@ -104,10 +108,12 @@ MeetingRoomCalendar.propTypes = {
   getRoom: PropTypes.func.isRequired,
   meetings: PropTypes.array.isRequired,
   checkSchedule: PropTypes.func.isRequired,
+  toSubmit: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   meetings: state.room,
+  toSubmit: state.meeting.toSubmit,
 });
 
 export default connect(mapStateToProps, {

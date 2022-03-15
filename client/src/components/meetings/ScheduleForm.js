@@ -9,22 +9,28 @@ import { loadCurrentMeeting } from "../../actions/authmeeting";
 import useToggle from "../../utils/useToggle";
 import { getRooms } from "../../actions/rooms";
 import { submitMeeting } from "../../actions/meeting";
+import { getOfficeList } from "../../actions/office";
 import MeetingRoomItem from "./MeetingRoomItem";
 import Schedules from "./Schedules";
 import Modal from "react-bootstrap/Modal";
 import MeetingRoomCalendar from "./MeetingRoomCalendar";
 import moment from "moment";
+import Form from "react-bootstrap/Form";
+import { preventDefault } from "@fullcalendar/react";
 
 const ScheduleForm = ({
   getRooms,
+  getOfficeList,
   room: { rooms },
   submitMeeting,
   auth: { office },
   meetings: { toSubmit },
+  offices: { officeList },
 }) => {
   useEffect(() => {
     getRooms();
-  }, [getRooms]);
+    getOfficeList();
+  }, [getRooms, getOfficeList]);
 
   let history = useHistory();
 
@@ -44,6 +50,9 @@ const ScheduleForm = ({
   });
   //toggle for modal
   const [value, toggleValue] = useToggle(true);
+
+  //office id
+  const [officeId, setOfficeId] = useState("");
 
   const [dateValue, dateOnChange] = useState("");
   const [start, startOnChange] = useState("08:00");
@@ -84,7 +93,7 @@ const ScheduleForm = ({
     }
   };
 
-  //select rooms with the samee admin
+  //select rooms with the same admin
   let roomItems;
   if (toSubmit.length === 0) {
     roomItems = rooms;
@@ -122,8 +131,19 @@ const ScheduleForm = ({
         schedule={schedule}
         toggleValue={toggleValue}
         handleClose={handleClose}
+        setOfficeId={setOfficeId}
       ></MeetingRoomCalendar>
     </div>
+  );
+
+  //map office name in dropdown
+  const officeSelect = (
+    <Form.Select onChange={(e) => setOfficeId(e.target.value)}>
+      <option value={""}>Select Office</option>
+      {officeList.map((office) => (
+        <option value={office._id}>{office.officeName}</option>
+      ))}
+    </Form.Select>
   );
 
   return (
@@ -272,10 +292,16 @@ const ScheduleForm = ({
           </Modal>
         </div>
         <div className="mt-2">
-          {toSubmit.length > 0 && office._id === toSubmit[0].admin ? (
-            <span>display a dropdown of office here</span>
+          {toSubmit.length > 0 &&
+          office._id === toSubmit[0].admin &&
+          officeList.length > 0 ? (
+            <span>
+              {officeSelect}
+              {officeId}
+            </span>
           ) : null}
         </div>
+
         <div className="mt-2">
           {toSubmit != 0 && (
             <Fragment>
@@ -298,6 +324,7 @@ ScheduleForm.propTypes = {
   proceedScheduling: PropTypes.func.isRequired,
   loadCurrentMeeting: PropTypes.func.isRequired,
   getRooms: PropTypes.func.isRequired,
+  getOfficeList: PropTypes.func.isRequired,
   room: PropTypes.object.isRequired,
   meeting: PropTypes.object.isRequired,
   submitMeeting: PropTypes.func.isRequired,
@@ -310,6 +337,7 @@ const mapStateToProps = (state) => ({
   meeting: state.meetingauth,
   meetings: state.meeting,
   auth: state.auth,
+  offices: state.office,
 });
 
 export default connect(mapStateToProps, {
@@ -317,4 +345,5 @@ export default connect(mapStateToProps, {
   loadCurrentMeeting,
   getRooms,
   submitMeeting,
+  getOfficeList,
 })(ScheduleForm);

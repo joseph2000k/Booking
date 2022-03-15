@@ -952,6 +952,10 @@ router.post("/submitadmin", [auth], async (req, res) => {
 
     const admin = await Office.findById(req.office.id);
 
+    if (office === "" || office === undefined) {
+      return res.status(400).json({ errors: [{ msg: "Office is required" }] });
+    }
+
     //get schedules in req.body and remove null
     const schedules = req.body.schedules.filter((item) => item !== null);
 
