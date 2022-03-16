@@ -959,10 +959,7 @@ router.post("/submitadmin", [auth], async (req, res) => {
     //get schedules in req.body and remove null
     const schedules = req.body.schedules.filter((item) => item !== null);
 
-    if (
-      admin.role !== "admin" ||
-      admin.id.toString() !== schedules[0].roomAdmin.toString()
-    ) {
+    if (admin.role !== "admin" || admin.id.toString() !== schedules[0].admin) {
       return res.status(401).json({ errors: [{ msg: "Unauthorized" }] });
     }
 

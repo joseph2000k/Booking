@@ -87,6 +87,36 @@ export const submitMeeting = (meetings, history) => async (dispatch) => {
   }
 };
 
+//submit meeting for admin
+export const submitMeetingAdmin = (meetings, history) => async (dispatch) => {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+    };
+    console.log(meetings);
+
+    const res = await axios.post("/api/meeting/submitadmin", meetings, config);
+
+    dispatch({
+      type: CREATE_MEETING,
+      payload: res.data,
+    });
+
+    history.push("/dashboard");
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+    }
+
+    dispatch({
+      type: MEETING_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
 //Meeting history
 export const meetingHistory = () => async (dispatch) => {
   try {

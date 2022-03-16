@@ -9,6 +9,7 @@ import { loadCurrentMeeting } from "../../actions/authmeeting";
 import useToggle from "../../utils/useToggle";
 import { getRooms } from "../../actions/rooms";
 import { submitMeeting } from "../../actions/meeting";
+import { submitMeetingAdmin } from "../../actions/meeting";
 import { getOfficeList } from "../../actions/office";
 import MeetingRoomItem from "./MeetingRoomItem";
 import Schedules from "./Schedules";
@@ -23,6 +24,7 @@ const ScheduleForm = ({
   getOfficeList,
   room: { rooms },
   submitMeeting,
+  submitMeetingAdmin,
   auth: { office },
   meetings: { toSubmit },
   offices: { officeList },
@@ -77,6 +79,12 @@ const ScheduleForm = ({
 
   const meeting = {
     ...formData,
+    schedules: toSubmit,
+  };
+
+  const adminMeeting = {
+    ...formData,
+    office: officeId,
     schedules: toSubmit,
   };
 
@@ -295,10 +303,7 @@ const ScheduleForm = ({
           {toSubmit.length > 0 &&
           office._id === toSubmit[0].admin &&
           officeList.length > 0 ? (
-            <span>
-              {officeSelect}
-              {officeId}
-            </span>
+            <span>{officeSelect}</span>
           ) : null}
         </div>
 
@@ -306,12 +311,21 @@ const ScheduleForm = ({
           {toSubmit != 0 && (
             <Fragment>
               <Schedules toSubmit={toSubmit} />
-              <button
-                className="btn btn-primary"
-                onClick={() => submitMeeting(meeting, history)}
-              >
-                Submit
-              </button>
+              {office.role === "admin" && office._id === toSubmit[0].admin ? (
+                <button
+                  className="btn btn-primary"
+                  onClick={() => submitMeetingAdmin(adminMeeting, history)}
+                >
+                  Schedule Meeting
+                </button>
+              ) : (
+                <button
+                  className="btn btn-primary"
+                  onClick={() => submitMeeting(meeting, history)}
+                >
+                  Submit
+                </button>
+              )}
             </Fragment>
           )}
         </div>
@@ -328,6 +342,7 @@ ScheduleForm.propTypes = {
   room: PropTypes.object.isRequired,
   meeting: PropTypes.object.isRequired,
   submitMeeting: PropTypes.func.isRequired,
+  submitMeetingAdmin: PropTypes.func.isRequired,
   meetings: PropTypes.object.isRequired,
   auth: PropTypes.object.isRequired,
 };
@@ -345,5 +360,6 @@ export default connect(mapStateToProps, {
   loadCurrentMeeting,
   getRooms,
   submitMeeting,
+  submitMeetingAdmin,
   getOfficeList,
 })(ScheduleForm);
