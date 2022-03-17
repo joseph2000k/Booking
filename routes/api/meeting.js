@@ -841,6 +841,22 @@ router.get("/adminforapproval/", [auth], async (req, res) => {
       { $unwind: "$schedules" },
       {
         $lookup: {
+          from: "rooms",
+          localField: "schedules.room",
+          foreignField: "_id",
+          as: "room",
+        },
+      },
+
+      {
+        $unwind: {
+          path: "$room",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+
+      {
+        $lookup: {
           from: "offices",
           localField: "office",
           foreignField: "_id",
@@ -858,6 +874,7 @@ router.get("/adminforapproval/", [auth], async (req, res) => {
         $project: {
           isApproved: 1,
           room: "$schedules.room",
+          roomAdmin: "$room.admin",
           meetingId: "$_id",
           isCancelled: "$schedules.isCancelled",
           title: "$office.officeName",
@@ -868,12 +885,12 @@ router.get("/adminforapproval/", [auth], async (req, res) => {
         },
       },
     ]);
-
     let forApprovals = [];
     for (let i = 0; i < meetingList.length; i++) {
-      var room = rooms.find(
-        (item) => item.toString() === meetingList[i].room.toString()
-      );
+      let room;
+      if (office.id.toString() === meetingList[i].roomAdmin.toString()) {
+        room = meetingList[i];
+      }
       if (
         room &&
         !forApprovals.find(
