@@ -7,7 +7,6 @@ import ClockLoader from "react-spinners/ClockLoader";
 import History from "./History";
 import ForApproval from "./ForApproval";
 import ForApprovalofAdmin from "./admin/ForApprovalofAdmin";
-import { getForApprovalMeetings } from "../../actions/meeting";
 import { clearSubmitMeetings } from "../../actions/meeting";
 import { getSchedules } from "../../actions/meeting";
 import UpcomingMeetings from "./UpcomingMeetings";
@@ -21,8 +20,6 @@ const Dashboard = ({
   meeting: { loading, schedules },
   meetings,
   adminApproval,
-  deleteMeeting,
-  getForApprovalMeetings,
 }) => {
   useEffect(() => {
     getMeetings();
@@ -94,7 +91,6 @@ Dashboard.propTypes = {
   meetings: PropTypes.array.isRequired,
   getSchedules: PropTypes.func.isRequired,
   adminApproval: PropTypes.array.isRequired,
-  getForApprovalMeetings: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -107,6 +103,5 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   getMeetings,
   clearSubmitMeetings,
-  getForApprovalMeetings,
   getSchedules,
 })(Dashboard);
