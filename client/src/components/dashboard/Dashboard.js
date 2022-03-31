@@ -28,8 +28,7 @@ const Dashboard = ({
     getMeetings();
     clearSubmitMeetings();
     getSchedules();
-    getForApprovalMeetings();
-  }, [getMeetings, clearSubmitMeetings, getSchedules, getForApprovalMeetings]);
+  }, [getMeetings, clearSubmitMeetings, getSchedules]);
 
   const forApproval = meetings.filter(
     (meeting) => meeting.isApproved === false
