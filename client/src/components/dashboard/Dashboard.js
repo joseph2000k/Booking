@@ -7,6 +7,7 @@ import ClockLoader from "react-spinners/ClockLoader";
 import History from "./History";
 import ForApproval from "./ForApproval";
 import ForApprovalofAdmin from "./admin/ForApprovalofAdmin";
+import { getForApprovalMeetings } from "../../actions/meeting";
 import { clearSubmitMeetings } from "../../actions/meeting";
 import { getSchedules } from "../../actions/meeting";
 import UpcomingMeetings from "./UpcomingMeetings";
@@ -20,12 +21,18 @@ const Dashboard = ({
   meeting: { loading, schedules },
   meetings,
   adminApproval,
+  deleteMeeting,
+  getForApprovalMeetings,
 }) => {
   useEffect(() => {
     getMeetings();
     clearSubmitMeetings();
     getSchedules();
   }, [getMeetings, clearSubmitMeetings, getSchedules]);
+
+  if (office != null && office.role === "admin") {
+    getForApprovalMeetings();
+  }
 
   const forApproval = meetings.filter(
     (meeting) => meeting.isApproved === false
@@ -49,7 +56,7 @@ const Dashboard = ({
     }
   }
 
-  return office === null || isSendingRequest ? (
+  return office === null || isSendingRequest || loading ? (
     <div className="d-flex justify-content-center">
       <ClockLoader />
     </div>
@@ -77,7 +84,12 @@ const Dashboard = ({
       )}
 
       {historyMeetings.length > 0 && (
-        <History history={historyMeetings} loading={loading} />
+        <History
+          history={historyMeetings
+            .sort((a, b) => (moment(a.start).isAfter(moment(b.start)) ? -1 : 1))
+            .slice(0, 5)}
+          loading={loading}
+        />
       )}
     </Fragment>
   );
@@ -91,6 +103,7 @@ Dashboard.propTypes = {
   meetings: PropTypes.array.isRequired,
   getSchedules: PropTypes.func.isRequired,
   adminApproval: PropTypes.array.isRequired,
+  getForApprovalMeetings: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -103,5 +116,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   getMeetings,
   clearSubmitMeetings,
+  getForApprovalMeetings,
   getSchedules,
 })(Dashboard);
