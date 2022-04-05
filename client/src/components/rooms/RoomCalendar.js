@@ -36,7 +36,16 @@ const RoomCalendar = ({
     history.push("/create-meeting");
   };
 
+  const handdleOnBeforeGetContent = () => {
+    printRef.current.hidden = true;
+  };
+
+  const handdleAfterPrint = () => {
+    printRef.current.hidden = false;
+  };
+
   const componentRef = useRef();
+  const printRef = useRef();
 
   return (
     <Fragment>
@@ -49,9 +58,13 @@ const RoomCalendar = ({
             <div>
               <ReactToPrint
                 trigger={() => (
-                  <button className="btn btn-primary">Print</button>
+                  <button ref={printRef} className="btn btn-primary">
+                    Print
+                  </button>
                 )}
                 content={() => componentRef.current}
+                onBeforeGetContent={handdleOnBeforeGetContent}
+                onAfterPrint={handdleAfterPrint}
               />
             </div>
           </div>
