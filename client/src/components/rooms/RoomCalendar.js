@@ -36,14 +36,6 @@ const RoomCalendar = ({
     history.push("/create-meeting");
   };
 
-  const handdleOnBeforeGetContent = () => {
-    printRef.current.hidden = true;
-  };
-
-  const handdleAfterPrint = () => {
-    printRef.current.hidden = false;
-  };
-
   const componentRef = useRef();
   const printRef = useRef();
 
@@ -63,8 +55,12 @@ const RoomCalendar = ({
                   </button>
                 )}
                 content={() => componentRef.current}
-                onBeforeGetContent={handdleOnBeforeGetContent}
-                onAfterPrint={handdleAfterPrint}
+                onBeforeGetContent={() => {
+                  printRef.current.hidden = true;
+                }}
+                onAfterPrint={() => {
+                  printRef.current.hidden = false;
+                }}
               />
             </div>
           </div>
