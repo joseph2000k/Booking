@@ -14,6 +14,7 @@ import UpcomingMeetings from "./UpcomingMeetings";
 import moment from "moment";
 
 const Dashboard = ({
+  getForApprovalMeetings,
   auth: { office, isSendingRequest },
   getMeetings,
   getSchedules,
@@ -22,17 +23,13 @@ const Dashboard = ({
   meetings,
   adminApproval,
   deleteMeeting,
-  getForApprovalMeetings,
 }) => {
   useEffect(() => {
+    getForApprovalMeetings();
     getMeetings();
     clearSubmitMeetings();
     getSchedules();
-  }, [getMeetings, clearSubmitMeetings, getSchedules]);
-
-  if (office != null && office.role === "admin") {
-    getForApprovalMeetings();
-  }
+  }, [getForApprovalMeetings, getMeetings, clearSubmitMeetings, getSchedules]);
 
   const forApproval = meetings.filter(
     (meeting) => meeting.isApproved === false
