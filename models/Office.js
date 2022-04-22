@@ -9,6 +9,16 @@ const OfficeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  contactName: {
+    type: String,
+    required: true,
+  },
+  contactNumber: {
+    type: String,
+  },
+  contactEmail: {
+    type: String,
+  },
   role: {
     type: String,
     required: true,
