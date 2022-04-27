@@ -37,7 +37,10 @@ const Navbar = ({
 
   const SuperUserLinks = (
     <Fragment>
-      <Link className="dropdown-item text-decoration-none link-dark" to={""}>
+      <Link
+        className="dropdown-item text-decoration-none link-dark"
+        to={`/add-office`}
+      >
         Add Office
       </Link>
       <Link className="dropdown-item text-decoration-none link-dark" to={""}>

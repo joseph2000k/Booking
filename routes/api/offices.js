@@ -9,7 +9,7 @@ const { check, validationResult } = require("express-validator");
 const Office = require("../../models/Office");
 //@route    POST api/offices
 //@desc     Register office
-//@access   Public
+//@access   Private
 router.post(
   "/",
   [
@@ -19,6 +19,7 @@ router.post(
       "password",
       "Please enter a password with 6 or more characters"
     ).isLength({ min: 6 }),
+    auth,
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -29,6 +30,12 @@ router.post(
     const { officeName, password, role, rooms } = req.body;
 
     try {
+      const user = await Office.findById(req.office.id);
+
+      if (user.role !== "admin") {
+        return res.status(400).json({ errors: [{ msg: "Not Authorized" }] });
+      }
+
       let office = await Office.findOne({ officeName });
 
       if (office) {
@@ -50,21 +57,8 @@ router.post(
 
       await office.save();
 
-      const payload = {
-        office: {
-          id: office.id,
-        },
-      };
-
-      jwt.sign(
-        payload,
-        config.get("jwtSecret"),
-        { expiresIn: 360000 },
-        (err, token) => {
-          if (err) throw err;
-          res.json({ token });
-        }
-      );
+      const payload = await Office.find().select("-password");
+      res.json(payload);
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
@@ -77,7 +71,7 @@ router.post(
 //@access  Private
 router.get("/", auth, async (req, res) => {
   try {
-    const offices = await Office.find().sort({ date: -1 });
+    const offices = await Office.find().sort({ date: -1 }).select("-password");
     res.json(offices);
   } catch (err) {
     console.error(err.message);

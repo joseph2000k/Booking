@@ -12,6 +12,7 @@ import Rooms from "./components/rooms/Rooms";
 import RoomCalendar from "./components/rooms/RoomCalendar";
 import Dashboard from "./components/dashboard/Dashboard";
 import Meeting from "./components/meetings/Meeting";
+import AddOffice from "./components/dashboard/admin/AddOffice";
 import Alert from "./components/layout/Alert";
 import { LOGOUT } from "./actions/types";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -57,6 +58,7 @@ const App = () => {
                 path="/create-meeting"
                 component={ScheduleForm}
               />
+              <PrivateRoute exact path="/add-office" component={AddOffice} />
             </Switch>
           </section>
         </Fragment>

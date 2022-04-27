@@ -1,4 +1,4 @@
-import { GET_OFFICE_LIST } from "../actions/types";
+import { GET_OFFICE_LIST, ADD_OFFICE } from "../actions/types";
 
 const initialState = {
   officeList: [],
@@ -14,6 +14,13 @@ export default function officeReducer(state = initialState, action) {
       return {
         ...state,
         officeList: payload,
+        loading: false,
+      };
+
+    case ADD_OFFICE:
+      return {
+        ...state,
+        officeList: [...payload],
         loading: false,
       };
     default:
