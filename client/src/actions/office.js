@@ -1,6 +1,6 @@
 import axios from "axios";
 import { setAlert } from "./alert";
-import { GET_OFFICE_LIST, ADD_OFFICE } from "./types";
+import { GET_OFFICE_LIST, ADD_OFFICE, DELETE_OFFICE } from "./types";
 
 export const getOfficeList = () => async (dispatch) => {
   try {
@@ -31,5 +31,20 @@ export const addOffice = (formData) => async (dispatch) => {
     if (errors) {
       errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
     }
+  }
+};
+
+export const deleteOffice = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`/api/offices/${id}`);
+
+    dispatch({
+      type: DELETE_OFFICE,
+      payload: id,
+    });
+
+    dispatch(setAlert("Office Deleted", "success"));
+  } catch (err) {
+    console.log(err);
   }
 };

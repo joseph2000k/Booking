@@ -43,11 +43,12 @@ const Navbar = ({
       >
         Add Office
       </Link>
-      <Link className="dropdown-item text-decoration-none link-dark" to={""}>
-        Delete Office
-      </Link>
-      <Link className="dropdown-item text-decoration-none link-dark" to={""}>
-        Manage Office Role
+
+      <Link
+        className="dropdown-item text-decoration-none link-dark"
+        to={`/manage-office`}
+      >
+        Manage Office
       </Link>
       <Link className="dropdown-item text-decoration-none link-dark" to={""}>
         Delete Room

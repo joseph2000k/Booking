@@ -77,8 +77,8 @@ const AddOffice = ({ addOffice, setAlert }) => {
                     value={role}
                     required
                   >
-                    <option selected>Please select a role</option>
-                    <option value="admin">Admin</option>
+                    <option selected>--Please select a role--</option>
+                    <option value="manager">Manager</option>
                     <option value="user">User</option>
                   </select>
                 </div>
