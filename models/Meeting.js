@@ -68,6 +68,10 @@ const MeetingSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  meetingAdmin: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "office",
+  },
   dateCreated: {
     type: Date,
     default: Date.now,

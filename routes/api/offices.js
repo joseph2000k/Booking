@@ -5,6 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
+const moment = require("moment");
 
 const Office = require("../../models/Office");
 const Meeting = require("../../models/Meeting");
@@ -88,6 +89,15 @@ router.delete("/:id", auth, async (req, res) => {
   try {
     const office = await Office.findById(req.params.id);
     const user = await Office.findById(req.office.id);
+    const meetings = await Meeting.find({ meetingAdmin: req.params.id }).where({
+      isNotPending: false,
+    });
+    console.log(meetings);
+    if (meetings.length > 0) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Office has pending meetings" }] });
+    }
 
     if (user.role !== "admin") {
       return res.status(400).json({ errors: [{ msg: "Not Authorized" }] });
@@ -98,8 +108,8 @@ router.delete("/:id", auth, async (req, res) => {
     }
 
     await office.remove();
-    await Meeting.deleteMany({ office: req.params.id });
-    await OfficeProfile.findOneAndRemove({ office: req.params.id });
+    await Meeting.deleteMany({ meetingAdmin: req.params.id });
+    await OfficeProfile.deleteMany({ office: req.params.id });
 
     res.json({ msg: "Office removed" });
   } catch (err) {

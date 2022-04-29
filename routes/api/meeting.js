@@ -330,6 +330,7 @@ router.get("/rooms/:roomId", async (req, res) => {
       {
         $project: {
           isApproved: 1,
+          isNotPending: 1,
           room: "$schedules.room",
           isCancelled: "$schedules.isCancelled",
           title: "$office.officeName",
@@ -346,10 +347,10 @@ router.get("/rooms/:roomId", async (req, res) => {
     ]);
 
     const meetings = meetingList.map((item) => {
-      if (item.isApproved === false) {
+      if (item.isApproved === false && item.isNotPending === false) {
         item.title = "Waiting for Approval";
         item.description = "Reserved (Waiting for Approval)";
-      } else {
+      } else if (item.isApproved === true && item.isNotPending === true) {
         item.description +=
           " on " +
           moment(item.start).format("MMMM DD YYYY , [From] h:mm a") +
@@ -516,6 +517,7 @@ router.put("/schedule/:meetingId", auth, async (req, res) => {
 router.delete("/:meetingId", auth, async (req, res) => {
   try {
     const meeting = await Meeting.findById(req.params.meetingId);
+
     if (!meeting) {
       return res.status(404).json({ msg: "Meeting does not exist" });
     }
@@ -713,6 +715,7 @@ router.post("/submit/", [auth], async (req, res) => {
       specialInstructions,
       first,
       second,
+      meetingAdmin,
       schedules: [start, end, room, roomAdmin],
     } = req.body;
 
@@ -798,6 +801,7 @@ router.post("/submit/", [auth], async (req, res) => {
       schedules,
       office: req.office.id,
       isSubmitted: true,
+      meetingAdmin,
     };
 
     const newMeeting = new Meeting(meeting);
@@ -940,6 +944,7 @@ router.put("/approval/:meetingId", [auth], async (req, res) => {
     }
 
     meeting.isApproved = true;
+    meeting.isNotPending = true;
 
     await meeting.save();
 

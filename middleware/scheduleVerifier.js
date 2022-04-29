@@ -6,7 +6,6 @@ const moment = require("moment");
 module.exports = async function (req, res, next) {
   const { room, start, end } = req.body;
   let roomName = await Room.findById(room);
-  console.log(start, end);
 
   if (!roomName) {
     return res.json({ msg: "invalid room" });
@@ -39,8 +38,14 @@ module.exports = async function (req, res, next) {
       },
     },
     {
+      $unwind: {
+        path: "$room",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
       $project: {
-        room: "$room.admin",
+        room: "$room._id",
         title: "$office.officeName",
         start: "$schedules.start",
         end: "$schedules.end",
@@ -72,6 +77,7 @@ module.exports = async function (req, res, next) {
     start,
     end,
   };
+
   if (schedule) {
     return res.status(406).json({
       errors: [

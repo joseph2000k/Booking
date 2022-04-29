@@ -79,6 +79,7 @@ const ScheduleForm = ({
 
   const meeting = {
     ...formData,
+    meetingAdmin: roomAdmin,
     schedules: toSubmit,
   };
 
