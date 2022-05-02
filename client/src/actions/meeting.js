@@ -32,12 +32,12 @@ export const getMeetings = () => async (dispatch) => {
         type: GET_MEETINGS,
         payload: [],
       });
+    } else {
+      dispatch({
+        type: MEETING_ERROR,
+        payload: { msg: err.response.statusText, status: err.response.status },
+      });
     }
-
-    dispatch({
-      type: MEETING_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status },
-    });
   }
 };
 

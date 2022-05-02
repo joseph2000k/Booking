@@ -342,7 +342,15 @@ router.get("/rooms/:roomId", async (req, res) => {
       },
 
       {
-        $match: { room: ObjectId(req.params.roomId), isCancelled: false },
+        $match: {
+          room: ObjectId(req.params.roomId),
+          isCancelled: false,
+          $and: [
+            {
+              $or: [{ isApproved: true }, { isNotPending: false }],
+            },
+          ],
+        },
       },
     ]);
 
