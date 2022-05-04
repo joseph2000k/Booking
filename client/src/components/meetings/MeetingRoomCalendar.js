@@ -68,6 +68,7 @@ const MeetingRoomCalendar = ({
           <Moment format="MM-DD-YYYY">{dateValue}</Moment>
         )}
         <button
+          {...(dateValue ? { disabled: false } : { disabled: true })}
           className="btn btn-primary"
           onClick={() => {
             checkSchedule(schedule);
