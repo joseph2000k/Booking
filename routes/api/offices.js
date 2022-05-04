@@ -108,7 +108,7 @@ router.delete("/:id", auth, async (req, res) => {
     }
 
     await office.remove();
-    await Meeting.deleteMany({ meetingAdmin: req.params.id });
+    await Meeting.deleteMany({ office: req.params.id });
     await OfficeProfile.deleteMany({ office: req.params.id });
 
     res.json({ msg: "Office removed" });

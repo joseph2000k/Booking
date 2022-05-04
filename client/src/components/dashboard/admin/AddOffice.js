@@ -18,7 +18,7 @@ const AddOffice = ({ addOffice, setAlert }) => {
     e.preventDefault();
     if (password !== password2) {
       setAlert("Passwords do not match", "danger");
-    } else if (role !== "user" && role !== "admin") {
+    } else if (role !== "user" && role !== "manager") {
       setAlert("Please select a valid role", "danger");
     } else {
       addOffice(formData);

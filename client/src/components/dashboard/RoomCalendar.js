@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import bootstrapPlugin from '@fullcalendar/bootstrap';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { getRoomMeetings } from '../../actions/rooms';
-import { getRoom } from '../../actions/rooms';
-import TimePicker from 'react-time-picker';
-import Moment from 'react-moment';
-import { checkSchedule } from '../../actions/meeting';
-import { rescheduleMeeting } from '../../actions/meeting';
-import moment from 'moment';
+import React, { useEffect, useState } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import bootstrapPlugin from "@fullcalendar/bootstrap";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { getRoomMeetings } from "../../actions/rooms";
+import { getRoom } from "../../actions/rooms";
+import TimePicker from "react-time-picker";
+import Moment from "react-moment";
+import { checkSchedule } from "../../actions/meeting";
+import { rescheduleMeeting } from "../../actions/meeting";
+import moment from "moment";
 
 const MeetingRoomCalendar = ({
   getRoom,
@@ -47,43 +47,43 @@ const MeetingRoomCalendar = ({
   };
 
   const pastDates = {
-    start: '1970-01-01',
-    end: moment().format('YYYY-MM-DD'),
-    display: 'background',
-    color: '#E8E8E8',
+    start: "1970-01-01",
+    end: moment().format("YYYY-MM-DD"),
+    display: "background",
+    color: "#E8E8E8",
   };
 
   meetings.push(pastDates);
 
   return (
     <div>
-      <div className='d-flex justify-content-center'>
+      <div className="d-flex justify-content-center">
         From:
         <TimePicker
-          className='border border-primary border-3 rounded'
-          disableClock='true'
-          minTime='06:00:00'
+          className="border border-primary border-3 rounded"
+          disableClock="true"
+          minTime="06:00:00"
           clearIcon
           onChange={startOnChange}
           value={start}
         />
         To:
         <TimePicker
-          className='border border-primary border-3 rounded'
-          disableClock='true'
-          minTime='06:00:00'
+          className="border border-primary border-3 rounded"
+          disableClock="true"
+          minTime="06:00:00"
           clearIcon
           onChange={endOnChange}
           value={end}
         />
         Date: {dateValue}
         {dateValue && moment(dateValue).isValid() ? (
-          <button className='btn btn-primary' onClick={handleConfirmClick}>
+          <button className="btn btn-primary" onClick={handleConfirmClick}>
             Confirm
           </button>
         ) : (
           <button
-            className='btn btn-primary'
+            className="btn btn-primary"
             disabled
             onClick={handleConfirmClick}
           >
@@ -91,14 +91,13 @@ const MeetingRoomCalendar = ({
           </button>
         )}
       </div>
-      <h2 className='h-title'>{room.name}</h2>
+      <h2 className="h-title">{room.name}</h2>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin, bootstrapPlugin]}
         weekends={false}
-        defaultView='dayGridMonth'
-        themeSystem='standard'
-        height='auto'
-        displayEventTime={false}
+        defaultView="dayGridMonth"
+        themeSystem="standard"
+        height="auto"
         events={meetings}
         selectable={true}
         selectAllow={selectAllow}

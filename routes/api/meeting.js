@@ -144,15 +144,14 @@ router.get("/view/:id", auth, async (req, res) => {
       .populate("office", "-password")
       .populate("schedules.room");
     const office = await Office.findById(req.office.id);
-
     if (!meeting) {
       return res.status(404).json({ msg: "Meeting not found" });
     }
 
     //check user
     if (
-      meeting.office.id.toString() === req.office.id ||
-      office.role === "admin"
+      meeting.meetingAdmin.toString() === req.office.id ||
+      meeting.office.id.toString() === req.office.id
     ) {
       res.json(meeting);
     } else {
