@@ -9,6 +9,7 @@ import {
   GET_MEETINGS,
   CLEAR_GET_TO_SUBMIT_MEETINGS,
   GET_FOR_APPROVAL_MEETINGS,
+  MEETING_APPROVED,
 } from "../actions/types";
 
 const initialState = {
@@ -56,6 +57,14 @@ export default function meetingReducer(state = initialState, action) {
       return {
         ...state,
         forApproval: payload,
+        loading: false,
+      };
+    case MEETING_APPROVED:
+      return {
+        ...state,
+        forApproval: state.forApproval.filter(
+          (meeting) => meeting.meetingId !== payload
+        ),
         loading: false,
       };
     case GET_TO_SUBMIT_MEETINGS:

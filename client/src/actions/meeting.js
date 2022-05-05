@@ -13,6 +13,7 @@ import {
   MEETING_HISTORY,
   CLEAR_GET_TO_SUBMIT_MEETINGS,
   GET_FOR_APPROVAL_MEETINGS,
+  MEETING_APPROVED,
 } from "./types";
 
 //Get all meetings for the current office
@@ -215,10 +216,12 @@ export const getForApprovalMeetings = () => async (dispatch) => {
 //approve a meeting (admin)
 export const approveMeeting = (id) => async (dispatch) => {
   try {
-    await axios.put(`/api/meeting/approval/${id}`);
+    const res = await axios.put(`/api/meeting/approval/${id}`);
 
-    dispatch(getForApprovalMeetings());
-
+    dispatch({
+      type: MEETING_APPROVED,
+      payload: id,
+    });
     dispatch(setAlert("Meeting approved", "success"));
   } catch (err) {
     /* const errors = err.response.data.errors;

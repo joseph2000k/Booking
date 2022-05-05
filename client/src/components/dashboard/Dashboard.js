@@ -32,7 +32,7 @@ const Dashboard = ({
   }, [getForApprovalMeetings, getMeetings, clearSubmitMeetings, getSchedules]);
 
   const forApproval = meetings.filter(
-    (meeting) => meeting.isApproved === false
+    (meeting) => meeting.isApproved === false && meeting.isNotPending === false
   );
 
   const historyMeetings = [];
@@ -44,8 +44,7 @@ const Dashboard = ({
       schedules[i].isCancelled === false
     ) {
       upcomingMeetings.push(schedules[i]);
-    }
-    if (
+    } else if (
       moment(schedules[i].end).isBefore(moment()) &&
       schedules[i].isApproved
     ) {
