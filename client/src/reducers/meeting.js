@@ -16,8 +16,6 @@ const initialState = {
   meeting: null,
   meetings: [],
   schedules: [],
-  //history: [],
-  //upcoming: [],
   toSubmit: [],
   forApproval: [],
   loading: true,
@@ -73,18 +71,6 @@ export default function meetingReducer(state = initialState, action) {
         toSubmit: [payload, ...state.toSubmit],
         loading: false,
       };
-    /*  case MEETING_HISTORY:
-      return {
-        ...state,
-        history: payload,
-        loading: false,
-      };
-    case GET_UPCOMING_MEETINGS:
-      return {
-        ...state,
-        upcoming: payload,
-        loading: false,
-      }; */
 
     case DELETE_SCHEDULE:
       return {
@@ -101,13 +87,11 @@ export default function meetingReducer(state = initialState, action) {
     case CLEAR_MEETINGS:
       return {
         ...state,
-        history: [],
         meetings: [],
         schedules: [],
         error: {},
         toSubmit: [],
         forApproval: [],
-        upcoming: [],
         loading: false,
       };
     default:

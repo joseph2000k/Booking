@@ -884,6 +884,7 @@ router.get("/adminforapproval/", [auth], async (req, res) => {
       {
         $project: {
           isApproved: 1,
+          isNotPending: 1,
           room: "$schedules.room",
           roomAdmin: "$room.admin",
           meetingId: "$_id",
@@ -893,6 +894,13 @@ router.get("/adminforapproval/", [auth], async (req, res) => {
           dateCreated: 1,
           description: 1,
           _id: 0,
+        },
+      },
+      {
+        $match: {
+          isApproved: false,
+          isNotPending: false,
+          isCancelled: false,
         },
       },
     ]);
