@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import bootstrapPlugin from "@fullcalendar/bootstrap";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { getRoomMeetings } from "../../actions/rooms";
-import { getRoom } from "../../actions/rooms";
-import TimePicker from "react-time-picker";
-import Moment from "react-moment";
-import { checkSchedule } from "../../actions/meeting";
+import React, { useEffect, useState } from 'react';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import bootstrapPlugin from '@fullcalendar/bootstrap';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getRoomMeetings } from '../../actions/rooms';
+import { getRoom } from '../../actions/rooms';
+import TimePicker from 'react-time-picker';
+import Moment from 'react-moment';
+import { checkSchedule } from '../../actions/meeting';
 
 const MeetingRoomCalendar = ({
   getRoom,
@@ -40,57 +40,59 @@ const MeetingRoomCalendar = ({
     }
   };
 
+  const handleConfirm = () => {
+    checkSchedule(schedule);
+    {
+      toggleValue(true);
+    }
+    if (toSubmit.length === 0) {
+      setOfficeId('');
+    }
+    handleClose();
+  };
+
   return (
     <div>
-      <div className="d-flex justify-content-center">
+      <div className='d-flex justify-content-center'>
         From:
         <TimePicker
-          className="border border-primary border-3 rounded"
-          disableClock="true"
-          minTime="06:00:00"
+          className='border border-primary border-3 rounded'
+          disableClock='true'
+          minTime='06:00:00'
           clearIcon
           onChange={startOnChange}
           value={start}
         />
         To:
         <TimePicker
-          className="border border-primary border-3 rounded"
-          disableClock="true"
-          minTime="06:00:00"
+          className='border border-primary border-3 rounded'
+          disableClock='true'
+          minTime='06:00:00'
           clearIcon
           onChange={endOnChange}
           value={end}
         />
-        Date:{" "}
-        {dateValue === "" ? (
-          " Please select a date below"
+        Date:{' '}
+        {dateValue === '' ? (
+          ' Please select a date below'
         ) : (
-          <Moment format="MM-DD-YYYY">{dateValue}</Moment>
+          <Moment format='MM-DD-YYYY'>{dateValue}</Moment>
         )}
         <button
           {...(dateValue ? { disabled: false } : { disabled: true })}
-          className="btn btn-primary"
-          onClick={() => {
-            checkSchedule(schedule);
-            {
-              toggleValue(true);
-            }
-            if (toSubmit.length === 0) {
-              setOfficeId("");
-            }
-            handleClose();
-          }}
+          className='btn btn-primary'
+          onClick={handleConfirm}
         >
           Confirm
         </button>
       </div>
-      <h1 className="h-title">{room.name}</h1>
+      <h1 className='h-title'>{room.name}</h1>
       <FullCalendar
         plugins={[dayGridPlugin, interactionPlugin, bootstrapPlugin]}
         weekends={false}
-        defaultView="dayGridMonth"
-        themeSystem="standard"
-        height="auto"
+        defaultView='dayGridMonth'
+        themeSystem='standard'
+        height='auto'
         events={meetings}
         selectable={true}
         selectAllow={selectAllow}
