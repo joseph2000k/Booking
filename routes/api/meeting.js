@@ -729,6 +729,21 @@ router.post("/submit/", [auth], async (req, res) => {
     //get schedules in req.body and remove null
     const schedules = req.body.schedules.filter((item) => item !== null);
 
+    for (let i = 0; i < schedules.length; i++) {
+      //find index of duplicate start and end time
+      const index = schedules.findIndex(
+        (item) =>
+          item.start === schedules[i].start && item.end === schedules[i].end
+      );
+      if (index === i) {
+        continue;
+      } else {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "Duplicate schedule" }] });
+      }
+    }
+
     const checkAdmin = schedules.map((item) => {
       if (item.roomAdmin != schedules[0].roomAdmin) {
         return false;
