@@ -9,7 +9,9 @@ import { getRoomMeetings } from "../../actions/rooms";
 import { getRoom } from "../../actions/rooms";
 import TimePicker from "react-time-picker";
 import Moment from "react-moment";
+import moment from "moment";
 import { checkSchedule } from "../../actions/meeting";
+import { setAlert } from "../../actions/alert";
 
 const MeetingRoomCalendar = ({
   getRoom,
@@ -27,6 +29,7 @@ const MeetingRoomCalendar = ({
   handleClose,
   setOfficeId,
   toSubmit,
+  setAlert,
   meetings: { meetings, room },
 }) => {
   useEffect(() => {
@@ -52,6 +55,21 @@ const MeetingRoomCalendar = ({
   });
 
   const handleConfirm = () => {
+    for (let i = 0; i < toSubmit.length; i++) {
+      const index = toSubmit.findIndex(
+        (item) =>
+          (moment(item.start) <= schedule.start ||
+            moment(item.start) <= schedule.end) &&
+          (moment(item.end) >= schedule.start ||
+            moment(item.end) >= schedule.end) &&
+          item.room.toString() === schedule.room.toString()
+      );
+      if (index === -1) {
+        continue;
+      } else {
+        return setAlert("You have already selected this time", "danger");
+      }
+    }
     checkSchedule(schedule);
     {
       toggleValue(true);
@@ -123,6 +141,7 @@ MeetingRoomCalendar.propTypes = {
   meetings: PropTypes.array.isRequired,
   checkSchedule: PropTypes.func.isRequired,
   toSubmit: PropTypes.array.isRequired,
+  setAlert: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -131,6 +150,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
+  setAlert,
   getRoomMeetings,
   getRoom,
   checkSchedule,
