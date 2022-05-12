@@ -733,14 +733,17 @@ router.post("/submit/", [auth], async (req, res) => {
       //find index of duplicate start and end time
       const index = schedules.findIndex(
         (item) =>
-          item.start === schedules[i].start && item.end === schedules[i].end
+          (item.start <= schedules[i].start ||
+            item.start <= schedules[i].end) &&
+          (item.end >= schedules[i].start || item.end >= schedules[i].end) &&
+          item.room.toString() === schedules[i].room.toString()
       );
       if (index === i) {
         continue;
       } else {
         return res
           .status(400)
-          .json({ errors: [{ msg: "Duplicate schedule" }] });
+          .json({ errors: [{ msg: "Check overlapping schedules" }] });
       }
     }
 
@@ -1010,6 +1013,24 @@ router.post("/submitadmin", [auth], async (req, res) => {
 
     //get schedules in req.body and remove null
     const schedules = req.body.schedules.filter((item) => item !== null);
+
+    for (let i = 0; i < schedules.length; i++) {
+      //find index of duplicate start and end time
+      const index = schedules.findIndex(
+        (item) =>
+          (item.start <= schedules[i].start ||
+            item.start <= schedules[i].end) &&
+          (item.end >= schedules[i].start || item.end >= schedules[i].end) &&
+          item.room.toString() === schedules[i].room.toString()
+      );
+      if (index === i) {
+        continue;
+      } else {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "Check overlapping schedules" }] });
+      }
+    }
 
     if (admin.role !== "admin" || admin.id.toString() !== schedules[0].admin) {
       return res.status(401).json({ errors: [{ msg: "Unauthorized" }] });
