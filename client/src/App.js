@@ -43,7 +43,9 @@ const App = () => {
           <Navbar />
           <Route exact path="/" component={Landing} />
           <section className="container mt-5 mb-0 p-0">
-            <Alert />
+            <div className="alert-fixed">
+              <Alert />
+            </div>
             <Switch>
               <Route exact path="/login" component={Login} />
               <Route exact path="/rooms" component={Rooms} />

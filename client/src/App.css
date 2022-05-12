@@ -34,7 +34,7 @@ a {
 .alert {
   padding: 0.8rem;
   margin: 1rem 0;
-  opacity: 0.9;
+  opacity: 1;
   background: var(--light-color);
   color: #333;
 }
@@ -122,6 +122,14 @@ a {
   display: inline-flex;
   margin-right: 30px;
   font-size: 1rem;
+}
+
+.alert-fixed {
+  position: fixed;
+  top: 85%;
+  left: 170px;
+  width: 75%;
+  z-index: 9999;
 }
 
 .landing {
