@@ -1,16 +1,16 @@
-import React, { useEffect, Fragment, useRef } from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import bootstrapPlugin from '@fullcalendar/bootstrap';
-import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { getRoomMeetings } from '../../actions/rooms';
-import { getRoom } from '../../actions/rooms';
-import tippy from 'tippy.js';
-import 'tippy.js/dist/tippy.css';
-import ReactToPrint from 'react-to-print';
+import React, { useEffect, Fragment, useRef } from "react";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import bootstrapPlugin from "@fullcalendar/bootstrap";
+import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
+import { getRoomMeetings } from "../../actions/rooms";
+import { getRoom } from "../../actions/rooms";
+import tippy from "tippy.js";
+import "tippy.js/dist/tippy.css";
+import ReactToPrint from "react-to-print";
 
 const RoomCalendar = ({
   isAuthenticated,
@@ -33,7 +33,7 @@ const RoomCalendar = ({
   const history = useHistory();
 
   const handleCreateMeeting = () => {
-    history.push('/create-meeting');
+    history.push("/create-meeting");
   };
 
   const componentRef = useRef();
@@ -44,15 +44,15 @@ const RoomCalendar = ({
   return (
     <Fragment>
       <div ref={componentRef}>
-        <div className='calendar bg-light p-4 rounded shadow'>
-          <div className='d-flex justify-content-between'>
+        <div className="calendar bg-light p-4 rounded shadow">
+          <div className="d-flex justify-content-between">
             <div>
-              <h2 className='h-title'>{room.name}</h2>
+              <h2 className="h-title">{room.name}</h2>
             </div>
             <div>
               <ReactToPrint
                 trigger={() => (
-                  <button ref={printRef} className='btn btn-primary'>
+                  <button ref={printRef} className="btn btn-primary">
                     Print
                   </button>
                 )}
@@ -70,11 +70,16 @@ const RoomCalendar = ({
           </div>
 
           <FullCalendar
+            headerToolbar={{
+              left: "prev,next today",
+              center: "title",
+              right: "dayGridMonth,dayGridWeek,dayGridDay",
+            }}
             plugins={[dayGridPlugin, interactionPlugin, bootstrapPlugin]}
             weekends={false}
-            defaultView='dayGridMonth'
-            themeSystem='standard'
-            height='auto'
+            defaultView="dayGridMonth"
+            themeSystem="standard"
+            height="auto"
             displayEventTime={true}
             displayEventEnd={true}
             events={meetings}
@@ -84,17 +89,17 @@ const RoomCalendar = ({
         </div>
         {
           <div ref={dateRef} hidden={true}>
-            <span className='d-flex justify-content-center'>{`As of ${new Date()}`}</span>
+            <span className="d-flex justify-content-center">{`As of ${new Date()}`}</span>
           </div>
         }
       </div>
       {isAuthenticated && (
         <button
-          className='btn btn-primary shadow m-3 position-fixed bottom-0 end-0'
+          className="btn btn-primary shadow m-3 position-fixed bottom-0 end-0"
           onClick={handleCreateMeeting}
         >
           <h5>
-            <i class='fa fa-pencil-square' aria-hidden='true'></i> Schedule a
+            <i class="fa fa-pencil-square" aria-hidden="true"></i> Schedule a
             Meeting
           </h5>
         </button>
