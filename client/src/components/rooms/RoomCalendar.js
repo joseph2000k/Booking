@@ -56,6 +56,7 @@ const RoomCalendar = ({
                     Print
                   </button>
                 )}
+                documentTitle="Meeting Schedule"
                 content={() => componentRef.current}
                 onBeforeGetContent={() => {
                   printRef.current.hidden = true;
