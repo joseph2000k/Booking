@@ -60,10 +60,42 @@ const RoomCalendar = ({
                 onBeforeGetContent={() => {
                   printRef.current.hidden = true;
                   dateRef.current.hidden = false;
+                  //hide toolbar
+                  document.getElementsByClassName(
+                    "fc-today-button"
+                  )[0].hidden = true;
+                  document.getElementsByClassName(
+                    "fc-button-group"
+                  )[0].hidden = true;
+                  document.getElementsByClassName(
+                    "fc-dayGridMonth-button"
+                  )[0].hidden = true;
+                  document.getElementsByClassName(
+                    "fc-dayGridWeek-button"
+                  )[0].hidden = true;
+                  document.getElementsByClassName(
+                    "fc-dayGridDay-button"
+                  )[0].hidden = true;
                 }}
                 onAfterPrint={() => {
                   printRef.current.hidden = false;
                   dateRef.current.hidden = true;
+                  //show toolbar again
+                  document.getElementsByClassName(
+                    "fc-today-button"
+                  )[0].hidden = false;
+                  document.getElementsByClassName(
+                    "fc-button-group"
+                  )[0].hidden = false;
+                  document.getElementsByClassName(
+                    "fc-dayGridMonth-button"
+                  )[0].hidden = false;
+                  document.getElementsByClassName(
+                    "fc-dayGridWeek-button"
+                  )[0].hidden = false;
+                  document.getElementsByClassName(
+                    "fc-dayGridDay-button"
+                  )[0].hidden = false;
                 }}
               />
             </div>
