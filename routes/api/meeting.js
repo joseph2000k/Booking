@@ -1116,6 +1116,7 @@ router.post("/submitadmin", [auth], async (req, res) => {
       office,
       isSubmitted: true,
       isApproved: true,
+      isNotPending: true,
     };
 
     const newMeeting = new Meeting(meeting);
