@@ -1,56 +1,56 @@
-const Meeting = require('../models/Meeting');
-const Room = require('../models/Room');
-const mongoose = require('mongoose');
-const moment = require('moment');
+const Meeting = require("../models/Meeting");
+const Room = require("../models/Room");
+const mongoose = require("mongoose");
+const moment = require("moment");
 
 module.exports = async function (req, res, next) {
   const { room, start, end, scheduleId } = req.body;
   let roomName = await Room.findById(room);
 
   if (!roomName) {
-    return res.json({ msg: 'invalid room' });
+    return res.json({ msg: "invalid room" });
   }
 
   const meetingList = await Meeting.aggregate([
     { $match: { isSubmitted: true } },
-    { $unwind: '$schedules' },
+    { $unwind: "$schedules" },
     {
       $lookup: {
-        from: 'offices',
-        localField: 'office',
-        foreignField: '_id',
-        as: 'office',
+        from: "offices",
+        localField: "office",
+        foreignField: "_id",
+        as: "office",
       },
     },
     //lookup the room
     {
       $lookup: {
-        from: 'rooms',
-        localField: 'schedules.room',
-        foreignField: '_id',
-        as: 'room',
+        from: "rooms",
+        localField: "schedules.room",
+        foreignField: "_id",
+        as: "room",
       },
     },
     {
       $unwind: {
-        path: '$office',
+        path: "$office",
         preserveNullAndEmptyArrays: true,
       },
     },
     {
       $unwind: {
-        path: '$room',
+        path: "$room",
         preserveNullAndEmptyArrays: true,
       },
     },
     {
       $project: {
-        room: '$room._id',
-        title: '$office.officeName',
-        start: '$schedules.start',
-        end: '$schedules.end',
-        isCancelled: '$schedules.isCancelled',
-        scheduleId: '$schedules._id',
+        room: "$room._id",
+        title: "$office.officeName",
+        start: "$schedules.start",
+        end: "$schedules.end",
+        isCancelled: "$schedules.isCancelled",
+        scheduleId: "$schedules._id",
         _id: 0,
       },
     },
@@ -77,17 +77,16 @@ module.exports = async function (req, res, next) {
       continue;
     }
   }
-
   if (meetingArray.length > 1) {
     return res
       .status(400)
-      .json({ errors: [{ msg: 'Please Check Overlapping Schedules' }] });
-  } else if (meetingArray.length == 1 && meetingArray.start != undefined) {
-    if (meetingArray[0].scheduleId == scheduleId) {
-      return next();
-    } else if (meetingArray[0].scheduleId != scheduleId) {
-      return res.json({ msg: 'Please check date' });
-    }
+      .json({ errors: [{ msg: "Please Check Overlapping Schedules" }] });
+  } else if (
+    meetingArray.length == 1 &&
+    meetingArray.start != undefined &&
+    meetingArray[0].scheduleId == scheduleId
+  ) {
+    return next();
   }
 
   if (meetingArray.length == 0 || meetingArray[0].scheduleId != scheduleId) {
@@ -119,7 +118,7 @@ module.exports = async function (req, res, next) {
 
   //if start is past or end is past return error
   if (moment(start).isBefore(moment()) || moment(end).isBefore(moment())) {
-    return res.status(403).json({ errors: [{ msg: 'invalid time' }] });
+    return res.status(403).json({ errors: [{ msg: "invalid time" }] });
   } else {
     req.verifiedSchedule = newSchedule;
     next();

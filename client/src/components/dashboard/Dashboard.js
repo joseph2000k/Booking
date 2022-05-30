@@ -76,7 +76,11 @@ const Dashboard = ({
       ) : null}
       {forApproval.length > 0 && <ForApproval meetings={forApproval} />}
       {upcomingMeetings.length > 0 && (
-        <UpcomingMeetings upcoming={upcomingMeetings} />
+        <UpcomingMeetings
+          upcoming={upcomingMeetings.sort((a, b) =>
+            moment(a.start).isAfter(moment(b.start)) ? 1 : -1
+          )}
+        />
       )}
 
       {historyMeetings.length > 0 && (
