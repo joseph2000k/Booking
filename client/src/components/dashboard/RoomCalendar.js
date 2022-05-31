@@ -34,8 +34,15 @@ const MeetingRoomCalendar = ({
     getRoomMeetings(roomId);
   }, [getRoom, getRoomMeetings]);
 
+  const dateStringConverter = 1000;
+  const secondsInADay = 86400;
+
   const selectAllow = (e) => {
-    if (e.end.getTime() / 1000 - e.start.getTime() / 1000 <= 86400) {
+    if (
+      e.end.getTime() / dateStringConverter -
+        e.start.getTime() / dateStringConverter <=
+      secondsInADay
+    ) {
       return true;
     }
   };

@@ -46,7 +46,8 @@ const Dashboard = ({
       upcomingMeetings.push(schedules[i]);
     } else if (
       moment(schedules[i].end).isBefore(moment()) &&
-      schedules[i].isApproved
+      schedules[i].isApproved &&
+      schedules[i].isCancelled === false
     ) {
       historyMeetings.push(schedules[i]);
     }
