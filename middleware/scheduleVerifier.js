@@ -73,20 +73,11 @@ module.exports = async function (req, res, next) {
     ) {
       meetingArray.push(meetingList[i]);
     }
-    if (start === undefined) {
-      continue;
-    }
   }
   if (meetingArray.length > 1) {
     return res
       .status(400)
       .json({ errors: [{ msg: "Please Check Overlapping Schedules" }] });
-  } else if (
-    meetingArray.length == 1 &&
-    meetingArray.start != undefined &&
-    meetingArray[0].scheduleId == scheduleId
-  ) {
-    return next();
   }
 
   if (meetingArray.length == 0 || meetingArray[0].scheduleId != scheduleId) {
@@ -118,7 +109,15 @@ module.exports = async function (req, res, next) {
 
   //if start is past or end is past return error
   if (moment(start).isBefore(moment()) || moment(end).isBefore(moment())) {
-    return res.status(403).json({ errors: [{ msg: "invalid time" }] });
+    return res
+      .status(403)
+      .json({ errors: [{ msg: "Please Select Present to Future Dates" }] });
+  }
+  //if start time is after end time return error
+  else if (moment(start).isAfter(moment(end))) {
+    return res
+      .status(403)
+      .json({ errors: [{ msg: "End Time is Greater than Start Time" }] });
   } else {
     req.verifiedSchedule = newSchedule;
     next();
