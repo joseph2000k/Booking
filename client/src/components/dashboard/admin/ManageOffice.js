@@ -1,7 +1,7 @@
-import React, { Fragment, useEffect } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { getOfficeList, deleteOffice } from "../../../actions/office";
+import React, { Fragment, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { getOfficeList, deleteOffice } from '../../../actions/office';
 
 const ManageOffice = ({ getOfficeList, offices, deleteOffice }) => {
   useEffect(() => {
@@ -11,15 +11,25 @@ const ManageOffice = ({ getOfficeList, offices, deleteOffice }) => {
   const handleDelete = (id) => {
     deleteOffice(id);
   };
+  //sort office by name
+  const sortedOffice = offices.sort((a, b) => {
+    if (a.officeName < b.officeName) {
+      return -1;
+    }
+    if (a.officeName > b.officeName) {
+      return 1;
+    }
+    return 0;
+  });
 
-  const officeList = offices.map((office) => (
+  const officeList = sortedOffice.map((office) => (
     <tr key={office._id}>
       <td>{office.officeName}</td>
       <td>{office.role}</td>
-      <div className="d-flex justify-content-end">
+      <div className='d-flex justify-content-end'>
         <td>
           <button
-            className="btn btn-danger mx-1"
+            className='btn btn-danger mx-1'
             onClick={() => handleDelete(office._id)}
           >
             Delete
@@ -31,14 +41,14 @@ const ManageOffice = ({ getOfficeList, offices, deleteOffice }) => {
 
   return (
     <Fragment>
-      <div className="container">
-        <div className="row">
-          <div className="col-md-6 mx-auto">
-            <div className="card card-body mt-5 shadow-sm p-3 mb-5 bg-white rounded">
-              <h2 className="text-center">
-                <i className="fas fa-user-plus"></i> Manage Office
+      <div className='container'>
+        <div className='row'>
+          <div className='col-md-6 mx-auto'>
+            <div className='card card-body mt-5 shadow-sm p-3 mb-5 bg-white rounded'>
+              <h2 className='text-center'>
+                <i className='fas fa-user-plus'></i> Manage Office
               </h2>
-              <table className="table table-striped">
+              <table className='table table-striped'>
                 <thead>
                   <tr>
                     <th>Office Name</th>
