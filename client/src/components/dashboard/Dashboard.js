@@ -77,11 +77,19 @@ const Dashboard = ({
       </div>
 
       <Tabs
-        activeKey={
-          selectedTab === null && forApproval.length > 0
-            ? "forApproval"
-            : activeTab
-        }
+        {...(office.role === "admin" && adminApproval.length > 0
+          ? {
+              activeKey:
+                selectedTab === null && adminApproval.length > 0
+                  ? "forApprovalofAdmin"
+                  : activeTab,
+            }
+          : {
+              activeKey:
+                selectedTab === null && forApproval.length > 0
+                  ? "forApproval"
+                  : activeTab,
+            })}
         onSelect={(key) => {
           setSelectedTab(!null);
           setActiveTab(key);
