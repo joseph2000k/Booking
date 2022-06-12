@@ -1,44 +1,63 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const MeetingSchema = new mongoose.Schema({
   office: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'office',
+    ref: "office",
   },
-  rooms: [
+  description: {
+    type: String,
+    required: true,
+  },
+  contactName: {
+    type: String,
+    required: true,
+  },
+  contactNumber: {
+    type: String,
+    required: true,
+  },
+  numberOfAttendees: {
+    type: Number,
+  },
+  schedules: [
     {
       room: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'room',
+        ref: "room",
       },
-      date: {
+      start: {
         type: Date,
         required: true,
       },
-      timeStart: {
+      end: {
         type: Date,
         required: true,
       },
-      timeEnd: {
-        type: Date,
-        required: true,
+      isCancelled: {
+        type: Boolean,
+        default: false,
       },
     },
   ],
-  requirements: [
-    {
-      first: {
-        type: String,
-      },
-      second: {
-        type: String,
-      },
-    },
-  ],
+  firstRequirements: {
+    type: String,
+  },
+  secondRequirements: {
+    type: String,
+  },
   specialInstructions: {
     type: String,
   },
   isNotPending: {
+    type: Boolean,
+    default: false,
+  },
+  isSubmitted: {
+    type: Boolean,
+    default: false,
+  },
+  isApproved: {
     type: Boolean,
     default: false,
   },
@@ -49,10 +68,14 @@ const MeetingSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  meetingAdmin: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "office",
+  },
   dateCreated: {
     type: Date,
     default: Date.now,
   },
 });
 
-module.exports = Meeting = mongoose.model('meeting', MeetingSchema);
+module.exports = Meeting = mongoose.model("meeting", MeetingSchema);

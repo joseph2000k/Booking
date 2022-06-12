@@ -4,4 +4,4 @@ npm i -D nodemon concurrently
 
 
 //client
-npm i axios react-router-dom redux react-redux redux-thunk redux-devtools-extension moment react-moment
+npm i axios react-router-dom redux react-redux redux-thunk redux-devtools-extension moment react-moment bootstrap react-time-picker react-spinners @emotion/react

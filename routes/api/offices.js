@@ -1,22 +1,28 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const config = require('config');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { check, validationResult } = require('express-validator');
+const config = require("config");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const auth = require("../../middleware/auth");
+const { check, validationResult } = require("express-validator");
+const moment = require("moment");
 
-const Office = require('../../models/Office');
+const Office = require("../../models/Office");
+const Meeting = require("../../models/Meeting");
+const OfficeProfile = require("../../models/OfficeProfile");
 //@route    POST api/offices
 //@desc     Register office
-//@access   Public
+//@access   Private
 router.post(
-  '/',
+  "/",
   [
-    check('officeName', 'Office Name is required').not().isEmpty(),
+    check("officeName", "Office Name is required").not().isEmpty(),
+    check("role", "Role is required").not().isEmpty(),
     check(
-      'password',
-      'Please enter a password with 6 or more characters'
+      "password",
+      "Please enter a password with 6 or more characters"
     ).isLength({ min: 6 }),
+    auth,
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -24,20 +30,28 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { officeName, password } = req.body;
+    const { officeName, password, role, rooms } = req.body;
 
     try {
+      const user = await Office.findById(req.office.id);
+
+      if (user.role !== "admin") {
+        return res.status(400).json({ errors: [{ msg: "Not Authorized" }] });
+      }
+
       let office = await Office.findOne({ officeName });
 
       if (office) {
         return res
           .status(400)
-          .json({ errors: [{ msg: 'Office already exists' }] });
+          .json({ errors: [{ msg: "Office already exists" }] });
       }
 
       office = new Office({
         officeName,
         password,
+        role,
+        rooms,
       });
 
       const salt = await bcrypt.genSalt(10);
@@ -46,26 +60,65 @@ router.post(
 
       await office.save();
 
-      const payload = {
-        office: {
-          id: office.id,
-        },
-      };
-
-      jwt.sign(
-        payload,
-        config.get('jwtSecret'),
-        { expiresIn: 360000 },
-        (err, token) => {
-          if (err) throw err;
-          res.json({ token });
-        }
-      );
+      const payload = await Office.find().select("-password");
+      res.json(payload);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server Error');
+      res.status(500).send("Server Error");
     }
   }
 );
+
+//@route   GET api/offices
+//@desc    Get all offices
+//@access  Private
+router.get("/", auth, async (req, res) => {
+  try {
+    const offices = await Office.find().sort({ date: -1 }).select("-password");
+    res.json(offices);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+//@route DELETE api/offices/:id
+//@desc  Delete an office
+//@access Private
+router.delete("/:id", auth, async (req, res) => {
+  try {
+    const office = await Office.findById(req.params.id);
+    const user = await Office.findById(req.office.id);
+    const meetings = await Meeting.find({ meetingAdmin: req.params.id }).where({
+      isNotPending: false,
+    });
+    console.log(meetings);
+    if (meetings.length > 0) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Office has pending meetings" }] });
+    }
+
+    if (user.role !== "admin") {
+      return res.status(400).json({ errors: [{ msg: "Not Authorized" }] });
+    }
+
+    if (!office) {
+      return res.status(404).json({ msg: "Office not found" });
+    }
+
+    await office.remove();
+    await Meeting.deleteMany({ office: req.params.id });
+    await OfficeProfile.deleteMany({ office: req.params.id });
+
+    res.json({ msg: "Office removed" });
+  } catch (err) {
+    console.error(err.message);
+    if (err.kind === "ObjectId") {
+      return res.status(404).json({ msg: "Office not found" });
+    }
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;
