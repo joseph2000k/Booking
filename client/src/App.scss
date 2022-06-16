@@ -147,14 +147,28 @@ a {
   font-size: 2rem;
 }
 
- .container-light {
+ .dashboard-tab {
+  max-width: 1100px;
+  margin: 1rem;
+  overflow: hidden;
+  padding: 0 2rem;
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+  border-radius: 5px;
+  min-width: 850px;
+  min-height: 75vh;
+  background-color: #fff;
+} 
+
+.announcement {
   max-width: 1100px;
   margin: auto;
   overflow: hidden;
   padding: 0 2rem;
-  margin-top: 5rem;
+  margin-top: 1rem;
   margin-bottom: 3rem;
   border-radius: 5px;
+  min-width: 250px;
   min-height: 75vh;
   background-color: #fff;
 } 

@@ -88,74 +88,89 @@ const Dashboard = ({
       <ClockLoader />
     </div>
   ) : (
-    <div className="container-light shadow-sm p-3 mb-5 bg-white rounded">
-      <Fragment>
-        <div>
-          <h3 className="text-center">{office.officeName} Dashboard</h3>
-          <Link to="create-meeting">
-            <button className="btn btn-primary shadow m-3 position-fixed bottom-0 end-0">
-              <h5>
-                <i class="fa fa-pencil-square" aria-hidden="true"></i> Schedule
-                a Meeting
-              </h5>
-            </button>
-          </Link>
-        </div>
+    <div className="d-flex flex-row m-0 mx-1">
+      <div className="dashboard-tab shadow-sm p-3 mb-5 bg-white rounded">
+        <Fragment>
+          <div>
+            <h3 className="text-center">{office.officeName} Dashboard</h3>
+            <Link to="create-meeting">
+              <button className="btn btn-primary shadow m-3 position-fixed bottom-0 end-0">
+                <h5>
+                  <i class="fa fa-pencil-square" aria-hidden="true"></i>{" "}
+                  Schedule a Meeting
+                </h5>
+              </button>
+            </Link>
+          </div>
 
-        <Tabs
-          {...(office.role === "admin" && adminApproval.length > 0
-            ? {
-                activeKey:
-                  selectedTab === null && adminApproval.length > 0
-                    ? "forApprovalofAdmin"
-                    : activeTab,
-              }
-            : {
-                activeKey:
-                  selectedTab === null && forApproval.length > 0
-                    ? "forApproval"
-                    : activeTab,
-              })}
-          onSelect={(key) => {
-            setSelectedTab(!null);
-            setActiveTab(key);
-          }}
-          id="uncontrolled-tab-example"
-          className="mb-3"
-        >
-          <Tab eventKey="upcomingMeetings" title={upcomingMeetingBadge}>
-            {upcomingMeetings.length > 0 && (
-              <UpcomingMeetings
-                upcoming={upcomingMeetings.sort((a, b) =>
-                  moment(a.start).isAfter(moment(b.start)) ? 1 : -1
-                )}
-              />
-            )}
-          </Tab>
-          <Tab eventKey="forApprovalofAdmin" title="For Your Approval">
-            {(office.role === "admin" || office.role === "manager") &&
-            adminApproval.length > 0 ? (
-              <ForApprovalofAdmin />
-            ) : null}
-          </Tab>
-          <Tab eventKey="forApproval" title={forApprovalBadge}>
-            {forApproval.length > 0 && <ForApproval meetings={forApproval} />}
-          </Tab>
+          <Tabs
+            {...(office.role === "admin" && adminApproval.length > 0
+              ? {
+                  activeKey:
+                    selectedTab === null && adminApproval.length > 0
+                      ? "forApprovalofAdmin"
+                      : activeTab,
+                }
+              : {
+                  activeKey:
+                    selectedTab === null && forApproval.length > 0
+                      ? "forApproval"
+                      : activeTab,
+                })}
+            onSelect={(key) => {
+              setSelectedTab(!null);
+              setActiveTab(key);
+            }}
+            id="uncontrolled-tab-example"
+            className="mb-3"
+          >
+            <Tab eventKey="upcomingMeetings" title={upcomingMeetingBadge}>
+              {upcomingMeetings.length > 0 && (
+                <UpcomingMeetings
+                  upcoming={upcomingMeetings.sort((a, b) =>
+                    moment(a.start).isAfter(moment(b.start)) ? 1 : -1
+                  )}
+                />
+              )}
+            </Tab>
+            <Tab eventKey="forApprovalofAdmin" title="For Your Approval">
+              {(office.role === "admin" || office.role === "manager") &&
+              adminApproval.length > 0 ? (
+                <ForApprovalofAdmin />
+              ) : null}
+            </Tab>
+            <Tab eventKey="forApproval" title={forApprovalBadge}>
+              {forApproval.length > 0 && <ForApproval meetings={forApproval} />}
+            </Tab>
 
-          <Tab eventKey="history" title="History">
-            {historyMeetings.length > 0 && (
-              <History
-                history={historyMeetings
-                  .sort((a, b) =>
-                    moment(a.start).isAfter(moment(b.start)) ? -1 : 1
-                  )
-                  .slice(0, 5)}
-                loading={loading}
-              />
-            )}
-          </Tab>
-        </Tabs>
-      </Fragment>
+            <Tab eventKey="history" title="History">
+              {historyMeetings.length > 0 && (
+                <History
+                  history={historyMeetings
+                    .sort((a, b) =>
+                      moment(a.start).isAfter(moment(b.start)) ? -1 : 1
+                    )
+                    .slice(0, 5)}
+                  loading={loading}
+                />
+              )}
+            </Tab>
+          </Tabs>
+        </Fragment>
+      </div>
+      <div className="announcement shadow-sm p-3 mb-5 bg-white rounded">
+        <span className="h5">
+          <i class="fa fa-bullhorn" aria-hidden="true">
+            {" "}
+            Announcement
+          </i>
+        </span>
+        <p></p>
+        <p>
+          This is a sample announcement. asjkdfhaskjdfhas haksjdfhkasdjf
+          akjsdhfk
+        </p>
+      </div>
     </div>
   );
 };
