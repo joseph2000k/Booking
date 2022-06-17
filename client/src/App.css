@@ -12124,7 +12124,7 @@ a {
   margin-top: 1rem;
   margin-bottom: 3rem;
   border-radius: 5px;
-  min-width: 50em;
+  min-width: 75%;
   min-height: 80vh;
   background-color: #fff;
 }
@@ -12138,7 +12138,7 @@ a {
   margin-bottom: 3rem;
   margin-left: 1rem;
   border-radius: 5px;
-  min-width: 15em;
+  min-width: 25%;
   min-height: 80vh;
   background-color: #fff;
 }
