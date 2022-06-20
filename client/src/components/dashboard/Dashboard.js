@@ -100,7 +100,7 @@ const Dashboard = ({
       <ClockLoader />
     </div>
   ) : (
-    <div className="d-flex flex-row m-0 mx-1">
+    <div className="d-flex flex-row m-0 mx-0">
       <div className="dashboard-tab shadow-sm p-3 mb-5 mx-0 bg-white rounded">
         <Fragment>
           <div>
