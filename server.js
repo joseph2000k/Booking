@@ -21,6 +21,7 @@ app.use("/api/officeprofile", require("./routes/api/officeprofile"));
 app.use("/api/rooms", require("./routes/api/rooms"));
 app.use("/api/admins", require("./routes/api/admins"));
 app.use("/api/authmeeting", require("./routes/api/authmeeting"));
+app.use("/api/announcements", require("./routes/api/announcements"));
 
 const PORT = process.env.PORT || 5000;
 
