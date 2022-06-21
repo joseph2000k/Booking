@@ -23,6 +23,7 @@ router.post(
       const newAnnouncement = new Announcement({
         text: req.body.text,
         office: req.office.id,
+        officeName: office.officeName,
       });
 
       const announcement = await newAnnouncement.save();

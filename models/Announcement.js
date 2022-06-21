@@ -6,6 +6,10 @@ const AnnouncementSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "Office",
   },
+  officeName: {
+    type: String,
+    required: true,
+  },
   text: {
     type: String,
     required: true,
