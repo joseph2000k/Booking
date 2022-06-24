@@ -29,7 +29,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, office, level, email, password } = req.body;
+    const { name, office, level, email, password, rooms } = req.body;
 
     try {
       if (req.admin.level !== 1) {
@@ -45,7 +45,9 @@ router.post(
           .json({ errors: [{ msg: "User already exists" }] });
       }
 
-      admin = new Admin({
+      const assignRoom = await Room.findById(rooms);
+
+      const newAdmin = new Admin({
         name,
         office,
         level,
@@ -53,18 +55,29 @@ router.post(
         email,
       });
 
+      assignRoom.admins.push(newAdmin._id);
+
+      //TODO:  verify room
+      //newAdmin.rooms.unshift(rooms);
+
       const salt = await bcrypt.genSalt(10);
 
-      admin.password = await bcrypt.hash(password, salt);
+      newAdmin.password = await bcrypt.hash(password, salt);
 
-      await admin.save();
+      await newAdmin.save();
 
-      res.json(admin);
+      assignRoom.save();
+
+      res.json(newAdmin);
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
     }
   }
 );
+
+//@route  POST api/admin
+//@desc   Assign a room
+//@access Private
 
 module.exports = router;
