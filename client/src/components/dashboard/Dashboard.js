@@ -7,6 +7,7 @@ import ClockLoader from "react-spinners/ClockLoader";
 import History from "./History";
 import ForApproval from "./ForApproval";
 import ForApprovalofAdmin from "./admin/ForApprovalofAdmin";
+import Announcements from "./Announcements";
 import { getForApprovalMeetings } from "../../actions/meeting";
 import { clearSubmitMeetings } from "../../actions/meeting";
 import { getSchedules } from "../../actions/meeting";
@@ -171,17 +172,7 @@ const Dashboard = ({
         </Fragment>
       </div>
       <div className="announcement shadow-sm p-3 mb-5 bg-white rounded">
-        <span className="h5">
-          <i class="fa fa-bullhorn" aria-hidden="true">
-            {" "}
-            Announcements
-          </i>
-        </span>
-        <p></p>
-        <p>
-          This is a sample announcement. asjkdfhaskjdfhas haksjdfhkasdjf
-          akjsdhfk
-        </p>
+        <Announcements />
       </div>
     </div>
   );

@@ -20,6 +20,11 @@ router.post(
 
     try {
       const office = await Office.findById(req.office.id).select("-password");
+
+      if (office.role !== "admin") {
+        return res.status(401).json({ msg: "Unauthorized" });
+      }
+
       const newAnnouncement = new Announcement({
         text: req.body.text,
         office: req.office.id,
@@ -34,5 +39,18 @@ router.post(
     }
   }
 );
+
+//@route GET api/announcements
+//@desc  Get all announcements
+//@access Private
+router.get("/", auth, async (req, res) => {
+  try {
+    const announcements = await Announcement.find().sort({ date: -1 });
+    res.json(announcements);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;

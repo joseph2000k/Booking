@@ -5,6 +5,7 @@ import alert from "./alert";
 import meeting from "./meeting";
 import meetingauth from "./meetingauth";
 import office from "./office";
+import announcements from "./announcements";
 
 export default combineReducers({
   room,
@@ -13,4 +14,5 @@ export default combineReducers({
   meeting,
   meetingauth,
   office,
+  announcements,
 });
