@@ -3,6 +3,7 @@ import React, { Fragment, useEffect } from "react";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
+import Sidebar from "./components/layout/Sidebar";
 import Landing from "./components/layout/Landing";
 import setAuthToken from "./utils/setAuthToken";
 import { loadOffice } from "./actions/auth";
@@ -46,6 +47,16 @@ const App = () => {
             <div className="alert-fixed">
               <Alert />
             </div>
+            {
+              <Route
+                render={({ location }) => {
+                  return location.pathname !== "/" &&
+                    location.pathname !== "/login" ? (
+                    <Sidebar />
+                  ) : null;
+                }}
+              />
+            }
             <Switch>
               <Route exact path="/login" component={Login} />
               <Route exact path="/rooms" component={Rooms} />
