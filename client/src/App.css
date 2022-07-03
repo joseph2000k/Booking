@@ -12014,8 +12014,8 @@ fieldset:disabled .btn {
 .pro-sidebar {
   color: #616161;
   height: 100%;
-  width: 220px;
-  min-width: 220px;
+  width: 250px;
+  min-width: 250px;
   text-align: left;
   -webkit-transition: width, left, right, 0.3s;
   transition: width, left, right, 0.3s;
@@ -12103,7 +12103,7 @@ fieldset:disabled .btn {
 @media (max-width: 480px) {
   .pro-sidebar.xs {
     position: fixed;
-    left: -220px;
+    left: -250px;
   }
   .pro-sidebar.xs.collapsed {
     left: -80px;
@@ -12116,7 +12116,7 @@ fieldset:disabled .btn {
   }
   .pro-sidebar.xs.rtl {
     left: auto;
-    right: -220px;
+    right: -250px;
   }
   .pro-sidebar.xs.rtl.collapsed {
     left: auto;
@@ -12131,7 +12131,7 @@ fieldset:disabled .btn {
 @media (max-width: 576px) {
   .pro-sidebar.sm {
     position: fixed;
-    left: -220px;
+    left: -250px;
   }
   .pro-sidebar.sm.collapsed {
     left: -80px;
@@ -12144,7 +12144,7 @@ fieldset:disabled .btn {
   }
   .pro-sidebar.sm.rtl {
     left: auto;
-    right: -220px;
+    right: -250px;
   }
   .pro-sidebar.sm.rtl.collapsed {
     left: auto;
@@ -12159,7 +12159,7 @@ fieldset:disabled .btn {
 @media (max-width: 768px) {
   .pro-sidebar.md {
     position: fixed;
-    left: -220px;
+    left: -250px;
   }
   .pro-sidebar.md.collapsed {
     left: -80px;
@@ -12172,7 +12172,7 @@ fieldset:disabled .btn {
   }
   .pro-sidebar.md.rtl {
     left: auto;
-    right: -220px;
+    right: -250px;
   }
   .pro-sidebar.md.rtl.collapsed {
     left: auto;
@@ -12187,7 +12187,7 @@ fieldset:disabled .btn {
 @media (max-width: 992px) {
   .pro-sidebar.lg {
     position: fixed;
-    left: -220px;
+    left: -250px;
   }
   .pro-sidebar.lg.collapsed {
     left: -80px;
@@ -12200,7 +12200,7 @@ fieldset:disabled .btn {
   }
   .pro-sidebar.lg.rtl {
     left: auto;
-    right: -220px;
+    right: -250px;
   }
   .pro-sidebar.lg.rtl.collapsed {
     left: auto;
@@ -12215,7 +12215,7 @@ fieldset:disabled .btn {
 @media (max-width: 1200px) {
   .pro-sidebar.xl {
     position: fixed;
-    left: -220px;
+    left: -250px;
   }
   .pro-sidebar.xl.collapsed {
     left: -80px;
@@ -12228,7 +12228,7 @@ fieldset:disabled .btn {
   }
   .pro-sidebar.xl.rtl {
     left: auto;
-    right: -220px;
+    right: -250px;
   }
   .pro-sidebar.xl.rtl.collapsed {
     left: auto;
@@ -12243,7 +12243,7 @@ fieldset:disabled .btn {
 @media (max-width: 1600px) {
   .pro-sidebar.xxl {
     position: fixed;
-    left: -220px;
+    left: -250px;
   }
   .pro-sidebar.xxl.collapsed {
     left: -80px;
@@ -12256,7 +12256,7 @@ fieldset:disabled .btn {
   }
   .pro-sidebar.xxl.rtl {
     left: auto;
-    right: -220px;
+    right: -250px;
   }
   .pro-sidebar.xxl.rtl.collapsed {
     left: auto;
@@ -12730,7 +12730,7 @@ a {
 }
 
 .container-component {
-  margin-left: 8rem;
+  margin-left: 10rem;
 }
 
 .navbar {
