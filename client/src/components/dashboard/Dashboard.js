@@ -118,7 +118,8 @@ const Dashboard = ({
           </div>
 
           <Tabs
-            {...(office.role === "admin" && adminApproval.length > 0
+            {...((office.role === "admin" || office.role === "manager") &&
+            adminApproval.length > 0
               ? {
                   activeKey:
                     selectedTab === null && adminApproval.length > 0

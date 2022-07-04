@@ -157,7 +157,7 @@ const ScheduleForm = ({
 
   return (
     <Fragment>
-      <div className="container mt-0 bg-light p-5">
+      <div className="container-component mt-0 bg-light p-5">
         <div className="p-2 bg-white rounded shadow-sm">
           <h2 className="h-title">Schedule a Meeting</h2>
           <form className="form">
