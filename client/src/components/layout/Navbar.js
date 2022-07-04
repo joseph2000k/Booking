@@ -35,39 +35,6 @@ const Navbar = ({
     </div>
   );
 
-  const SuperUserLinks = (
-    <Fragment>
-      <Link
-        className="dropdown-item text-decoration-none link-dark"
-        to={`/add-office`}
-      >
-        Add Office
-      </Link>
-
-      <Link
-        className="dropdown-item text-decoration-none link-dark"
-        to={`/manage-office`}
-      >
-        Manage Office
-      </Link>
-      <Link className="dropdown-item text-decoration-none link-dark" to={""}>
-        Delete Room
-      </Link>
-    </Fragment>
-  );
-
-  //map through rooms and display them in dropdown-item links
-  const roomLinks = rooms.map((room) => (
-    <Link
-      key={room._id}
-      to={`/rooms/${room._id}`}
-      className="dropdown-item text-decoration-none link-dark"
-    >
-      {room.name}
-      {/* <div className='dropdown-divider'></div> */}
-    </Link>
-  ));
-
   return (
     <nav className="nav fixed-top bg-info justify-content-between">
       <h2 className="d-flex align-items-center">
@@ -76,46 +43,14 @@ const Navbar = ({
           BookingSystem
         </Link>
       </h2>
-
       <div className="d-flex align-items-center">
-        <li className="nav-item dropdown">
-          <a
-            className="nav-link dropdown-toggle link-light"
-            href="#"
-            id="navbarDropdown"
-            role="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Rooms
-          </a>
-          <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-            {roomLinks}
-          </div>
-        </li>
-        {office != null && isAuthenticated && office.role === "admin" ? (
+        {office !== null && isAuthenticated && !isSendingRequest && (
           <Fragment>
-            <span className="text-light">|</span>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle link-light"
-                href="#"
-                id="navbarDropdown"
-                role="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                Admin
-              </a>
-              <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                {SuperUserLinks}
-              </div>
-            </li>
+            <div className="office-name-navbar-background">
+              <div className="office-name-navbar">{office.officeName}</div>
+            </div>
           </Fragment>
-        ) : null}
-
+        )}
         {!isSendingRequest && (
           <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
         )}

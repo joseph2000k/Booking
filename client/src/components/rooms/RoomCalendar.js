@@ -43,7 +43,7 @@ const RoomCalendar = ({
 
   return (
     <Fragment>
-      <div ref={componentRef}>
+      <div className="container-component" ref={componentRef}>
         <div className="calendar bg-light p-4 rounded shadow">
           <div className="d-flex justify-content-between">
             <div>

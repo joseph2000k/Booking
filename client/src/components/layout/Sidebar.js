@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import { getRooms } from '../../actions/rooms';
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
+import { getRooms } from "../../actions/rooms";
 
 const Sidebar = ({
   getRooms,
@@ -21,35 +21,50 @@ const Sidebar = ({
   ));
 
   return (
-    <ProSidebar className='position-fixed top-0 start-0 mt-4'>
-      <div className='mt-4'>
+    <ProSidebar className="position-fixed top-0 start-0 mt-4">
+      <div className="mt-4">
         <Menu>
           {isAuthenticated && (
-            <MenuItem icon={<i className='fa fa-home' />}>
-              <Link to='/dashboard'>Dashboard</Link>
+            <MenuItem icon={<i className="fa fa-home" />}>
+              <Link to="/dashboard">Dashboard</Link>
             </MenuItem>
           )}
           <SubMenu
-            defaultOpen='true'
-            title='Rooms'
-            icon={<i className='fa fa-door-open' />}
+            defaultOpen="true"
+            title="Rooms"
+            icon={<i className="fa fa-door-open" />}
           >
             {roomLinks}
           </SubMenu>
           {office !== null &&
           !isSendingRequest &&
           isAuthenticated &&
-          (office.role === 'admin' || office.role === 'manager') ? (
+          (office.role === "admin" || office.role === "manager") ? (
             <SubMenu
-              defaultOpen='true'
-              title='Announcements'
-              icon={<i className='fa fa-bullhorn' />}
+              defaultOpen="true"
+              title="Announcements"
+              icon={<i className="fa fa-bullhorn" />}
             >
               <MenuItem>
-                <Link to='/myannoncements'>My Announcements</Link>
+                <Link to="/myannoncements">My Announcements</Link>
               </MenuItem>
               <MenuItem>
-                <Link to='/createannouncement'>Create Announcement</Link>
+                <Link to="/createannouncement">Make Announcement</Link>
+              </MenuItem>
+            </SubMenu>
+          ) : null}
+
+          {office !== null && isAuthenticated && office.role === "admin" ? (
+            <SubMenu
+              defaultOpen="true"
+              title="Offices"
+              icon={<i className="fa fa-building" />}
+            >
+              <MenuItem>
+                <Link to={`/add-office`}>Add Office</Link>
+              </MenuItem>
+              <MenuItem>
+                <Link to={`/manage-office`}>Manage Office</Link>
               </MenuItem>
             </SubMenu>
           ) : null}

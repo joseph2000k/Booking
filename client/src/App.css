@@ -12733,6 +12733,27 @@ a {
   margin-left: 10rem;
 }
 
+.office-name-navbar {
+  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+}
+
+.office-name-navbar-background {
+  background-color: #00b4d8;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 30px;
+  width: 100px;
+  border-radius: 10px;
+}
+
 .navbar {
   width: 100%;
   height: 50px;

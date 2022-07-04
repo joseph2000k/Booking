@@ -92,6 +92,21 @@ a {
   margin-left: 10rem;
 }
 
+.office-name-navbar {
+  font-family: $body-font;
+  color: $my-font;
+}
+
+.office-name-navbar-background {
+  background-color: $skyColor;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 100px;
+  border-radius: 10px;
+}
+
 .navbar {
   width: 100%;
   height: 50px;
