@@ -27,7 +27,7 @@ const AddOffice = ({ addOffice, setAlert }) => {
 
   return (
     <Fragment>
-      <div className="container">
+      <div className="container-component">
         <div className="row">
           <div className="col-md-6 mx-auto">
             <div className="card card-body mt-5 shadow-sm p-3 mb-5 bg-white rounded">

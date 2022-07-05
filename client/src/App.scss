@@ -35,6 +35,10 @@ a {
   text-decoration: none;
 }
 
+.text-area {
+  resize: none;
+}
+
 .a-link {
   color: black;
   font-family: $body-font;

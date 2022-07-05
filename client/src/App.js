@@ -14,6 +14,7 @@ import RoomCalendar from "./components/rooms/RoomCalendar";
 import Dashboard from "./components/dashboard/Dashboard";
 import Meeting from "./components/meetings/Meeting";
 import AddOffice from "./components/dashboard/admin/AddOffice";
+import MakeAnnouncement from "./components/dashboard/admin/MakeAnnouncement";
 import ManageOffice from "./components/dashboard/admin/ManageOffice";
 import Alert from "./components/layout/Alert";
 import { LOGOUT } from "./actions/types";
@@ -77,6 +78,11 @@ const App = () => {
                 exact
                 path="/manage-office"
                 component={ManageOffice}
+              />
+              <PrivateRoute
+                exact
+                path="/make-announcement"
+                component={MakeAnnouncement}
               />
             </Switch>
           </section>

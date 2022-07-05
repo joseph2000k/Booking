@@ -49,7 +49,7 @@ const Sidebar = ({
                 <Link to="/myannoncements">My Announcements</Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/createannouncement">Make Announcement</Link>
+                <Link to="/make-announcement">Make Announcement</Link>
               </MenuItem>
             </SubMenu>
           ) : null}

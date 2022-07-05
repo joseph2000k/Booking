@@ -1,7 +1,7 @@
-import React, { Fragment, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { getOfficeList, deleteOffice } from '../../../actions/office';
+import React, { Fragment, useEffect } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { getOfficeList, deleteOffice } from "../../../actions/office";
 
 const ManageOffice = ({ getOfficeList, offices, deleteOffice }) => {
   useEffect(() => {
@@ -26,10 +26,10 @@ const ManageOffice = ({ getOfficeList, offices, deleteOffice }) => {
     <tr key={office._id}>
       <td>{office.officeName}</td>
       <td>{office.role}</td>
-      <div className='d-flex justify-content-end'>
+      <div className="d-flex justify-content-end">
         <td>
           <button
-            className='btn btn-danger mx-1'
+            className="btn btn-danger mx-1"
             onClick={() => handleDelete(office._id)}
           >
             Delete
@@ -41,14 +41,14 @@ const ManageOffice = ({ getOfficeList, offices, deleteOffice }) => {
 
   return (
     <Fragment>
-      <div className='container'>
-        <div className='row'>
-          <div className='col-md-6 mx-auto'>
-            <div className='card card-body mt-5 shadow-sm p-3 mb-5 bg-white rounded'>
-              <h2 className='text-center'>
-                <i className='fas fa-user-plus'></i> Manage Office
+      <div className="container-component">
+        <div className="row">
+          <div className="col-md-6 mx-auto">
+            <div className="card card-body mt-5 shadow-sm p-3 mb-5 bg-white rounded">
+              <h2 className="text-center">
+                <i className="fas fa-user-plus"></i> Manage Office
               </h2>
-              <table className='table table-striped'>
+              <table className="table table-striped">
                 <thead>
                   <tr>
                     <th>Office Name</th>
