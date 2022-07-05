@@ -87,7 +87,7 @@ const AddOffice = ({ addOffice, setAlert }) => {
                   <input
                     type="submit"
                     value="Add Office"
-                    className="btn btn-primary btn-block"
+                    className="btn btn-primary btn-block submit-button"
                   />
                 </div>
               </form>
