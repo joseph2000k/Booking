@@ -8,7 +8,9 @@ const MakeAnnouncement = ({}) => {
       <div className="row">
         <div className="col-md-6 mx-auto">
           <div className="card card-body mt-5 shadow-sm p-3 mb-5 bg-white">
-            <h3>Make Announcement</h3>
+            <div className="d-flex justify-content-center">
+              <h3>Make Announcement</h3>
+            </div>
             <div>
               <form>
                 <textarea
