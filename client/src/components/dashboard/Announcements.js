@@ -3,7 +3,10 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getAnnouncements } from "../../actions/announcements";
 
-const Announcements = ({ getAnnouncements, announcements }) => {
+const Announcements = ({
+  getAnnouncements,
+  announcements: { announcements, loading },
+}) => {
   useEffect(() => {
     getAnnouncements();
   }, [getAnnouncements]);
@@ -16,11 +19,14 @@ const Announcements = ({ getAnnouncements, announcements }) => {
   ));
 
   return (
-    <Fragment>
-      <span className="h5">Announcements</span>
-      <p>{""}</p>
-      <div>{allAnnouncements}</div>
-    </Fragment>
+    announcements !== null &&
+    !loading && (
+      <Fragment>
+        <span className="h5">Announcements</span>
+        <p>{""}</p>
+        <div>{allAnnouncements}</div>
+      </Fragment>
+    )
   );
 };
 
@@ -30,7 +36,7 @@ Announcements.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  announcements: state.announcements.announcements,
+  announcements: state.announcements,
 });
 
 export default connect(mapStateToProps, { getAnnouncements })(Announcements);

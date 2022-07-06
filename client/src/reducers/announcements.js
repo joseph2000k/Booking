@@ -1,4 +1,8 @@
-import { GET_ANNOUNCEMENTS, ANNOUNCEMENT_ERROR } from "../actions/types";
+import {
+  GET_ANNOUNCEMENTS,
+  POST_ANNOUNCEMENT,
+  ANNOUNCEMENT_ERROR,
+} from "../actions/types";
 
 const initialState = {
   announcements: [],
@@ -14,6 +18,13 @@ export default function announcementsReducer(state = initialState, action) {
       return {
         ...state,
         announcements: payload,
+        loading: false,
+      };
+
+    case POST_ANNOUNCEMENT:
+      return {
+        ...state,
+        announcements: [payload, ...state.announcements],
         loading: false,
       };
 

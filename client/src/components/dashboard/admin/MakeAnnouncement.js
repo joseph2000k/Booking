@@ -1,8 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { postAnnouncement } from "../../../actions/announcements";
+import { useHistory } from "react-router-dom";
 
-const MakeAnnouncement = ({}) => {
+const MakeAnnouncement = ({ postAnnouncement }) => {
+  const history = useHistory();
+
+  const [formData, setFormData] = useState({});
+
+  const { text } = formData;
+
+  const onChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    postAnnouncement(formData, history);
+  };
+
   return (
     <div className="container-component">
       <div className="row">
@@ -12,16 +29,19 @@ const MakeAnnouncement = ({}) => {
               <h3>Make Announcement</h3>
             </div>
             <div>
-              <form>
+              <form onSubmit={(e) => onSubmit(e)}>
                 <textarea
                   className="form-control text-area"
-                  name="announcement"
+                  onChange={(e) => onChange(e)}
+                  name="text"
                   rows="10"
                   placeholder="Enter announcement here"
+                  value={text}
                 ></textarea>
                 <div className="d-flex justify-content-center">
                   <input
                     type="submit"
+                    value={"Post"}
                     className="btn btn-primary mt-2 submit-button"
                   />
                 </div>
@@ -34,4 +54,8 @@ const MakeAnnouncement = ({}) => {
   );
 };
 
-export default connect(null, {})(MakeAnnouncement);
+MakeAnnouncement.propTypes = {
+  postAnnouncement: PropTypes.func.isRequired,
+};
+
+export default connect(null, { postAnnouncement })(MakeAnnouncement);
