@@ -22,11 +22,16 @@ const Sidebar = ({
 
   return (
     <ProSidebar className="position-fixed top-0 start-0 mt-4">
-      <div className="mt-4">
+      <div className="mt-4 sidebar-line-height">
         <Menu>
           {isAuthenticated && (
             <MenuItem icon={<i className="fa fa-home" />}>
               <Link to="/dashboard">Dashboard</Link>
+            </MenuItem>
+          )}
+          {isAuthenticated && (
+            <MenuItem icon={<i className="fa fa-calendar" />}>
+              <Link to="/create-meeting">Schedule a Meeting</Link>
             </MenuItem>
           )}
           <SubMenu

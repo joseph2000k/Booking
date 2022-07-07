@@ -100,6 +100,10 @@ a {
   margin-left: 10rem;
 }
 
+.sidebar-line-height {
+  line-height: 1.1rem;
+}
+
 .office-name-navbar {
   font-family: $body-font;
   color: $my-font;
@@ -190,10 +194,10 @@ a {
   overflow: hidden;
   padding: 0 2rem;
   margin-top: 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   border-radius: 5px;
   min-width: 81%;
-  min-height: 80vh;
+  min-height: 87vh;
   background-color: #fff;
 } 
 
@@ -203,11 +207,11 @@ a {
   overflow: hidden;
   padding: 0 2rem;
   margin-top: 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   margin-left: 1rem;
   border-radius: 5px;
   min-width: 25%;
-  min-height: 80vh;
+  min-height: 87vh;
   background-color: #fff;
 } 
 

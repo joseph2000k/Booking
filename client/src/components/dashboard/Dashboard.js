@@ -103,18 +103,10 @@ const Dashboard = ({
   ) : (
     <div className="d-flex flex-row container-component">
       <div className="position-fixed top-0 start-0 mt-4"></div>
-      <div className="dashboard-tab shadow-sm p-3 mb-5 mx-0 bg-white rounded">
+      <div className="dashboard-tab shadow-sm p-3 mb-1 mx-0 bg-white rounded">
         <Fragment>
           <div>
             <h3 className="text-center">Dashboard</h3>
-            <Link to="create-meeting">
-              <button className="btn btn-primary shadow m-3 position-fixed bottom-0 end-0">
-                <h5>
-                  <i class="fa fa-pencil-square" aria-hidden="true"></i>{" "}
-                  Schedule a Meeting
-                </h5>
-              </button>
-            </Link>
           </div>
 
           <Tabs
@@ -173,7 +165,7 @@ const Dashboard = ({
           </Tabs>
         </Fragment>
       </div>
-      <div className="announcement shadow-sm p-3 mb-5 bg-white rounded">
+      <div className="announcement shadow-sm p-3 mb-1 bg-white rounded">
         <Announcements />
       </div>
     </div>
