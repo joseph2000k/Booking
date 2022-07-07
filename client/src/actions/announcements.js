@@ -40,13 +40,16 @@ export const postAnnouncement = (formData, history) => async (dispatch) => {
     });
     dispatch(setAlert("Announcement Created", "success"));
     history.push("/dashboard");
-  } catch (error) {
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
+    }
+
     dispatch({
       type: ANNOUNCEMENT_ERROR,
-      payload: {
-        msg: error.response.statusText,
-        status: error.response.status,
-      },
+      payload: { msg: err.response.statusText, status: err.response.status },
     });
   }
 };

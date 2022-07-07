@@ -21,8 +21,8 @@ router.post(
     try {
       const office = await Office.findById(req.office.id).select("-password");
 
-      if (office.role !== "admin") {
-        return res.status(401).json({ msg: "Unauthorized" });
+      if (office.role !== "admin" && office.role !== "manager") {
+        return res.status(401).json({ errors: [{ msg: "Unauthorized" }] });
       }
 
       const newAnnouncement = new Announcement({
