@@ -53,4 +53,28 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+//@route GET api/announcements/:id
+//@desc  GET all user's announcements
+//@access Private
+router.get("/:id", auth, async (req, res) => {
+  try {
+    const office = await Office.findById(req.params.id).select("-password");
+
+    if (office.id !== req.office.id) {
+      return res.status(401).json({ errors: [{ msg: "Unauthorized" }] });
+    }
+
+    if (office.role !== "admin" && office.role !== "manager") {
+      return res.status(401).json({ errors: [{ msg: "Unauthorized" }] });
+    }
+
+    const announcements = await Announcement.find({ office: req.params.id });
+
+    res.json(announcements);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = router;
