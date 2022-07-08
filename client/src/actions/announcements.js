@@ -2,6 +2,7 @@ import axios from "axios";
 import { setAlert } from "./alert";
 import {
   GET_ANNOUNCEMENTS,
+  GET_MY_ANNOUNCEMENTS,
   ANNOUNCEMENT_ERROR,
   POST_ANNOUNCEMENT,
 } from "./types";
@@ -20,6 +21,26 @@ export const getAnnouncements = () => async (dispatch) => {
       payload: {
         msg: error.response.statusText,
         status: error.response.status,
+      },
+    });
+  }
+};
+
+//GET MY ANNOUNCEMENTS
+export const getMyAnnouncements = (id) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/announcements/${id}`);
+
+    dispatch({
+      type: GET_MY_ANNOUNCEMENTS,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ANNOUNCEMENT_ERROR,
+      payload: {
+        msg: error.response.statusText,
+        status: error.responce.status,
       },
     });
   }

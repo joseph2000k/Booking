@@ -2,10 +2,12 @@ import {
   GET_ANNOUNCEMENTS,
   POST_ANNOUNCEMENT,
   ANNOUNCEMENT_ERROR,
+  GET_MY_ANNOUNCEMENTS,
 } from "../actions/types";
 
 const initialState = {
   announcements: [],
+  myannouncements: [],
   loading: true,
   error: {},
 };
@@ -18,6 +20,13 @@ export default function announcementsReducer(state = initialState, action) {
       return {
         ...state,
         announcements: payload,
+        loading: false,
+      };
+
+    case GET_MY_ANNOUNCEMENTS:
+      return {
+        ...state,
+        myannouncements: payload,
         loading: false,
       };
 

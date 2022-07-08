@@ -51,7 +51,9 @@ const Sidebar = ({
               icon={<i className="fa fa-bullhorn" />}
             >
               <MenuItem>
-                <Link to="/myannoncements">My Announcements</Link>
+                <Link to={`/myannouncements/${office._id}`}>
+                  My Announcements
+                </Link>
               </MenuItem>
               <MenuItem>
                 <Link to="/make-announcement">Make Announcement</Link>
