@@ -1,0 +1,227 @@
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+$sidebar-bg-color: #ffffff;
+$sidebar-color: #616161;
+$sidebar-width: 250px;
+$highlight-color: #00b4d8;
+$submenu-bg-color: #ffffff;
+$submenu-indent: 50px;
+
+@import "../node_modules/react-pro-sidebar/dist/scss/styles.scss";
+
+body {
+  background-color: #f5f5f5 !important;
+}
+
+$skyColor: #00b4d8;
+$my-font: white;
+$body-font: Arial, Helvetica, sans-serif;
+
+:root {
+  --primary-color: #17a2b8;
+  --dark-color: #343a40;
+  --light-color: #f4f4f4;
+  --danger-color: #dc3545;
+  --success-color: #28a745;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+.text-area {
+  resize: none;
+}
+
+.a-link {
+  color: black;
+  font-family: $body-font;
+}
+
+.h-title {
+  font-family: $body-font;
+  font-weight: bold;
+}
+
+.form .form-group {
+  margin: 1.2rem 0;
+}
+
+.submit-button {
+  width: 100%;
+}
+
+.alert {
+  padding: 0.8rem;
+  margin: 1rem 0;
+  opacity: 1;
+  background: var(--light-color);
+  color: #333;
+}
+
+.alert-primary {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.alert-light {
+  background: var(--light-color);
+  color: #333;
+}
+
+.alert-dark {
+  background: var(--dark-color);
+  color: #fff;
+}
+
+.alert-danger {
+  background: var(--danger-color);
+  color: #fff;
+}
+
+.alert-success {
+  background: var(--success-color);
+  color: #fff;
+}
+
+.alert-white {
+  background: #fff;
+  color: #333;
+  border: #ccc solid 1px;
+}
+
+.container-component {
+  margin-left: 10rem;
+}
+
+.sidebar-line-height {
+  line-height: 1.1rem;
+}
+
+.office-name-navbar {
+  font-family: $body-font;
+  color: $my-font;
+}
+
+.office-name-navbar-background {
+  background-color: $skyColor;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 100px;
+  border-radius: 10px;
+}
+
+.navbar {
+  width: 100%;
+  height: 50px;
+  background-color: $skyColor;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.7rem 1rem;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  z-index: 4;
+
+  .btn {
+    display: inline-block;
+    background: var(--light-color);
+    color: #333;
+    padding: 0.4rem 1.3rem;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    margin-right: 0.5rem;
+    transition: opacity 0.2s ease-in;
+    outline: none;
+  }
+
+
+  .btn-primary {
+    background: var(--primary-color);
+    color: #fff;
+  }
+
+  a {
+    color: $my-font;
+    text-decoration: none;
+    font-family: $body-font;
+  }
+
+  li {
+    font-family: $body-font;
+    list-style-type: none;
+    display: inline-flex;
+    margin-right: 30px;
+    font-size: 1rem;
+  }
+}
+
+.alert-fixed {
+  position: fixed;
+  top: 85%;
+  left: 170px;
+  width: 75%;
+  z-index: 9999;
+}
+
+.landing {
+  background-image: url("./img/calendar.png");
+  height: 100vh;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: -1;
+  background-color: #faf9f6;
+}
+
+.x-large {
+  font-size: 2rem;
+}
+
+ .dashboard-tab {
+  max-width: 1100px;
+  margin: 1rem;
+  overflow: hidden;
+  padding: 0 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  min-width: 81%;
+  min-height: 87vh;
+  background-color: #fff;
+} 
+
+.announcement {
+  max-width: 1100px;
+  margin: auto;
+  overflow: hidden;
+  padding: 0 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+  border-radius: 5px;
+  min-width: 25%;
+  min-height: 87vh;
+  background-color: #fff;
+} 
+
+.fc-event-time,
+.fc-event-title {
+  padding: 0 1px;
+  white-space: normal;
+}
+
+.calendar {
+  max-width: 900px;
+  margin: auto;
+}

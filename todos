@@ -1,3 +1,6 @@
+disapproved a meeting
+move meeting date
+manage emergency meeting eg. meeting with a high official
 document printing capability for hard copy approval
 attach supporting documents
 chat related to specific meeting request
@@ -32,3 +35,34 @@ undefined
 > nd1.getTime() <= d2.getTime()  && nd1.getTime() >= d1.getTime()
 true
 >
+
+Meeting.find({
+    $and: [
+        { $or: [{d1: {&lte: timeEnd}}, {d1: {$lte : timeStart}}] },
+        { $or: [{d2: {&lte: timeEnd}}, {d2: {$lte : timeStart}}] }
+    ]
+})
+
+
+REF.
+https://stackoverflow.com/questions/34003927/how-can-i-do-a-conditional-mongoose-query-that-uses-and-and-or
+
+
+
+use split method in room, timeStart and timeEnd
+
+if (room.length===timeStart.length===timeEnd.length){
+    for(let i=0; i<room.length; i++){
+        var newRoomsched = {
+        room[i],
+        timeStart[i],
+        timeEnd[i],
+      };
+      meeting.rooms.unshift(newRoomsched);
+    }
+}
+
+
+https://www.mongodb.com/developer/article/mongodb-schema-design-best-practices/
+
+/\d{4}(.\d{2}){2}(\s|T)(\d{2}.){2}\d{2}/g
